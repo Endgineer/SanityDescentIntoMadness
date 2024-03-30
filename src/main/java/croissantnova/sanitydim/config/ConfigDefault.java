@@ -16,6 +16,7 @@ public class ConfigDefault
     public final DoubleValue m_negMul;
 
     public final DoubleValue m_passive;
+    public final DoubleValue m_deep;
     public final DoubleValue m_raining;
     public final IntValue m_hungerThreshold;
     public final DoubleValue m_hungry;
@@ -101,6 +102,9 @@ public class ConfigDefault
         m_passive = builder
                 .comment("This value will be added to sanity each second regardless of any other factors")
                 .defineInRange("passive", .0, -100.0, 100.0);
+        m_deep = builder
+                .comment("Players will gain this amount of sanity per second while deep underground")
+                .defineInRange("deep", -.15, -100.0, 100.0);
         m_raining = builder
                 .comment("Sanity gain per second during rainy weather or in water")
                 .defineInRange("raining", -.2, -100.0, 100.0);
