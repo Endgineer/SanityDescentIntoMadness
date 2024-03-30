@@ -39,6 +39,7 @@ public abstract class ConfigManager
 
         // sanity.passive
         proxies.put("sanity.passive.passive", new ProxyValueEntry<>(() -> getDefault().m_passive.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.deep", new ProxyValueEntry<>(() -> getDefault().m_deep.get(), ConfigManager::finalizePassive));
         proxies.put("sanity.passive.raining", new ProxyValueEntry<>(() -> getDefault().m_raining.get(), ConfigManager::finalizePassive));
         proxies.put("sanity.passive.hunger_threshold", new ProxyValueEntry<>(() -> getDefault().m_hungerThreshold.get(), ConfigManager::noFinalize));
         proxies.put("sanity.passive.hungry", new ProxyValueEntry<>(() -> getDefault().m_hungry.get(), ConfigManager::finalizePassive));
