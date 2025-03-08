@@ -91,6 +91,7 @@ public abstract class ConfigManager
         // sanity.entity
         proxies.put("sanity.entity.sane_see_inner_entities", new ProxyValueEntry<>(() -> getDefault().m_saneSeeInnerEntities.get(), ConfigManager::noFinalize));
         proxies.put("sanity.entity.spawn_chance_seconds", new ProxyValueEntry<>(() -> getDefault().m_innerEntitiesSpawnChanceSeconds.get(), ConfigManager::noFinalize));
+        ConfigEntry.INNER_ENTITY_DESPAWN_MOBS_DISTANCE.putInProxies(proxies);
 
         // sanity.client
         // sanity.client.indicator

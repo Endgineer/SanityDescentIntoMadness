@@ -65,6 +65,7 @@ public class ConfigDefault
 
     public final BooleanValue m_saneSeeInnerEntities;
     public final IntValue m_innerEntitiesSpawnChanceSeconds;
+    public final IntValue m_innerEntitiesDespawnNearbyMobsDistance;
 
     public final BooleanValue m_renderIndicator;
     public final BooleanValue m_twitchIndicator;
@@ -290,6 +291,10 @@ public class ConfigDefault
 
         builder.pop();
 
+
+
+
+
         builder.comment("Entities configuration").push("entity");
 
         m_saneSeeInnerEntities = builder
@@ -299,15 +304,25 @@ public class ConfigDefault
                         "Players who are targeted by inner entities see them regardless")
                 .define("sane_see_inner_entities", false);
 
-        builder.pop();
-
         m_innerEntitiesSpawnChanceSeconds = builder
                 .comment(
                         "How many seconds it should take for it to be a 95% chance that an inner entity has spawned.",
                         "Useful to stop inner entities from spawning predictably after the timeout counter has ended."
                 )
                 .defineInRange("spawn_chance_seconds", 30, 1, 1200);
+
+        m_innerEntitiesDespawnNearbyMobsDistance = builder
+                .comment(
+                        "The distance (in blocks) that entities in #sanitydim:inner_entity_despawnable have to be within to despawn when near inner entities.",
+                        "Setting this value to 0 disables this feature."
+                )
+                .defineInRange("despawn_mobs_distance", 32, 0, 128);
+
         builder.pop();
+
+
+
+
 
         builder.comment("Client configuration").push("client");
         builder.comment("Sanity indicator configuration").push("indicator");
