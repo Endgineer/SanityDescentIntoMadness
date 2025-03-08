@@ -6,6 +6,7 @@ import croissantnova.sanitydim.capability.*;
 import croissantnova.sanitydim.client.SoundPlayback;
 import croissantnova.sanitydim.command.SanityCommand;
 import croissantnova.sanitydim.entity.InnerEntity;
+import croissantnova.sanitydim.sources.active.PlayerHurtAnimalEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -84,10 +85,12 @@ public class EventHandler
     @SubscribeEvent
     public void onLivingDamage(final LivingDamageEvent event)
     {
-        if (event.getEntity() instanceof ServerPlayer player)
+        if (event.getEntity() instanceof ServerPlayer player) {
             SanityProcessor.handlePlayerHurt(player, event.getAmount());
-        else if (event.getEntity() instanceof Animal animal && event.getSource().getEntity() instanceof ServerPlayer player)
-            SanityProcessor.handlePlayerHurtAnimal(player, animal, event.getAmount());
+        }
+        else if (event.getEntity() instanceof Animal animal && event.getSource().getEntity() instanceof ServerPlayer player) {
+            new PlayerHurtAnimalEvent(player, animal, event.getAmount());
+        }
     }
 
     @SubscribeEvent

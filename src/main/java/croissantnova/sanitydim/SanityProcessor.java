@@ -299,19 +299,6 @@ public final class SanityProcessor
         });
     }
 
-    public static void handlePlayerHurtAnimal(ServerPlayer player, Animal animal, float amount)
-    {
-        if (player == null || player.isCreative() || player.isSpectator() || amount <= 0)
-            return;
-
-        player.getCapability(SanityProvider.CAP).ifPresent(s ->
-        {
-            ResourceLocation dimLoc = player.level().dimension().location();
-            addSanity(s, amount * ConfigProxy.getAnimalHurtRatio(player.level().dimension().location()) * (animal.isBaby() ? 2.0f : 1.0f), player);
-//            s.setSanity(s.getSanity() + amount * ConfigProxy.getAnimalHurtRatio(player.level.dimension().location()) * (animal.isBaby() ? 2.0f : 1.0f));
-        });
-    }
-
     public static void handlePlayerPetDeath(ServerPlayer player, TamableAnimal pet)
     {
         if (player == null || player.isCreative() || player.isSpectator() || pet.isOwnedBy(player))
