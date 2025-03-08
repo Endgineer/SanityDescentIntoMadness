@@ -81,10 +81,10 @@ public class RottingStalker extends InnerEntity implements GeoEntity
     public static AttributeSupplier buildAttributes()
     {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 500.0d)
+                .add(Attributes.MAX_HEALTH, 40.0d)
                 .add(Attributes.FOLLOW_RANGE, 128.0d)
                 .add(Attributes.ATTACK_DAMAGE, 8.0d)
-                .add(Attributes.MOVEMENT_SPEED, 0.42d)
+                .add(Attributes.MOVEMENT_SPEED, 0.4d)
                 .build();
     }
 }
