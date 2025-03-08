@@ -19,7 +19,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SneakingTerror extends InnerEntity implements GeoEntity
+public class SneakingTerror extends NightmareEntity implements GeoEntity
 {
     private final AnimatableInstanceCache m_animCache = GeckoLibUtil.createInstanceCache(this);
 

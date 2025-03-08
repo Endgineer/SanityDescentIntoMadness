@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import croissantnova.sanitydim.capability.InnerEntityCapImplProvider;
 import croissantnova.sanitydim.capability.SanityProvider;
 import croissantnova.sanitydim.config.ConfigProxy;
-import croissantnova.sanitydim.entity.InnerEntity;
+import croissantnova.sanitydim.entity.NightmareEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -17,7 +17,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class RendererInnerEntity<T extends InnerEntity & GeoAnimatable> extends GeoEntityRenderer<T>
+public class RendererInnerEntity<T extends NightmareEntity & GeoAnimatable> extends GeoEntityRenderer<T>
 {
     private final Minecraft m_mc = Minecraft.getInstance();
     private final AtomicBoolean m_shouldRender = new AtomicBoolean(false);

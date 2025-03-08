@@ -23,7 +23,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class RottingStalker extends InnerEntity implements GeoEntity
+public class RottingStalker extends NightmareEntity implements GeoEntity
 {
     private final AnimatableInstanceCache m_animCache = GeckoLibUtil.createInstanceCache(this);
 

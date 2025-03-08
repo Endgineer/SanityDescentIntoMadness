@@ -5,7 +5,7 @@ import croissantnova.sanitydim.SanityProcessor;
 import croissantnova.sanitydim.capability.*;
 import croissantnova.sanitydim.client.SoundPlayback;
 import croissantnova.sanitydim.command.SanityCommand;
-import croissantnova.sanitydim.entity.InnerEntity;
+import croissantnova.sanitydim.entity.NightmareEntity;
 import croissantnova.sanitydim.sources.active.PlayerHurtAnimalEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -58,7 +58,7 @@ public class EventHandler
     {
         if (event.getObject() instanceof Player)
             event.addCapability(SanityProvider.KEY, new SanityProvider());
-        else if (event.getObject() instanceof InnerEntity)
+        else if (event.getObject() instanceof NightmareEntity)
             event.addCapability(InnerEntityCapImplProvider.KEY, new InnerEntityCapImplProvider());
     }
 

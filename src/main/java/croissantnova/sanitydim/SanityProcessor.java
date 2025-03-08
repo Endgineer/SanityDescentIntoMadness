@@ -2,7 +2,7 @@ package croissantnova.sanitydim;
 
 import croissantnova.sanitydim.capability.*;
 import croissantnova.sanitydim.config.*;
-import croissantnova.sanitydim.entity.InnerEntity;
+import croissantnova.sanitydim.entity.NightmareEntity;
 import croissantnova.sanitydim.entity.InnerEntitySpawner;
 import croissantnova.sanitydim.item.ItemRegistry;
 import croissantnova.sanitydim.net.InnerEntityCapImplPacket;
@@ -20,7 +20,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -177,7 +176,7 @@ public final class SanityProcessor
     {
         for (Entity ent : level.getEntities().getAll())
         {
-            if (ent instanceof InnerEntity ie)
+            if (ent instanceof NightmareEntity ie)
             {
                 ie.getCapability(InnerEntityCapImplProvider.CAP).ifPresent(iec ->
                 {

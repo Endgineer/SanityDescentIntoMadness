@@ -48,8 +48,13 @@ public class InnerEntitySpawner
         return calculateSpawnChance(ConfigProxy.getInnerEntitySpawnChanceSeconds(dim));
     }
 
-    public static @NotNull List<InnerEntity> getInnerEntitiesInRadius(@NotNull Level level, BlockPos blockPos, int radius) {
-        return level.getEntitiesOfClass(InnerEntity.class, new AABB(blockPos).inflate(radius));
+    public static @NotNull List<NightmareEntity> getInnerEntitiesInRadius(@NotNull Level level, BlockPos blockPos, int radius) {
+        return level.getEntitiesOfClass(NightmareEntity.class, new AABB(blockPos).inflate(radius));
+    }
+
+    // when nightmares should spawn and also the inverse of when they should despawn
+    public static boolean isNightmareTime(@NotNull Level level) {
+        return level.isNight() || level.isThundering();
     }
 
     // every tick try to spawn an inner entity
@@ -77,7 +82,7 @@ public class InnerEntitySpawner
         if (player == null || player.isCreative() || player.isSpectator() || player.level().getDifficulty().equals(Difficulty.PEACEFUL)) {
             return;
         }
-        if (!(player.level().isNight() || player.level().isThundering())) {
+        if (!isNightmareTime(player.level())) {
             return;
         }
 
@@ -104,7 +109,7 @@ public class InnerEntitySpawner
             return;
         }
 
-        InnerEntity entity = createNewRandomInnerEntity(player);
+        NightmareEntity entity = createNewRandomInnerEntity(player);
         if (entity == null) {
             return;
         }
@@ -132,9 +137,9 @@ public class InnerEntitySpawner
     }
 
     private boolean hasMaxInnerEntities() {
-        List<InnerEntity> entities = getInnerEntitiesInRadius(player.level(), player.blockPosition(), DETECTION_RADIUS);
+        List<NightmareEntity> entities = getInnerEntitiesInRadius(player.level(), player.blockPosition(), DETECTION_RADIUS);
         int score = 0;
-        for (InnerEntity entity : entities) {
+        for (NightmareEntity entity : entities) {
             if (entity instanceof RottingStalker) {
                 score += ROTTING_STALKER_SPAWN_SCORE;
             }
@@ -166,7 +171,7 @@ public class InnerEntitySpawner
         return 0;
     }
 
-    private InnerEntity createNewRandomInnerEntity(@NotNull ServerPlayer player) {
+    private NightmareEntity createNewRandomInnerEntity(@NotNull ServerPlayer player) {
         int index = RANDOM_SOURCE.nextInt(EntityRegistry.INNER_ENTITIES.size());
         return EntityRegistry.INNER_ENTITIES.get(index).get().create(player.level());
     }
