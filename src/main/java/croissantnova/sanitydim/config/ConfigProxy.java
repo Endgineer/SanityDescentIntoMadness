@@ -141,6 +141,14 @@ public abstract class ConfigProxy
         return ConfigManager.proxyd2f("sanity.active.animal_hurt_ratio", dim);
     }
 
+    public static float getRottingStalkerKillRatio(ResourceLocation dim) {
+        return ConfigManager.proxyd2f(ConfigEntry.ROTTING_STALKER_KILL_RATIO.getProxyKey(), dim);
+    }
+
+    public static float getSneakingTerrorKillRatio(ResourceLocation dim) {
+        return ConfigManager.proxyd2f(ConfigEntry.SNEAKING_TERROR_KILL_RATIO.getProxyKey(), dim);
+    }
+
     public static float getPetDeath(ResourceLocation dim)
     {
         return ConfigManager.proxyd2f("sanity.active.pet_death", dim);

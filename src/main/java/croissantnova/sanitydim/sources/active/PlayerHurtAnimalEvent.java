@@ -27,7 +27,7 @@ public class PlayerHurtAnimalEvent {
         handle();
     }
 
-    public void handle()
+    private void handle()
     {
         if (player == null || player.isCreative() || player.isSpectator() || damageDealt <= 0f) {
             return;

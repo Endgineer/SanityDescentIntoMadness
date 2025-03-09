@@ -41,6 +41,8 @@ public class ConfigDefault
     public final DoubleValue m_animalBreeding;
     public final DoubleValue m_animalBreedingCd;
     public final DoubleValue m_animalHurtRatio;
+    public final DoubleValue m_rottingStalkerKillRatio;
+    public final DoubleValue m_sneakingTerrorKillRatio;
     public final DoubleValue m_petDeath;
     public final DoubleValue m_villagerTrade;
     public final DoubleValue m_villagerTradeCd;
@@ -192,6 +194,16 @@ public class ConfigDefault
                         "Players gain this amount of sanity for every point of damage dealt to peaceful animals (incl. neutral ones)",
                         "This value is doubled for baby animals")
                 .defineInRange("animal_hurt_ratio", -.5, -100.0, 100.0);
+        m_rottingStalkerKillRatio = builder
+                .comment(
+                        "Players gain this amount of sanity when killing a rotting stalker."
+                )
+                .defineInRange("rotting_stalker_kill_ratio", 0.1, -100.0, 100);
+        m_sneakingTerrorKillRatio = builder
+                .comment(
+                        "Players gain this amount of sanity when killing a sneaking terror."
+                )
+                .defineInRange("rotting_stalker_kill_ratio", 0.1, -100.0, 100);
         m_petDeath = builder
                 .comment("Players gain this amount of sanity upon their pets' death")
                 .defineInRange("pet_death", -60.0, -100.0, 100.0);

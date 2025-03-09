@@ -6,7 +6,9 @@ import croissantnova.sanitydim.capability.*;
 import croissantnova.sanitydim.client.SoundPlayback;
 import croissantnova.sanitydim.command.SanityCommand;
 import croissantnova.sanitydim.entity.NightmareEntity;
+import croissantnova.sanitydim.item.ItemRegistry;
 import croissantnova.sanitydim.sources.active.PlayerHurtAnimalEvent;
+import croissantnova.sanitydim.sources.active.PlayerKillNightmareEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -17,6 +19,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
@@ -36,6 +40,7 @@ import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.TradeWithVillagerEvent;
+import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.level.SleepFinishedTimeEvent;
@@ -85,10 +90,11 @@ public class EventHandler
     @SubscribeEvent
     public void onLivingDamage(final LivingDamageEvent event)
     {
-        if (event.getEntity() instanceof ServerPlayer player) {
+        Entity entity = event.getEntity();
+        if (entity instanceof ServerPlayer player) {
             SanityProcessor.handlePlayerHurt(player, event.getAmount());
         }
-        else if (event.getEntity() instanceof Animal animal && event.getSource().getEntity() instanceof ServerPlayer player) {
+        else if (entity instanceof Animal animal && event.getSource().getEntity() instanceof ServerPlayer player) {
             new PlayerHurtAnimalEvent(player, animal, event.getAmount());
         }
     }
@@ -96,8 +102,13 @@ public class EventHandler
     @SubscribeEvent
     public void onLivingDeath(final LivingDeathEvent event)
     {
-        if (event.getEntity() instanceof TamableAnimal ta && ta.getOwnerUUID() != null)
+        Entity entity = event.getEntity();
+        if (entity instanceof TamableAnimal ta && ta.getOwnerUUID() != null) {
             SanityProcessor.handlePlayerPetDeath(ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayer(ta.getOwnerUUID()), ta);
+        }
+        else if (entity instanceof NightmareEntity nightmareEntity && event.getSource().getEntity() instanceof ServerPlayer player) {
+            new PlayerKillNightmareEvent(player, nightmareEntity);
+        }
     }
 
     @SubscribeEvent

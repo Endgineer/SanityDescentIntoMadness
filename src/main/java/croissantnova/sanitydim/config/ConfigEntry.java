@@ -10,6 +10,14 @@ public enum ConfigEntry {
             "sanity.entity.despawn_nearby_mobs_distance",
             new ConfigManager.ProxyValueEntry<>(() -> ConfigManager.getDefault().m_innerEntitiesDespawnNearbyMobsDistance.get(), ConfigManager::noFinalize)
     ),
+    ROTTING_STALKER_KILL_RATIO(
+            "sanity.active.rotting_stalker_kill_ratio",
+            new ConfigManager.ProxyValueEntry<>(() -> ConfigManager.getDefault().m_rottingStalkerKillRatio.get(), ConfigManager::finalizeActive)
+    ),
+    SNEAKING_TERROR_KILL_RATIO(
+            "sanity.active.sneaking_terror_kill_ratio",
+            new ConfigManager.ProxyValueEntry<>(() -> ConfigManager.getDefault().m_sneakingTerrorKillRatio.get(), ConfigManager::finalizeActive)
+    ),
     ;
 
     private final String proxyKey;

@@ -65,6 +65,12 @@ public abstract class NightmareEntity extends Monster
     public void tick() {
         super.tick();
 
+        // despawn nightmare entities when it's no longer nightmare time
+        if (!InnerEntitySpawner.isNightmareTime(this.level())) {
+            this.remove(RemovalReason.DISCARDED);
+            return;
+        }
+
         int despawnDistance = ConfigProxy.getInnerEntityDespawnMobsDistance(this.level().dimension().location());
         if (despawnDistance <= 0) {
             return;
