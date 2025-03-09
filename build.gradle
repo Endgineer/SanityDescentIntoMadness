@@ -5,6 +5,7 @@ buildscript {
         maven { url = 'https://maven.parchmentmc.org' }
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
+        maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2)', changing: true
