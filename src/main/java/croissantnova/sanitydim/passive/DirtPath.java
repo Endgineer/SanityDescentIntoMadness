@@ -23,11 +23,11 @@ public class DirtPath implements IPassiveSanitySource
     public float get(@Nonnull ServerPlayer player, @Nonnull ISanity cap, @Nonnull ResourceLocation dim)
     {
         BlockState on = player.getFeetBlockState();
-        BlockPos bpos = player.blockPosition();
+        BlockPos blockPos = player.blockPosition();
         ServerLevel level = player.serverLevel();
         if (on.is(Blocks.DIRT_PATH) || on.is(BlockTags.WOOL_CARPETS) || on.isAir() && (
-                level.getBlockState(bpos.below()).is(Blocks.DIRT_PATH)) || level.getBlockState(bpos.below()).is(BlockTags.WOOL_CARPETS) ||
-                level.getBlockState(bpos.below().below()).is(Blocks.DIRT_PATH) || level.getBlockState(bpos.below().below()).is(BlockTags.WOOL_CARPETS))
+                level.getBlockState(blockPos.below()).is(Blocks.DIRT_PATH)) || level.getBlockState(blockPos.below()).is(BlockTags.WOOL_CARPETS) ||
+                level.getBlockState(blockPos.below().below()).is(Blocks.DIRT_PATH) || level.getBlockState(blockPos.below().below()).is(BlockTags.WOOL_CARPETS))
         {
             Vec3 pos = player.position();
             Vec3 prevPos = m_playerToPos.getOrDefault(player, Vec3.ZERO);

@@ -74,15 +74,15 @@ public final class SanityProcessor
 
         garlandTimer--;
         ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
-        if (headItem.is(ItemRegistry.GARLAND.get()))
-        {
-            // TODO: unhardcode
-            passive -= .00005 * ConfigProxy.getPosMul(dim);
+        if (headItem.is(ItemRegistry.GARLAND.get())) {
+            // TODO: un-hardcode
+            passive -= .00005f * ConfigProxy.getPosMul(dim);
             if (garlandTimer <= 0)
                 headItem.hurtAndBreak(player.isInWaterOrRain() ? 2 : 1, player, ent -> {});
         }
-        if (garlandTimer <= 0)
+        if (garlandTimer <= 0) {
             garlandTimer = MAX_GARLAND_TIMER;
+        }
 
         return passive;
     }
