@@ -1,11 +1,13 @@
 package croissantnova.sanitydim.util;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityHelper {
 
@@ -14,7 +16,7 @@ public class EntityHelper {
             new ResourceLocation("sanitydim", "inner_entity_despawnable")
     );
 
-    public static boolean despawnsNearInnerEntities(Entity entity) {
+    public static boolean despawnsNearInnerEntities(@NotNull Entity entity) {
         return entity.getType().is(INNER_ENTITY_DESPAWNABLE_TAG);
     }
 }

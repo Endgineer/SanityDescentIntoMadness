@@ -63,7 +63,7 @@ public class SanityMod
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         initGui();
-        //EntityRenderers.register(EntityRegistry.SHADE_CHOMPER.get(), RendererShadeChomper::new);
+        //EntityRenderers.register(EntityRegistry.SHADE_CHOMPER.getConfigValue(), RendererShadeChomper::new);
     }
 
     @OnlyIn(Dist.CLIENT)

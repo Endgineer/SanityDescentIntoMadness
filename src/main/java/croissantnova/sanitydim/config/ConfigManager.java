@@ -27,117 +27,121 @@ public abstract class ConfigManager
     protected static final Map<String, ProxyValueEntry<?>> proxies = new HashMap<>();
 
     public static final List<Pair<?, ForgeConfigSpec>> configList = new ArrayList<>();
-    public static Pair<ConfigDefault, ForgeConfigSpec> def;
+    public static Pair<ConfigValues, ForgeConfigSpec> configValues;
 
     public static void init()
     {
-        configList.add(def = new ForgeConfigSpec.Builder().configure(ConfigDefault::new));
+        configList.add(configValues = new ForgeConfigSpec.Builder().configure(ConfigValues::new));
 
         // sanity
-        proxies.put("sanity.positive_multiplier", new ProxyValueEntry<>(() -> getDefault().m_posMul.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.negative_multiplier", new ProxyValueEntry<>(() -> getDefault().m_negMul.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.positive_multiplier", new ProxyValueEntry<>(() -> getConfigValues().m_posMul.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.negative_multiplier", new ProxyValueEntry<>(() -> getConfigValues().m_negMul.get(), ConfigManager::noFinalize));
 
         // sanity.passive
-        proxies.put("sanity.passive.passive", new ProxyValueEntry<>(() -> getDefault().m_passive.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.passive.raining", new ProxyValueEntry<>(() -> getDefault().m_raining.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.passive.hunger_threshold", new ProxyValueEntry<>(() -> getDefault().m_hungerThreshold.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.passive.hungry", new ProxyValueEntry<>(() -> getDefault().m_hungry.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.passive.ender_man_anger", new ProxyValueEntry<>(() -> getDefault().m_enderManAnger.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.passive.pet", new ProxyValueEntry<>(() -> getDefault().m_pet.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.passive.monster", new ProxyValueEntry<>(() -> getDefault().m_monster.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.passive.darkness", new ProxyValueEntry<>(() -> getDefault().m_darkness.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.passive.darkness_threshold", new ProxyValueEntry<>(() -> getDefault().m_darknessThreshold.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.passive.lightness", new ProxyValueEntry<>(() -> getDefault().m_lightness.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.passive.lightness_threshold", new ProxyValueEntry<>(() -> getDefault().m_lightnessThreshold.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.passive.block_stuck", new ProxyValueEntry<>(() -> getDefault().m_blockStuck.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.passive.dirt_path", new ProxyValueEntry<>(() -> getDefault().m_dirtPath.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.passive.jukebox_pleasant", new ProxyValueEntry<>(() -> getDefault().m_jukeboxPleasant.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.passive.jukebox_unsettling", new ProxyValueEntry<>(() -> getDefault().m_jukeboxUnsettling.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.passive", new ProxyValueEntry<>(() -> getConfigValues().m_passive.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.raining", new ProxyValueEntry<>(() -> getConfigValues().m_raining.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.hunger_threshold", new ProxyValueEntry<>(() -> getConfigValues().m_hungerThreshold.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.passive.hungry", new ProxyValueEntry<>(() -> getConfigValues().m_hungry.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.ender_man_anger", new ProxyValueEntry<>(() -> getConfigValues().m_enderManAnger.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.pet", new ProxyValueEntry<>(() -> getConfigValues().m_pet.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.monster", new ProxyValueEntry<>(() -> getConfigValues().m_monster.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.darkness", new ProxyValueEntry<>(() -> getConfigValues().m_darkness.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.darkness_threshold", new ProxyValueEntry<>(() -> getConfigValues().m_darknessThreshold.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.passive.lightness", new ProxyValueEntry<>(() -> getConfigValues().m_lightness.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.lightness_threshold", new ProxyValueEntry<>(() -> getConfigValues().m_lightnessThreshold.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.passive.block_stuck", new ProxyValueEntry<>(() -> getConfigValues().m_blockStuck.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.dirt_path", new ProxyValueEntry<>(() -> getConfigValues().m_dirtPath.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.jukebox_pleasant", new ProxyValueEntry<>(() -> getConfigValues().m_jukeboxPleasant.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.jukebox_unsettling", new ProxyValueEntry<>(() -> getConfigValues().m_jukeboxUnsettling.get(), ConfigManager::finalizePassive));
         proxies.put("sanity.passive.blocks", new ProxyValueEntry<>(() -> defPassiveBlocks, ConfigManager::noFinalize));
 
         //sanity.active
-        proxies.put("sanity.active.sleeping", new ProxyValueEntry<>(() -> getDefault().m_sleeping.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.sleeping_cd", new ProxyValueEntry<>(() -> getDefault().m_sleepingCd.get(), ConfigManager::finalizeCooldown));
-        proxies.put("sanity.active.hurt_ratio", new ProxyValueEntry<>(() -> getDefault().m_hurtRatio.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.baby_chicken_spawn", new ProxyValueEntry<>(() -> getDefault().m_babyChickenSpawning.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.baby_chicken_spawn_cd", new ProxyValueEntry<>(() -> getDefault().m_babyChickenSpawningCd.get(), ConfigManager::finalizeCooldown));
-        proxies.put("sanity.active.advancement", new ProxyValueEntry<>(() -> getDefault().m_advancement.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.animal_breeding", new ProxyValueEntry<>(() -> getDefault().m_animalBreeding.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.animal_breeding_cd", new ProxyValueEntry<>(() -> getDefault().m_animalBreedingCd.get(), ConfigManager::finalizeCooldown));
-        proxies.put("sanity.active.animal_hurt_ratio", new ProxyValueEntry<>(() -> getDefault().m_animalHurtRatio.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.pet_death", new ProxyValueEntry<>(() -> getDefault().m_petDeath.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.villager_trade", new ProxyValueEntry<>(() -> getDefault().m_villagerTrade.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.villager_trade_cd", new ProxyValueEntry<>(() -> getDefault().m_villagerTradeCd.get(), ConfigManager::finalizeCooldown));
-        proxies.put("sanity.active.shearing", new ProxyValueEntry<>(() -> getDefault().m_shearing.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.shearing_cd", new ProxyValueEntry<>(() -> getDefault().m_shearingCd.get(), ConfigManager::finalizeCooldown));
-        proxies.put("sanity.active.eating", new ProxyValueEntry<>(() -> getDefault().m_eating.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.eating_cd", new ProxyValueEntry<>(() -> getDefault().m_eatingCd.get(), ConfigManager::finalizeCooldown));
-        proxies.put("sanity.active.fishing", new ProxyValueEntry<>(() -> getDefault().m_fishing.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.fishing_cd", new ProxyValueEntry<>(() -> getDefault().m_fishingCd.get(), ConfigManager::finalizeCooldown));
-        proxies.put("sanity.active.farmland_trample", new ProxyValueEntry<>(() -> getDefault().m_farmlandTrample.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.potting_flower", new ProxyValueEntry<>(() -> getDefault().m_pottingFlower.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.potting_flower_cd", new ProxyValueEntry<>(() -> getDefault().m_pottingFlowerCd.get(), ConfigManager::finalizeCooldown));
-        proxies.put("sanity.active.changed_dimension", new ProxyValueEntry<>(() -> getDefault().m_changedDimension.get(), ConfigManager::finalizeActive));
-        proxies.put("sanity.active.struck_by_lightning", new ProxyValueEntry<>(() -> getDefault().m_struckByLightning.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.sleeping", new ProxyValueEntry<>(() -> getConfigValues().m_sleeping.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.sleeping_cd", new ProxyValueEntry<>(() -> getConfigValues().m_sleepingCd.get(), ConfigManager::finalizeCooldown));
+        proxies.put("sanity.active.hurt_ratio", new ProxyValueEntry<>(() -> getConfigValues().m_hurtRatio.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.baby_chicken_spawn", new ProxyValueEntry<>(() -> getConfigValues().m_babyChickenSpawning.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.baby_chicken_spawn_cd", new ProxyValueEntry<>(() -> getConfigValues().m_babyChickenSpawningCd.get(), ConfigManager::finalizeCooldown));
+        proxies.put("sanity.active.advancement", new ProxyValueEntry<>(() -> getConfigValues().m_advancement.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.animal_breeding", new ProxyValueEntry<>(() -> getConfigValues().m_animalBreeding.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.animal_breeding_cd", new ProxyValueEntry<>(() -> getConfigValues().m_animalBreedingCd.get(), ConfigManager::finalizeCooldown));
+        proxies.put("sanity.active.animal_hurt_ratio", new ProxyValueEntry<>(() -> getConfigValues().m_animalHurtRatio.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.pet_death", new ProxyValueEntry<>(() -> getConfigValues().m_petDeath.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.villager_trade", new ProxyValueEntry<>(() -> getConfigValues().m_villagerTrade.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.villager_trade_cd", new ProxyValueEntry<>(() -> getConfigValues().m_villagerTradeCd.get(), ConfigManager::finalizeCooldown));
+        proxies.put("sanity.active.shearing", new ProxyValueEntry<>(() -> getConfigValues().m_shearing.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.shearing_cd", new ProxyValueEntry<>(() -> getConfigValues().m_shearingCd.get(), ConfigManager::finalizeCooldown));
+        proxies.put("sanity.active.eating", new ProxyValueEntry<>(() -> getConfigValues().m_eating.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.eating_cd", new ProxyValueEntry<>(() -> getConfigValues().m_eatingCd.get(), ConfigManager::finalizeCooldown));
+        proxies.put("sanity.active.fishing", new ProxyValueEntry<>(() -> getConfigValues().m_fishing.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.fishing_cd", new ProxyValueEntry<>(() -> getConfigValues().m_fishingCd.get(), ConfigManager::finalizeCooldown));
+        proxies.put("sanity.active.farmland_trample", new ProxyValueEntry<>(() -> getConfigValues().m_farmlandTrample.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.potting_flower", new ProxyValueEntry<>(() -> getConfigValues().m_pottingFlower.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.potting_flower_cd", new ProxyValueEntry<>(() -> getConfigValues().m_pottingFlowerCd.get(), ConfigManager::finalizeCooldown));
+        proxies.put("sanity.active.changed_dimension", new ProxyValueEntry<>(() -> getConfigValues().m_changedDimension.get(), ConfigManager::finalizeActive));
+        proxies.put("sanity.active.struck_by_lightning", new ProxyValueEntry<>(() -> getConfigValues().m_struckByLightning.get(), ConfigManager::finalizeActive));
         proxies.put("sanity.active.items", new ProxyValueEntry<>(() -> defItems, ConfigManager::noFinalize));
         proxies.put("sanity.active.item_categories", new ProxyValueEntry<>(() -> defItemCats, ConfigManager::noFinalize));
         proxies.put("sanity.active.broken_blocks", new ProxyValueEntry<>(() -> defBrokenBlocks, ConfigManager::noFinalize));
         proxies.put("sanity.active.broken_block_categories", new ProxyValueEntry<>(() -> defBrokenBlockCats, ConfigManager::noFinalize));
 
         // sanity.multiplayer
-        proxies.put("sanity.multiplayer.sane_player_company", new ProxyValueEntry<>(() -> getDefault().m_sanePlayerCompany.get(), ConfigManager::finalizePassive));
-        proxies.put("sanity.multiplayer.insane_player_company", new ProxyValueEntry<>(() -> getDefault().m_insanePlayerCompany.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.multiplayer.sane_player_company", new ProxyValueEntry<>(() -> getConfigValues().m_sanePlayerCompany.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.multiplayer.insane_player_company", new ProxyValueEntry<>(() -> getConfigValues().m_insanePlayerCompany.get(), ConfigManager::finalizePassive));
 
         // sanity.entity
-        proxies.put("sanity.entity.sane_see_inner_entities", new ProxyValueEntry<>(() -> getDefault().m_saneSeeInnerEntities.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.entity.spawn_chance_seconds", new ProxyValueEntry<>(() -> getDefault().m_innerEntitiesSpawnChanceSeconds.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.entity.sane_see_inner_entities", new ProxyValueEntry<>(() -> getConfigValues().m_saneSeeInnerEntities.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.entity.spawn_chance_seconds", new ProxyValueEntry<>(() -> getConfigValues().m_innerEntitiesSpawnChanceSeconds.get(), ConfigManager::noFinalize));
 
         // reduces boilerplate and code duplication
-        for (ConfigEntry configEntry : ConfigEntry.values()) {
+        for (ConfigEntryOld configEntry : ConfigEntryOld.values()) {
             configEntry.putInProxies(proxies);
         }
 
+        ConfigEntry.configEntries.forEach(configEntry -> {
+            configEntry.putInProxies(proxies);
+        });
+
         // sanity.client
         // sanity.client.indicator
-        proxies.put("sanity.client.indicator.render", new ProxyValueEntry<>(() -> getDefault().m_renderIndicator.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.client.indicator.twitch", new ProxyValueEntry<>(() -> getDefault().m_twitchIndicator.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.client.indicator.scale", new ProxyValueEntry<>(() -> getDefault().m_indicatorScale.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.client.indicator.location", new ProxyValueEntry<>(() -> getDefault().m_indicatorLocation.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.indicator.render", new ProxyValueEntry<>(() -> getConfigValues().m_renderIndicator.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.indicator.twitch", new ProxyValueEntry<>(() -> getConfigValues().m_twitchIndicator.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.indicator.scale", new ProxyValueEntry<>(() -> getConfigValues().m_indicatorScale.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.indicator.location", new ProxyValueEntry<>(() -> getConfigValues().m_indicatorLocation.get(), ConfigManager::noFinalize));
 
         // sanity.client.hints
-        proxies.put("sanity.client.hints.render", new ProxyValueEntry<>(() -> getDefault().m_renderHint.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.client.hints.twitch", new ProxyValueEntry<>(() -> getDefault().m_twitchHint.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.hints.render", new ProxyValueEntry<>(() -> getConfigValues().m_renderHint.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.hints.twitch", new ProxyValueEntry<>(() -> getConfigValues().m_twitchHint.get(), ConfigManager::noFinalize));
 
         // sanity.client.blood_tendrils
-        proxies.put("sanity.client.blood_tendrils.render", new ProxyValueEntry<>(() -> getDefault().m_renderBloodTendrilsOverlay.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.client.blood_tendrils.short_burst_flash", new ProxyValueEntry<>(() -> getDefault().m_flashBtOnShortBurst.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.client.blood_tendrils.render_passive", new ProxyValueEntry<>(() -> getDefault().m_renderBtPassive.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.blood_tendrils.render", new ProxyValueEntry<>(() -> getConfigValues().m_renderBloodTendrilsOverlay.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.blood_tendrils.short_burst_flash", new ProxyValueEntry<>(() -> getConfigValues().m_flashBtOnShortBurst.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.blood_tendrils.render_passive", new ProxyValueEntry<>(() -> getConfigValues().m_renderBtPassive.get(), ConfigManager::noFinalize));
 
-        proxies.put("sanity.client.render_post", new ProxyValueEntry<>(() -> getDefault().m_renderPost.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.client.play_sounds", new ProxyValueEntry<>(() -> getDefault().m_playSounds.get(), ConfigManager::noFinalize));
-        proxies.put("sanity.client.insanity_volume", new ProxyValueEntry<>(() -> getDefault().m_insanityVolume.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.render_post", new ProxyValueEntry<>(() -> getConfigValues().m_renderPost.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.play_sounds", new ProxyValueEntry<>(() -> getConfigValues().m_playSounds.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.client.insanity_volume", new ProxyValueEntry<>(() -> getConfigValues().m_insanityVolume.get(), ConfigManager::noFinalize));
 
         DimensionConfig.init();
     }
 
     public static void register()
     {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, def.getRight(), SanityMod.MODID + File.separator + "default.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, configValues.getRight(), SanityMod.MODID + File.separator + "default.toml");
     }
 
-    public static ConfigDefault getDefault()
+    public static ConfigValues getConfigValues()
     {
-        return def.getLeft();
+        return configValues.getLeft();
     }
 
     public static void onConfigLoading(final ModConfigEvent.Loading event)
     {
-        defPassiveBlocks = ConfigManager.processPassiveBlocks(getDefault().m_passiveBlocks.get());
-        defItems = ConfigManager.processItems(getDefault().m_items.get());
-        defItemCats = ConfigManager.processItemCats(getDefault().m_itemCats.get());
+        defPassiveBlocks = ConfigManager.processPassiveBlocks(getConfigValues().m_passiveBlocks.get());
+        defItems = ConfigManager.processItems(getConfigValues().m_items.get());
+        defItemCats = ConfigManager.processItemCats(getConfigValues().m_itemCats.get());
         defIdToItemCat = ConfigManager.getMapFromItemCats(defItemCats);
-        defBrokenBlocks = ConfigManager.processBrokenBlocks(getDefault().m_brokenBlocks.get());
-        defBrokenBlockCats = ConfigManager.processBrokenBlockCats(getDefault().m_brokenBlockCats.get());
+        defBrokenBlocks = ConfigManager.processBrokenBlocks(getConfigValues().m_brokenBlocks.get());
+        defBrokenBlockCats = ConfigManager.processBrokenBlockCats(getConfigValues().m_brokenBlockCats.get());
         defIdToBrokenBlockCat = ConfigManager.getMapFromBrokenBlockCats(defBrokenBlockCats);
     }
 

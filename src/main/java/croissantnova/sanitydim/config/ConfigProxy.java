@@ -142,11 +142,11 @@ public abstract class ConfigProxy
     }
 
     public static float getRottingStalkerKillRatio(ResourceLocation dim) {
-        return ConfigManager.proxyd2f(ConfigEntry.ROTTING_STALKER_KILL_RATIO.getProxyKey(), dim);
+        return ConfigManager.proxyd2f(ConfigEntryOld.ROTTING_STALKER_KILL_RATIO.getProxyKey(), dim);
     }
 
     public static float getSneakingTerrorKillRatio(ResourceLocation dim) {
-        return ConfigManager.proxyd2f(ConfigEntry.SNEAKING_TERROR_KILL_RATIO.getProxyKey(), dim);
+        return ConfigManager.proxyd2f(ConfigEntryOld.SNEAKING_TERROR_KILL_RATIO.getProxyKey(), dim);
     }
 
     public static float getPetDeath(ResourceLocation dim)
@@ -269,7 +269,7 @@ public abstract class ConfigProxy
     }
 
     public static int getInnerEntityDespawnMobsDistance(ResourceLocation dim) {
-        return ConfigManager.proxyi(ConfigEntry.INNER_ENTITY_DESPAWN_MOBS_DISTANCE.getProxyKey(), dim);
+        return ConfigManager.proxyi(ConfigEntryOld.INNER_ENTITY_DESPAWN_MOBS_DISTANCE.getProxyKey(), dim);
     }
 
     public static boolean getRenderIndicator(ResourceLocation dim)

@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DirtPath implements IPassiveSanitySource
+public class OnCarpetSanitySource implements IPassiveSanitySource
 {
     private final Map<ServerPlayer, Vec3> m_playerToPos = new HashMap<>();
 
@@ -25,9 +25,9 @@ public class DirtPath implements IPassiveSanitySource
         BlockState on = player.getFeetBlockState();
         BlockPos blockPos = player.blockPosition();
         ServerLevel level = player.serverLevel();
-        if (on.is(Blocks.DIRT_PATH) || on.is(BlockTags.WOOL_CARPETS) || on.isAir() && (
-                level.getBlockState(blockPos.below()).is(Blocks.DIRT_PATH)) || level.getBlockState(blockPos.below()).is(BlockTags.WOOL_CARPETS) ||
-                level.getBlockState(blockPos.below().below()).is(Blocks.DIRT_PATH) || level.getBlockState(blockPos.below().below()).is(BlockTags.WOOL_CARPETS))
+        if (on.is(BlockTags.WOOL_CARPETS) || on.isAir() && (
+                level.getBlockState(blockPos.below()).is(BlockTags.WOOL_CARPETS) ||
+                level.getBlockState(blockPos.below().below()).is(BlockTags.WOOL_CARPETS)))
         {
             Vec3 pos = player.position();
             Vec3 prevPos = m_playerToPos.getOrDefault(player, Vec3.ZERO);

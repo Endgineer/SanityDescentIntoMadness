@@ -55,7 +55,10 @@ public final class SanityProcessor
             new PlayerCompany(),
             new Jukebox(),
             new BlockStuck(),
-            new DirtPath()
+            new OnCarpetSanitySource(),
+            new BodyDamageSanitySource(),
+            new TemperatureSanitySource(),
+            new ThirstSanitySource()
     ));
 
     private SanityProcessor() {}

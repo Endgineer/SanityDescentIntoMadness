@@ -10,11 +10,14 @@ import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigDefault
+import static croissantnova.sanitydim.api.SanityAPI.*;
+
+public class ConfigValues
 {
     public final DoubleValue m_posMul;
     public final DoubleValue m_negMul;
 
+    // passives
     public final DoubleValue m_passive;
     public final DoubleValue m_raining;
     public final IntValue m_hungerThreshold;
@@ -32,6 +35,57 @@ public class ConfigDefault
     public final DoubleValue m_jukeboxUnsettling;
     public final ConfigValue<List<? extends String>> m_passiveBlocks;
 
+    public final PassiveSanitySource passiveSanitySource;
+    public static class PassiveSanitySource {
+        public final DoubleValue bodyPartSlightlyWounded;
+        public final DoubleValue bodyPartWounded;
+        public final DoubleValue bodyPartHeavilyWounded;
+        public final DoubleValue bodyPartDead;
+        public final DoubleValue lowHydration;
+        public final DoubleValue frostbiteTemperature;
+        public final DoubleValue coldTemperature;
+        public final DoubleValue normalTemperature;
+        public final DoubleValue hotTemperature;
+        public final DoubleValue heatStrokeTemperature;
+
+        private final ForgeConfigSpec.Builder builder;
+
+        public PassiveSanitySource(ForgeConfigSpec.Builder builder) {
+            this.builder = builder;
+            bodyPartSlightlyWounded = builder
+                    .comment("Having a slightly wounded body part gives this amount of sanity per second")
+                    .defineInRange("body_part_slightly_wounded", -0.01, MIN_SANITY, MAX_SANITY);
+            bodyPartWounded = builder
+                    .comment("Having a wounded body part gives this amount of sanity per second")
+                    .defineInRange("body_part_wounded", -0.025, MIN_SANITY, MAX_SANITY);
+            bodyPartHeavilyWounded = builder
+                    .comment("Having a heavily wounded body part gives this amount of sanity per second")
+                    .defineInRange("body_part_heavily_wounded", -0.05, MIN_SANITY, MAX_SANITY);
+            bodyPartDead = builder
+                    .comment("Having a dead body part gives this amount of sanity per second")
+                    .defineInRange("body_part_dead", -0.1, MIN_SANITY, MAX_SANITY);
+
+            lowHydration = builder
+                    .comment("Players will gain this amount of sanity per second when their hydration is at 6 or below")
+                    .comment("Value will be multiplied by 20% for each point of hydration under 6 (200% sanity gain/loss at 0 hydration)")
+                    .defineInRange("low_hydration", -0.2, MIN_SANITY, MAX_SANITY);
+
+            heatStrokeTemperature = temperature("heat stroke", -0.5);
+            frostbiteTemperature = temperature("frostbite", -0.5);
+            hotTemperature = temperature("hot", -0.1);
+            coldTemperature = temperature("cold", -0.1);
+            normalTemperature = temperature("normal", 0.05);
+        }
+
+        private DoubleValue temperature(String name, double value) {
+            return builder
+                    .comment(String.format("How much sanity you gain per second while having a %s temperature", name))
+                    .defineInRange(name.replaceAll(" ", "_") + "temperature", value, MIN_SANITY, MAX_SANITY);
+        }
+    }
+
+
+    // actives
     public final DoubleValue m_sleeping;
     public final DoubleValue m_sleepingCd;
     public final DoubleValue m_hurtRatio;
@@ -85,7 +139,7 @@ public class ConfigDefault
     public final BooleanValue m_playSounds;
     public final DoubleValue m_insanityVolume;
 
-    public ConfigDefault(ForgeConfigSpec.Builder builder)
+    public ConfigValues(ForgeConfigSpec.Builder builder)
     {
         builder.comment(
                 "Sanity configuration",
@@ -98,7 +152,7 @@ public class ConfigDefault
                 .defineInRange("positive_multiplier", 1.0, Float.MIN_VALUE, Float.MAX_VALUE);
         m_negMul = builder
                 .comment("For balancing purposes: the effectiveness of all negative sanity sources will be multiplied by this number")
-                .defineInRange("negative_multiplier", 1.0, Float.MIN_VALUE, Float.MAX_VALUE);
+                .defineInRange("negative_multiplier", 0.5, Float.MIN_VALUE, Float.MAX_VALUE);
 
         builder.comment("Configuration for passive sanity sources").push("passive");
 
@@ -140,14 +194,16 @@ public class ConfigDefault
                 .comment("Players who are stuck in blocks (such as cobweb) and have their movement restricted gain this amount of sanity per second")
                 .defineInRange("block_stuck", -.09, -100.0, 100.0);
         m_dirtPath = builder
-                .comment("Players moving on a dirt path or a carpet receive this amount of sanity per second")
-                .defineInRange("dirt_path", .09, -100.0, 100.0);
+                .comment("Players moving on carpet receive this amount of sanity per second")
+                .defineInRange("carpet", .09, -100.0, 100.0);
         m_jukeboxPleasant = builder
                 .comment("Nearby jukebox playing a pleasant melody gives this amount of sanity per second")
                 .defineInRange("jukebox_pleasant", .08, -100.0, 100.0);
         m_jukeboxUnsettling = builder
                 .comment("Nearby jukebox playing an unsettling melody gives this amount of sanity per second (this takes priority over pleasant melodies)")
                 .defineInRange("jukebox_unsettling", -.11, -100.0, 100.0);
+
+        passiveSanitySource = new PassiveSanitySource(builder);
 
         List<String> path = new ArrayList<>();
         path.add("blocks");
@@ -160,7 +216,7 @@ public class ConfigDefault
                 "Supports boolean block state properties (can be omitted together with brackets)",
                 "Prefix with TAG_ and follow with a tag registry name to define all blocks with the tag",
                 "NOTE: not everything may work correctly with any configuration, e.g. multiblocks like tall flowers and beds; needs testing")
-                .defineListAllowEmpty(path, ConfigDefault::passiveBlocksDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, ConfigValues::passiveBlocksDefault, ConfigManager::stringEntryIsValid);
 
         builder.pop();
         builder.comment("Configuration for active sanity sources").push("active");
@@ -256,7 +312,7 @@ public class ConfigDefault
                 "Where A is how much sanity is gained upon usage and B is a custom category",
                 "Items with the same categories share the same cooldown",
                 "The sanity gained will be multiplied by (timeSinceLastUsage / categoryCooldown) capping at 1.0")
-                .defineListAllowEmpty(path, ConfigDefault::itemsDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, ConfigValues::itemsDefault, ConfigManager::stringEntryIsValid);
 
         path.clear();
         path.add("item_categories");
@@ -265,7 +321,7 @@ public class ConfigDefault
                 "Define a list of custom categories for items specified in <items>",
                 "A category should be included as follows: A;B",
                 "Where A is a category id (integer) and B is a cooldown (in seconds) all items in this category share")
-                .defineListAllowEmpty(path, ConfigDefault::itemCatsDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, ConfigValues::itemCatsDefault, ConfigManager::stringEntryIsValid);
 
         path.clear();
         path.add("broken_blocks");
@@ -280,7 +336,7 @@ public class ConfigDefault
                 "Blocks with the same categories share the same cooldown",
                 "The sanity gained will be multiplied by (timeSinceLastUsage / categoryCooldown) capping at 1.0",
                 "NOTE: not everything may work correctly with any configuration, e.g. multiblocks like tall flowers and beds need testing")
-                .defineListAllowEmpty(path, ConfigDefault::brokenBlocksDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, ConfigValues::brokenBlocksDefault, ConfigManager::stringEntryIsValid);
 
         path.clear();
         path.add("broken_block_categories");
@@ -289,7 +345,7 @@ public class ConfigDefault
                 "Define a list of custom categories for blocks specified in <broken_blocks>",
                 "A category should be included as follows: A;B",
                 "Where A is a category id (integer) and B is a cooldown (in seconds) all blocks in this category share")
-                .defineListAllowEmpty(path, ConfigDefault::brokenBlockCatsDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, ConfigValues::brokenBlockCatsDefault, ConfigManager::stringEntryIsValid);
 
         builder.pop();
         builder.comment("Multiplayer configuration").push("multiplayer");

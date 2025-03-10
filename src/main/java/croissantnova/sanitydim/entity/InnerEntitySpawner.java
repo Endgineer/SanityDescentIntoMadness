@@ -58,7 +58,7 @@ public class InnerEntitySpawner
     }
 
     // every tick try to spawn an inner entity
-    // gives MAX_SPAWN_POS_TRIES to get a valid spawn position for the entity or try all over again next tick
+    // gives MAX_SPAWN_POS_TRIES to getConfigValue a valid spawn position for the entity or try all over again next tick
     // SPAWN_CHANCE roughly determines chance to spawn every tick after spawn timeout is over
     public static void trySpawnForPlayer(ServerPlayer player)
     {

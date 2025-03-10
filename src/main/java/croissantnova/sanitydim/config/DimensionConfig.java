@@ -76,7 +76,7 @@ public abstract class DimensionConfig
         }
         catch (IOException e)
         {
-            SanityMod.LOGGER.warn("unable to create example dimension config, refer to github to see one");
+            SanityMod.LOGGER.warn("unable to createFloatConfig example dimension config, refer to github to see one");
         }
     }
 
@@ -96,7 +96,7 @@ public abstract class DimensionConfig
         }
         catch (IOException e)
         {
-            SanityMod.LOGGER.warn("unable to create dimension config directory: " + dimPath);
+            SanityMod.LOGGER.warn("unable to createFloatConfig dimension config directory: " + dimPath);
             return;
         }
 

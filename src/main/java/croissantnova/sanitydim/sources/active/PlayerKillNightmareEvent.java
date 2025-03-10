@@ -2,12 +2,12 @@ package croissantnova.sanitydim.sources.active;
 
 import croissantnova.sanitydim.SanityProcessor;
 import croissantnova.sanitydim.capability.SanityProvider;
+import croissantnova.sanitydim.config.ConfigEntry;
 import croissantnova.sanitydim.config.ConfigProxy;
 import croissantnova.sanitydim.entity.NightmareEntity;
 import croissantnova.sanitydim.entity.RottingStalker;
 import croissantnova.sanitydim.entity.SneakingTerror;
 import croissantnova.sanitydim.util.PlayerHelper;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 public class PlayerKillNightmareEvent {
@@ -31,7 +31,7 @@ public class PlayerKillNightmareEvent {
                 sanityGain = ConfigProxy.getRottingStalkerKillRatio(PlayerHelper.getDim(player));
             }
             else if (nightmareEntity instanceof SneakingTerror) {
-                sanityGain = ConfigProxy.getSneakingTerrorKillRatio(PlayerHelper.getDim(player));
+                sanityGain = ConfigEntry.activeSanitySource.killedSneakingTerror.getConfigValue(PlayerHelper.getDim(player));
             }
             else {
                 throw new IllegalArgumentException("Killed nightmare entity is not yet registered.");
