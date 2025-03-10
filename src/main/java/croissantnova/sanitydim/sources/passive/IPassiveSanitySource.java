@@ -1,4 +1,4 @@
-package croissantnova.sanitydim.passive;
+package croissantnova.sanitydim.sources.passive;
 
 import croissantnova.sanitydim.capability.ISanity;
 import net.minecraft.resources.ResourceLocation;

@@ -1,4 +1,4 @@
-package croissantnova.sanitydim.passive;
+package croissantnova.sanitydim.sources.passive;
 
 import croissantnova.sanitydim.capability.ISanity;
 import croissantnova.sanitydim.config.ConfigProxy;
@@ -9,7 +9,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

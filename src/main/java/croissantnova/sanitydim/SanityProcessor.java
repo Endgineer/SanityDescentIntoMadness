@@ -8,7 +8,7 @@ import croissantnova.sanitydim.item.ItemRegistry;
 import croissantnova.sanitydim.net.InnerEntityCapImplPacket;
 import croissantnova.sanitydim.net.PacketHandler;
 import croissantnova.sanitydim.net.SanityPacket;
-import croissantnova.sanitydim.passive.*;
+import croissantnova.sanitydim.sources.passive.*;
 import croissantnova.sanitydim.util.MathHelper;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;

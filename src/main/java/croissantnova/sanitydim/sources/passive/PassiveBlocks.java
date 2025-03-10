@@ -1,4 +1,4 @@
-package croissantnova.sanitydim.passive;
+package croissantnova.sanitydim.sources.passive;
 
 import croissantnova.sanitydim.block.BlockStateHelper;
 import croissantnova.sanitydim.capability.ISanity;
