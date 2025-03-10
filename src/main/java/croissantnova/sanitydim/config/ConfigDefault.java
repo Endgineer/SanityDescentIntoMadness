@@ -203,7 +203,7 @@ public class ConfigDefault
                 .comment(
                         "Players gain this amount of sanity when killing a sneaking terror."
                 )
-                .defineInRange("rotting_stalker_kill_ratio", 0.1, -100.0, 100);
+                .defineInRange("sneaking_terror_kill_ratio", 0.1, -100.0, 100);
         m_petDeath = builder
                 .comment("Players gain this amount of sanity upon their pets' death")
                 .defineInRange("pet_death", -60.0, -100.0, 100.0);
