@@ -44,7 +44,7 @@ public final class SanityProcessor
     public static final float SANITY_TARGET_THRESHOLD = .87f;
     public static final List<IPassiveSanitySource> PASSIVE_SANITY_SOURCES = new ArrayList<>(Arrays.asList(
             new Passive(),
-            new InWaterOrRain(),
+            new InRain(),
             new Hungry(),
             new EnderManAnger(),
             new Pet(),

@@ -106,7 +106,7 @@ public class ConfigDefault
                 .comment("This value will be added to sanity each second regardless of any other factors")
                 .defineInRange("passive", .0, -100.0, 100.0);
         m_raining = builder
-                .comment("Sanity gain per second during rainy weather or in water")
+                .comment("Sanity gain per second while in rain")
                 .defineInRange("raining", -.2, -100.0, 100.0);
         m_hungerThreshold = builder
                 .comment("Players' sanity will start getting affected with food levels at and below this threshold (in half-drumsticks)")
