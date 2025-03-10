@@ -9,9 +9,16 @@ public abstract class ItemTooltipHelper
 {
     public static void showTooltipOnShift(List<Component> components, String itemId)
     {
-        if (Screen.hasShiftDown())
-            components.add(Component.translatable("item." + SanityMod.MODID + "." + itemId + ".tooltip"));
-        else
+        if (Screen.hasShiftDown()) {
+            String tooltipKey = "item." + SanityMod.MODID + "." + itemId + ".tooltip";
+            String rawTooltip = Component.translatable(tooltipKey).getString();
+
+            for (String line : rawTooltip.split("\n")) {
+                components.add(Component.literal(line));
+            }
+        }
+        else {
             components.add(Component.translatable("item." + SanityMod.MODID + ".tooltip.press_shift"));
+        }
     }
 }
