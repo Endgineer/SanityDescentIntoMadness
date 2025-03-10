@@ -45,7 +45,7 @@ description='''Brings the sanity mechanic from Don't Starve into Minecraft'''
 [[dependencies.sanitydim]]
     "modId"="geckolib"
     mandatory=true
-    versionRange="[4.2,)"
+    versionRange="[4.7,)"
     side="BOTH"
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.sanitydim]] #optional
@@ -64,6 +64,6 @@ description='''Brings the sanity mechanic from Don't Starve into Minecraft'''
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.20,1.21)"
+    versionRange="[1.20.1,1.21)"
     ordering="NONE"
     side="BOTH"
