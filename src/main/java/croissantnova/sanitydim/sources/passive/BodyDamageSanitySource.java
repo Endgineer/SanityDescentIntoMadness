@@ -1,7 +1,7 @@
 package croissantnova.sanitydim.sources.passive;
 
 import croissantnova.sanitydim.capability.ISanity;
-import croissantnova.sanitydim.config.ConfigEntry;
+import croissantnova.sanitydim.config.ConfigEntryOld2;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -28,13 +28,13 @@ public class BodyDamageSanitySource implements IPassiveSanitySource {
             return 0f;
         }
         else if (healthRatio >= 0.66f) {
-            return ConfigEntry.passiveSanitySource.bodyPartSlightlyWounded.getConfigValue(dim);
+            return ConfigEntryOld2.passiveSanitySource.bodyPartSlightlyWounded.getConfigValue(dim);
         } else if (healthRatio >= 0.33f) {
-            return ConfigEntry.passiveSanitySource.bodyPartWounded.getConfigValue(dim);
+            return ConfigEntryOld2.passiveSanitySource.bodyPartWounded.getConfigValue(dim);
         } else if (healthRatio > 0f) {
-            return ConfigEntry.passiveSanitySource.bodyPartHeavilyWounded.getConfigValue(dim);
+            return ConfigEntryOld2.passiveSanitySource.bodyPartHeavilyWounded.getConfigValue(dim);
         } else {
-            return ConfigEntry.passiveSanitySource.bodyPartDead.getConfigValue(dim);
+            return ConfigEntryOld2.passiveSanitySource.bodyPartDead.getConfigValue(dim);
         }
     }
 }

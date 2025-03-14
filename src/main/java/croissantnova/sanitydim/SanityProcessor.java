@@ -58,12 +58,13 @@ public final class SanityProcessor
             new OnCarpetSanitySource(),
             new BodyDamageSanitySource(),
             new TemperatureSanitySource(),
-            new ThirstSanitySource()
+            new ThirstSanitySource(),
+            new NearEntitySanitySource()
     ));
 
     private SanityProcessor() {}
 
-    private static float calcPassive(ServerPlayer player, ISanity sanity)
+    private static float calcPassive(@NotNull ServerPlayer player, ISanity sanity)
     {
         ResourceLocation dim = player.level().dimension().location();
         float passive = 0;
@@ -90,7 +91,7 @@ public final class SanityProcessor
         return passive;
     }
 
-    private static void shareSanity(ServerPlayer player, Sanity cap)
+    private static void shareSanity(ServerPlayer player, @NotNull Sanity cap)
     {
         if (cap.getDirty())
         {
@@ -120,18 +121,19 @@ public final class SanityProcessor
         return value >= 0 ? ConfigProxy.getNegMul(dim) * getGarlandMultiplier(player) : ConfigProxy.getPosMul(dim);
     }
 
-    public static void addSanity(@NotNull ISanity sanity, float value, @NotNull ServerPlayer player)
-    {
-        if (value == 0.0f)
+    public static void addSanity(@NotNull ISanity sanityCapability, float value, @NotNull ServerPlayer player) {
+        if (value == 0.0f) {
             return;
+        }
 
-        sanity.setSanity(sanity.getSanity() + value * getSanityMultiplier(player, value));
+        sanityCapability.setSanity(sanityCapability.getSanity() + value * getSanityMultiplier(player, value));
     }
 
     public static void tickPlayer(final ServerPlayer player)
     {
-        if (player == null || player.isCreative() || player.isSpectator())
+        if (player == null || player.isCreative() || player.isSpectator()) {
             return;
+        }
 
         player.getCapability(SanityProvider.CAP).ifPresent(s ->
         {
@@ -139,7 +141,7 @@ public final class SanityProcessor
 
             float passive = calcPassive(player, s);
             float snapshot = s.getSanity();
-            // passive premultiplied so no need for SanityProcessor#addSanity
+            // passive pre-multiplied so no need for SanityProcessor#addSanity
             s.setSanity(s.getSanity() + passive);
             if (s instanceof IPassiveSanity ps)
             {
@@ -169,8 +171,9 @@ public final class SanityProcessor
                         it.remove();
                 }
             }
-            if (s instanceof Sanity)
+            if (s instanceof Sanity) {
                 shareSanity(player, (Sanity)s);
+            }
         });
         InnerEntitySpawner.trySpawnForPlayer(player);
     }
@@ -340,7 +343,6 @@ public final class SanityProcessor
         {
             ResourceLocation dimLoc = player.level().dimension().location();
             addSanity(s, ConfigProxy.getAdvancement(dimLoc), player);
-//            s.setSanity(s.getSanity() + ConfigProxy.getAdvancement(player.level.dimension().location()));
         });
     }
 
@@ -465,25 +467,25 @@ public final class SanityProcessor
             {
                 ResourceLocation dim = level.dimension().location();
 
-                for (ConfigBrokenBlock cbblock : ConfigProxy.getBrokenBlocks(dim))
+                for (ConfigBrokenBlock cbBlock : ConfigProxy.getBrokenBlocks(dim))
                 {
-                    if (!(cbblock.m_isTag && blockState.getTags().anyMatch(tag -> tag.location().equals(cbblock.m_name)) ||
-                            block.equals(ForgeRegistries.BLOCKS.getValue(cbblock.m_name))))
+                    if (!(cbBlock.m_isTag && blockState.getTags().anyMatch(tag -> tag.location().equals(cbBlock.m_name)) ||
+                            block.equals(ForgeRegistries.BLOCKS.getValue(cbBlock.m_name))))
                     {
                         continue;
                     }
 
-                    if (cbblock.m_toolRequired && !correctTool)
+                    if (cbBlock.m_toolRequired && !correctTool)
                         return;
 
-                    if (!ConfigProxy.getIdToBrokenBlockCat(dim).containsKey(cbblock.m_cat))
+                    if (!ConfigProxy.getIdToBrokenBlockCat(dim).containsKey(cbBlock.m_cat))
                     {
-                        SanityMod.LOGGER.warn("player " + player.getDisplayName().getString() + " mined " + cbblock.m_name + " from category " + cbblock.m_cat + ", but no such category is present");
+                        SanityMod.LOGGER.warn("player " + player.getDisplayName().getString() + " mined " + cbBlock.m_name + " from category " + cbBlock.m_cat + ", but no such category is present");
                         return;
                     }
 
-                    // skip if artifically placed and block needs to be naturally gend
-                    if (cbblock.m_naturallyGend)
+                    // skip if artificially placed and block needs to be naturally generated
+                    if (cbBlock.m_naturallyGend)
                     {
                         AtomicBoolean flag = new AtomicBoolean(false);
                         levelChunk.getCapability(SanityLevelChunkProvider.CAP).ifPresent(sl ->
@@ -498,26 +500,26 @@ public final class SanityProcessor
                             return;
                     }
 
-                    ConfigBrokenBlockCategory cat = ConfigProxy.getIdToBrokenBlockCat(dim).get(cbblock.m_cat);
+                    ConfigBrokenBlockCategory cat = ConfigProxy.getIdToBrokenBlockCat(dim).get(cbBlock.m_cat);
                     if (cat.m_cd <= 0)
                     {
-                        addSanity(s, cbblock.m_sanity, player);
+                        addSanity(s, cbBlock.m_sanity, player);
                         return;
                     }
 
                     Map<Integer, Integer> brokenBlockCds = ps.getBrokenBlocksCooldowns();
 
-                    if (!brokenBlockCds.containsKey(cbblock.m_cat) || brokenBlockCds.get(cbblock.m_cat) <= 0)
+                    if (!brokenBlockCds.containsKey(cbBlock.m_cat) || brokenBlockCds.get(cbBlock.m_cat) <= 0)
                     {
-                        addSanity(s, cbblock.m_sanity, player);
+                        addSanity(s, cbBlock.m_sanity, player);
                     }
                     else
                     {
-                        int timePassed = cat.m_cd - brokenBlockCds.get(cbblock.m_cat);
-                        addSanity(s, cbblock.m_sanity * MathHelper.clampNorm((float)timePassed / cat.m_cd), player);
+                        int timePassed = cat.m_cd - brokenBlockCds.get(cbBlock.m_cat);
+                        addSanity(s, cbBlock.m_sanity * MathHelper.clampNorm((float)timePassed / cat.m_cd), player);
                     }
 
-                    brokenBlockCds.put(cbblock.m_cat, cat.m_cd);
+                    brokenBlockCds.put(cbBlock.m_cat, cat.m_cd);
 
                     return;
                 }

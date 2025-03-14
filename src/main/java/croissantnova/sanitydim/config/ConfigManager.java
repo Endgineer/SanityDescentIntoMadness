@@ -1,12 +1,17 @@
 package croissantnova.sanitydim.config;
 
 import croissantnova.sanitydim.SanityMod;
+import croissantnova.sanitydim.config.custom.PassiveSanityEntity;
+import croissantnova.sanitydim.config.custom.PassiveSanityEntityProcessor;
+import croissantnova.sanitydim.config.value.ModConfigProcessableValue;
+import croissantnova.sanitydim.config.value.ModConfigValue;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -14,8 +19,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class ConfigManager
-{
+public abstract class ConfigManager {
     private static List<ConfigPassiveBlock> defPassiveBlocks = new ArrayList<>();
     private static List<ConfigItem> defItems = new ArrayList<>();
     private static List<ConfigItemCategory> defItemCats = new ArrayList<>();
@@ -29,8 +33,7 @@ public abstract class ConfigManager
     public static final List<Pair<?, ForgeConfigSpec>> configList = new ArrayList<>();
     public static Pair<ConfigValues, ForgeConfigSpec> configValues;
 
-    public static void init()
-    {
+    public static void init() {
         configList.add(configValues = new ForgeConfigSpec.Builder().configure(ConfigValues::new));
 
         // sanity
@@ -97,9 +100,13 @@ public abstract class ConfigManager
             configEntry.putInProxies(proxies);
         }
 
-        ConfigEntry.configEntries.forEach(configEntry -> {
+        ConfigEntryOld2.configEntries.forEach(configEntry -> {
             configEntry.putInProxies(proxies);
         });
+
+        ModConfigValue.CONFIG_VALUES.forEach(configValue -> configValue.loadProxy(proxies));
+
+        ModConfigProcessableValue.CONFIG_VALUES.forEach(configValue -> configValue.loadProxy(proxies));
 
         // sanity.client
         // sanity.client.indicator
@@ -124,18 +131,15 @@ public abstract class ConfigManager
         DimensionConfig.init();
     }
 
-    public static void register()
-    {
+    public static void register() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, configValues.getRight(), SanityMod.MODID + File.separator + "default.toml");
     }
 
-    public static ConfigValues getConfigValues()
-    {
+    public static ConfigValues getConfigValues() {
         return configValues.getLeft();
     }
 
-    public static void onConfigLoading(final ModConfigEvent.Loading event)
-    {
+    public static void onConfigLoading(final ModConfigEvent.Loading event) {
         defPassiveBlocks = ConfigManager.processPassiveBlocks(getConfigValues().m_passiveBlocks.get());
         defItems = ConfigManager.processItems(getConfigValues().m_items.get());
         defItemCats = ConfigManager.processItemCats(getConfigValues().m_itemCats.get());
@@ -145,57 +149,46 @@ public abstract class ConfigManager
         defIdToBrokenBlockCat = ConfigManager.getMapFromBrokenBlockCats(defBrokenBlockCats);
     }
 
-    public static void onConfigReloading(final ModConfigEvent.Reloading event)
-    {
+    public static void onConfigReloading(final ModConfigEvent.Reloading event) {
     }
 
-    public static boolean stringEntryIsValid(Object entry)
-    {
+    public static boolean stringEntryIsValid(Object entry) {
         return entry instanceof String s && !s.isEmpty() && !s.isBlank();
     }
 
-    public static Double finalizeActive(Double value)
-    {
+    public static Double finalizeActive(Double value) {
         return -value / 100f;
     }
 
-    public static Double finalizePassive(Double value)
-    {
+    public static Double finalizePassive(Double value) {
         return -value / 2000f;
     }
 
-    public static Double finalizeCooldown(Double value)
-    {
-        return (double)Math.round(value * 20f);
+    public static Double finalizeCooldown(Double value) {
+        return (double) Math.round(value * 20f);
     }
 
-    public static <T> T noFinalize(T value)
-    {
+    public static <T> T noFinalize(T value) {
         return value;
     }
 
-    public static float proxyd2f(String path, ResourceLocation dim)
-    {
-        return ((Double)proxy(path, dim)).floatValue();
+    public static float proxyd2f(String path, ResourceLocation dim) {
+        return ((Double) proxy(path, dim)).floatValue();
     }
 
-    public static int proxyi(String path, ResourceLocation dim)
-    {
-        return ((Integer)proxy(path, dim)).intValue();
+    public static int proxyi(String path, ResourceLocation dim) {
+        return ((Integer) proxy(path, dim)).intValue();
     }
 
-    public static int proxyd2i(String path, ResourceLocation dim)
-    {
-        return ((Double)proxy(path, dim)).intValue();
+    public static int proxyd2i(String path, ResourceLocation dim) {
+        return ((Double) proxy(path, dim)).intValue();
     }
 
-    public static boolean proxyb(String path, ResourceLocation dim)
-    {
-        return ((Boolean)proxy(path, dim)).booleanValue();
+    public static boolean proxyb(String path, ResourceLocation dim) {
+        return ((Boolean) proxy(path, dim)).booleanValue();
     }
 
-    public static <T> T proxy(String path, ResourceLocation dim)
-    {
+    public static <T> @Nullable T proxy(String path, ResourceLocation dim) {
         if (!proxies.containsKey(path) || !DimensionConfig.configToDimStored.containsKey(path))
             return null;
 
@@ -207,48 +200,37 @@ public abstract class ConfigManager
             return entry.finalizedDefault();
     }
 
-    public static Map<Integer, ConfigItemCategory> getIdToItemCat(ResourceLocation dim)
-    {
+    public static Map<Integer, ConfigItemCategory> getIdToItemCat(ResourceLocation dim) {
         return dim != null && DimensionConfig.idToItemCat.containsKey(dim) ? DimensionConfig.idToItemCat.get(dim) : defIdToItemCat;
     }
 
-    public static Map<Integer, ConfigBrokenBlockCategory> getIdToBrokenBlockCat(ResourceLocation dim)
-    {
+    public static Map<Integer, ConfigBrokenBlockCategory> getIdToBrokenBlockCat(ResourceLocation dim) {
         return dim != null && DimensionConfig.idToBrokenBlockCat.containsKey(dim) ? DimensionConfig.idToBrokenBlockCat.get(dim) : defIdToBrokenBlockCat;
     }
 
-    public static List<ConfigPassiveBlock> processPassiveBlocks(List<? extends String> raw)
-    {
+    public static List<ConfigPassiveBlock> processPassiveBlocks(List<? extends String> raw) {
         List<ConfigPassiveBlock> list = new ArrayList<>();
 
-        for (String entry : raw)
-        {
+        for (String entry : raw) {
             String[] params = entry.trim().split("\\s*;\\s*", 4);
-            if (params.length != 4)
-            {
+            if (params.length != 4) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> the number of parameters is not 4");
                 continue;
             }
 
             float sanity;
-            try
-            {
+            try {
                 sanity = Float.parseFloat(params[1]);
-            }
-            catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> can't convert " + params[1] + " to float");
                 continue;
             }
             sanity /= -2000.0f;
 
             float rad;
-            try
-            {
+            try {
                 rad = Float.parseFloat(params[2]);
-            }
-            catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> can't convert " + params[2] + " to float");
                 continue;
             }
@@ -256,29 +238,24 @@ public abstract class ConfigManager
             String name = params[0];
             Map<String, Boolean> props = new HashMap<>();
             int firstBracket = -1, secondBracket = -1;
-            if ((firstBracket = params[0].indexOf('[')) != -1 && (secondBracket = params[0].indexOf(']')) != -1 && firstBracket < secondBracket)
-            {
+            if ((firstBracket = params[0].indexOf('[')) != -1 && (secondBracket = params[0].indexOf(']')) != -1 && firstBracket < secondBracket) {
                 name = params[0].substring(0, firstBracket);
 
                 String propStr = params[0].substring(firstBracket + 1, secondBracket);
                 String[] propStrSplit = propStr.trim().split("\\s*,\\s*");
-                for (String s : propStrSplit)
-                {
+                for (String s : propStrSplit) {
                     String[] keyValue = s.split("\\s*=\\s*", 2);
-                    if (keyValue.length == 2)
-                    {
+                    if (keyValue.length == 2) {
                         props.put(keyValue[0], Boolean.parseBoolean(keyValue[1]));
                     }
                 }
             }
 
             ConfigPassiveBlock block = new ConfigPassiveBlock();
-            if (name.startsWith("TAG_") && name.length() > 4)
-            {
+            if (name.startsWith("TAG_") && name.length() > 4) {
                 block.m_name = new ResourceLocation(name.substring(4));
                 block.m_isTag = true;
-            }
-            else block.m_name = new ResourceLocation(name);
+            } else block.m_name = new ResourceLocation(name);
             block.m_sanity = sanity;
             block.m_rad = rad;
             block.m_props = props;
@@ -289,38 +266,29 @@ public abstract class ConfigManager
         return list;
     }
 
-    public static List<ConfigItem> processItems(List<? extends String> raw)
-    {
+    public static List<ConfigItem> processItems(List<? extends String> raw) {
         List<ConfigItem> list = new ArrayList<>();
 
-        for (String entry : raw)
-        {
+        for (String entry : raw) {
             String[] params = entry.trim().split("\\s*;\\s*", 3);
-            if (params.length != 3)
-            {
+            if (params.length != 3) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> the number of parameters is not 3");
                 continue;
             }
 
             float sanity;
-            try
-            {
+            try {
                 sanity = Float.parseFloat(params[1]);
-            }
-            catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> can't convert " + params[1] + " to float");
                 continue;
             }
             sanity /= -100.0f;
 
             int cat;
-            try
-            {
+            try {
                 cat = Integer.parseInt(params[2]);
-            }
-            catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> can't convert " + params[2] + " to integer");
                 continue;
             }
@@ -335,37 +303,28 @@ public abstract class ConfigManager
         return list;
     }
 
-    public static List<ConfigItemCategory> processItemCats(List<? extends String> raw)
-    {
+    public static List<ConfigItemCategory> processItemCats(List<? extends String> raw) {
         List<ConfigItemCategory> list = new ArrayList<>();
 
-        for (String entry : raw)
-        {
+        for (String entry : raw) {
             String[] params = entry.trim().split("\\s*;\\s*", 2);
-            if (params.length != 2)
-            {
+            if (params.length != 2) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> the number of parameters is not 2");
                 continue;
             }
 
             int id;
-            try
-            {
+            try {
                 id = Integer.parseInt(params[0]);
-            }
-            catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> can't convert " + params[0] + " to integer");
                 continue;
             }
 
             float cdf;
-            try
-            {
+            try {
                 cdf = Float.parseFloat(params[1]);
-            }
-            catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> can't convert " + params[1] + " to float");
                 continue;
             }
@@ -380,50 +339,39 @@ public abstract class ConfigManager
         return list;
     }
 
-    public static Map<Integer, ConfigItemCategory> getMapFromItemCats(List<ConfigItemCategory> cats)
-    {
+    public static Map<Integer, ConfigItemCategory> getMapFromItemCats(List<ConfigItemCategory> cats) {
         Map<Integer, ConfigItemCategory> map = new HashMap<>();
 
-        for (ConfigItemCategory cat : cats)
-        {
+        for (ConfigItemCategory cat : cats) {
             map.put(cat.m_id, cat);
         }
 
         return map;
     }
 
-    public static List<ConfigBrokenBlock> processBrokenBlocks(List<? extends String> raw)
-    {
+    public static List<ConfigBrokenBlock> processBrokenBlocks(List<? extends String> raw) {
         List<ConfigBrokenBlock> list = new ArrayList<>();
 
-        for (String entry : raw)
-        {
+        for (String entry : raw) {
             String[] params = entry.trim().split("\\s*;\\s*", 5);
-            if (params.length != 5)
-            {
+            if (params.length != 5) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> the number of parameters is not 5");
                 continue;
             }
 
             float sanity;
-            try
-            {
+            try {
                 sanity = Float.parseFloat(params[1]);
-            }
-            catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> can't convert " + params[1] + " to float");
                 continue;
             }
             sanity /= -100.0f;
 
             int cat;
-            try
-            {
+            try {
                 cat = Integer.parseInt(params[2]);
-            }
-            catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> can't convert " + params[2] + " to integer");
                 continue;
             }
@@ -432,12 +380,10 @@ public abstract class ConfigManager
             boolean correctToolRequired = Boolean.parseBoolean(params[4]);
 
             ConfigBrokenBlock block = new ConfigBrokenBlock();
-            if (params[0].startsWith("TAG_") && params[0].length() > 4)
-            {
+            if (params[0].startsWith("TAG_") && params[0].length() > 4) {
                 block.m_name = new ResourceLocation(params[0].substring(4));
                 block.m_isTag = true;
-            }
-            else block.m_name = new ResourceLocation(params[0]);
+            } else block.m_name = new ResourceLocation(params[0]);
             block.m_sanity = sanity;
             block.m_cat = cat;
             block.m_naturallyGend = naturallyGend;
@@ -448,37 +394,28 @@ public abstract class ConfigManager
         return list;
     }
 
-    public static List<ConfigBrokenBlockCategory> processBrokenBlockCats(List<? extends String> raw)
-    {
+    public static List<ConfigBrokenBlockCategory> processBrokenBlockCats(List<? extends String> raw) {
         List<ConfigBrokenBlockCategory> list = new ArrayList<>();
 
-        for (String entry : raw)
-        {
+        for (String entry : raw) {
             String[] params = entry.trim().split("\\s*;\\s*", 2);
-            if (params.length != 2)
-            {
+            if (params.length != 2) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> the number of parameters is not 2");
                 continue;
             }
 
             int id;
-            try
-            {
+            try {
                 id = Integer.parseInt(params[0]);
-            }
-            catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> can't convert " + params[0] + " to integer");
                 continue;
             }
 
             float cdf;
-            try
-            {
+            try {
                 cdf = Float.parseFloat(params[1]);
-            }
-            catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 SanityMod.LOGGER.error("config format error in " + entry + " -> can't convert " + params[1] + " to float");
                 continue;
             }
@@ -493,43 +430,36 @@ public abstract class ConfigManager
         return list;
     }
 
-    public static Map<Integer, ConfigBrokenBlockCategory> getMapFromBrokenBlockCats(List<ConfigBrokenBlockCategory> cats)
-    {
+    public static Map<Integer, ConfigBrokenBlockCategory> getMapFromBrokenBlockCats(List<ConfigBrokenBlockCategory> cats) {
         Map<Integer, ConfigBrokenBlockCategory> map = new HashMap<>();
 
-        for (ConfigBrokenBlockCategory cat : cats)
-        {
+        for (ConfigBrokenBlockCategory cat : cats) {
             map.put(cat.m_id, cat);
         }
 
         return map;
     }
 
-    public static class ProxyValueEntry<T>
-    {
+    public static class ProxyValueEntry<T> {
         private final Supplier<T> m_supplierProvider;
         private final Function<T, T> m_finalizerProvider;
 
-        public ProxyValueEntry(@Nonnull Supplier<T> supplierProvider, @Nonnull Function<T, T> finalizerProvider)
-        {
+        public ProxyValueEntry(@Nonnull Supplier<T> supplierProvider, @Nonnull Function<T, T> finalizerProvider) {
             Objects.requireNonNull(supplierProvider);
             Objects.requireNonNull(finalizerProvider);
             m_supplierProvider = supplierProvider;
             m_finalizerProvider = finalizerProvider;
         }
 
-        public T defaultValue()
-        {
+        public T defaultValue() {
             return m_supplierProvider.get();
         }
 
-        public T finalizedDefault()
-        {
+        public T finalizedDefault() {
             return finalizeValue(defaultValue());
         }
 
-        public T finalizeValue(@Nonnull T t)
-        {
+        public T finalizeValue(@Nonnull T t) {
             return m_finalizerProvider.apply(t);
         }
     }

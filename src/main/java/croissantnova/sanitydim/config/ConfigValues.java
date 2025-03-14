@@ -1,5 +1,9 @@
 package croissantnova.sanitydim.config;
 
+import croissantnova.sanitydim.config.custom.PassiveSanityEntity;
+import croissantnova.sanitydim.config.custom.PassiveSanityEntityProcessor;
+import croissantnova.sanitydim.config.value.ModConfigProcessableValue;
+import croissantnova.sanitydim.config.value.ModConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
@@ -8,6 +12,7 @@ import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static croissantnova.sanitydim.api.SanityAPI.*;
@@ -41,12 +46,18 @@ public class ConfigValues
         public final DoubleValue bodyPartWounded;
         public final DoubleValue bodyPartHeavilyWounded;
         public final DoubleValue bodyPartDead;
+
         public final DoubleValue lowHydration;
+
         public final DoubleValue frostbiteTemperature;
         public final DoubleValue coldTemperature;
         public final DoubleValue normalTemperature;
         public final DoubleValue hotTemperature;
         public final DoubleValue heatStrokeTemperature;
+
+        public final DoubleValue nearbyEndermen;
+        public final DoubleValue nearbyAngryEndermen;
+        public final DoubleValue nearbyEndermenDistance;
 
         private final ForgeConfigSpec.Builder builder;
 
@@ -75,12 +86,24 @@ public class ConfigValues
             hotTemperature = temperature("hot", -0.1);
             coldTemperature = temperature("cold", -0.1);
             normalTemperature = temperature("normal", 0.05);
+
+            nearbyEndermen = builder
+                    .comment("Sanity exposure rate while near an enderman.")
+                    .comment("Stacks linearly with how many endermen are near the player.")
+                    .defineInRange("nearby_endermen", -0.05, MIN_SANITY, MAX_SANITY);
+            nearbyAngryEndermen = builder
+                    .comment("Sanity exposure rate while near an enderman.")
+                    .comment("Stacks linearly with how many endermen are near the player.")
+                    .defineInRange("nearby_angry_endermen", -0.1, MIN_SANITY, MAX_SANITY);
+            nearbyEndermenDistance = builder
+                    .comment("The radius (in blocks) an enderman has to be within in order to affect the player's sanity.")
+                    .defineInRange("nearby_enderman_distance", 4.0, 0.5, 1024.0);
         }
 
         private DoubleValue temperature(String name, double value) {
             return builder
                     .comment(String.format("How much sanity you gain per second while having a %s temperature", name))
-                    .defineInRange(name.replaceAll(" ", "_") + "temperature", value, MIN_SANITY, MAX_SANITY);
+                    .defineInRange(name.replaceAll(" ", "_") + "_temperature", value, MIN_SANITY, MAX_SANITY);
         }
     }
 
@@ -139,6 +162,27 @@ public class ConfigValues
     public final BooleanValue m_playSounds;
     public final DoubleValue m_insanityVolume;
 
+    public final ModConfigProcessableValue<List<? extends String>, List<PassiveSanityEntity>> passive_sanityEntities = new ModConfigProcessableValue<List<? extends String>, List<PassiveSanityEntity>>(
+            "sanity.passive.entities",
+            ConfigManager::noFinalize
+    ) {
+        @Override
+        public void build(ForgeConfigSpec.Builder builder) {
+            configValue = builder
+                    .comment("Define a list of entities that affect sanity of players standing near them")
+                    .comment("An entity should be included as follows: A;B;C")
+                    .comment("A = entity registry name (e.g. minecraft:enderman)")
+                    .comment("B = radius (in blocks as a double)")
+                    .comment("C = how much sanity is gained per second")
+                    .defineListAllowEmpty(Collections.singletonList("entities"), passiveSanityEntitiesDefault(), ConfigManager::stringEntryIsValid);
+        }
+
+        @Override
+        public List<PassiveSanityEntity> process() {
+            return PassiveSanityEntityProcessor.process(configValue.get());
+        }
+    };
+
     public ConfigValues(ForgeConfigSpec.Builder builder)
     {
         builder.comment(
@@ -152,7 +196,7 @@ public class ConfigValues
                 .defineInRange("positive_multiplier", 1.0, Float.MIN_VALUE, Float.MAX_VALUE);
         m_negMul = builder
                 .comment("For balancing purposes: the effectiveness of all negative sanity sources will be multiplied by this number")
-                .defineInRange("negative_multiplier", 0.5, Float.MIN_VALUE, Float.MAX_VALUE);
+                .defineInRange("negative_multiplier", 1.0, Float.MIN_VALUE, Float.MAX_VALUE);
 
         builder.comment("Configuration for passive sanity sources").push("passive");
 
@@ -217,6 +261,10 @@ public class ConfigValues
                 "Prefix with TAG_ and follow with a tag registry name to define all blocks with the tag",
                 "NOTE: not everything may work correctly with any configuration, e.g. multiblocks like tall flowers and beds; needs testing")
                 .defineListAllowEmpty(path, ConfigValues::passiveBlocksDefault, ConfigManager::stringEntryIsValid);
+
+        passive_sanityEntities.build(builder);
+
+
 
         builder.pop();
         builder.comment("Configuration for active sanity sources").push("active");
@@ -444,6 +492,14 @@ public class ConfigValues
                 .defineInRange("insanity_volume", .6, .0, 1.0);
 
         builder.pop();
+    }
+
+    private static List<String> passiveSanityEntitiesDefault() {
+        List<String> list = new ArrayList<>();
+
+        list.add("minecraft:enderman;-0.025;4");
+
+        return list;
     }
 
     private static List<String> passiveBlocksDefault()

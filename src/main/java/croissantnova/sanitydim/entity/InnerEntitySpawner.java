@@ -114,7 +114,7 @@ public class InnerEntitySpawner
             return;
         }
 
-        // adds paranoia since the inner entity may or may not spawn depending on obstructions in environment
+        // adds paranoia since the nightmare entity may or may not spawn depending on obstructions in environment
         playSpawnAttemptSound();
 
         BlockPos spawnPos = getRandomSpawnPos();
