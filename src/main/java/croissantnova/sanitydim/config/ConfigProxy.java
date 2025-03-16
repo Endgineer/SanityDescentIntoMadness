@@ -77,7 +77,7 @@ public abstract class ConfigProxy
         return ConfigManager.proxyd2f("sanity.passive.block_stuck", dim);
     }
 
-    public static float getDirtPath(ResourceLocation dim)
+    public static float getStandingOnCarpetSanity(ResourceLocation dim)
     {
         return ConfigManager.proxyd2f("sanity.passive.dirt_path", dim);
     }
