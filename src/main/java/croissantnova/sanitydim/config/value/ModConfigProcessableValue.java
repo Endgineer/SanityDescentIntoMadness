@@ -1,14 +1,12 @@
 package croissantnova.sanitydim.config.value;
 
 import croissantnova.sanitydim.config.ConfigManager;
-import croissantnova.sanitydim.config.custom.PassiveSanityEntity;
 import croissantnova.sanitydim.util.ListHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;

@@ -1,6 +1,7 @@
 package croissantnova.sanitydim.net;
 
-import croissantnova.sanitydim.capability.*;
+import croissantnova.sanitydim.capability.InnerEntityCapImpl;
+import croissantnova.sanitydim.capability.InnerEntityCapImplProvider;
 import croissantnova.sanitydim.entity.NightmareEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;

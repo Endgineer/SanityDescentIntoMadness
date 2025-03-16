@@ -2,8 +2,8 @@ package croissantnova.sanitydim;
 
 import croissantnova.sanitydim.capability.*;
 import croissantnova.sanitydim.config.*;
-import croissantnova.sanitydim.entity.NightmareEntity;
 import croissantnova.sanitydim.entity.InnerEntitySpawner;
+import croissantnova.sanitydim.entity.NightmareEntity;
 import croissantnova.sanitydim.item.ItemRegistry;
 import croissantnova.sanitydim.net.InnerEntityCapImplPacket;
 import croissantnova.sanitydim.net.PacketHandler;

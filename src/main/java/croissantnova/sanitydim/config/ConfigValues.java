@@ -4,18 +4,13 @@ import croissantnova.sanitydim.config.custom.PassiveSanityEntity;
 import croissantnova.sanitydim.config.custom.PassiveSanityEntityProcessor;
 import croissantnova.sanitydim.config.value.ModConfigProcessableValue;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
+import net.minecraftforge.common.ForgeConfigSpec.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
-import static croissantnova.sanitydim.api.SanityAPI.*;
+import static croissantnova.sanitydim.api.SanityAPI.MAX_SANITY;
+import static croissantnova.sanitydim.api.SanityAPI.MIN_SANITY;
 
 public class ConfigValues
 {

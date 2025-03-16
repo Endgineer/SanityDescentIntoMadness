@@ -3,8 +3,6 @@ package croissantnova.sanitydim.config.custom;
 import croissantnova.sanitydim.SanityMod;
 import croissantnova.sanitydim.config.ConfigManager;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.Objects;

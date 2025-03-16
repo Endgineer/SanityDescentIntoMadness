@@ -2,7 +2,6 @@ package croissantnova.sanitydim.sources.passive;
 
 import croissantnova.sanitydim.capability.ISanity;
 import croissantnova.sanitydim.config.ConfigProxy;
-import croissantnova.sanitydim.mixin.MixinEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 

@@ -1,19 +1,17 @@
 package croissantnova.sanitydim.command;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
-
 import croissantnova.sanitydim.capability.SanityProvider;
 import croissantnova.sanitydim.config.ConfigManager;
-import croissantnova.sanitydim.config.DimensionConfig;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+
+import java.util.Collection;
+import java.util.Collections;
 
 public class SanityCommand
 {
