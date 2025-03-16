@@ -6,11 +6,11 @@ A Minecraft mod that brings the sanity mechanic from [Don't Starve](https://stor
 
 ## Requirements
 
-<a aria-label="Minecraft Forge" href="https://files.minecraftforge.net/net/minecraftforge/forge/index_1.19.4.html">
-<img alt="" src="https://img.shields.io/badge/Minecraft%20Forge-1.19.4--45.1.0-dfa86a?style=for-the-badge">
+<a aria-label="Minecraft Forge" href="https://files.minecraftforge.net/net/minecraftforge/forge/index_1.20.1.html">
+<img alt="" src="https://img.shields.io/badge/Minecraft%20Forge-1.20.1--47.3.0-dfa86a?style=for-the-badge">
 </a>
 <a aria-label="GeckoLib" href="https://modrinth.com/mod/geckolib">
-<img alt="" src="https://img.shields.io/badge/geckolib-4.2-52da6a?style=for-the-badge">
+<img alt="" src="https://img.shields.io/badge/geckolib-4.7-52da6a?style=for-the-badge">
 </a>
 
 ## Description
