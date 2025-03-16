@@ -69,7 +69,7 @@ public class SanityCommand {
     private static int getSanity(CommandSourceStack stack, ServerPlayer player) {
         float sanity = SanityAPI.getSanity(player);
         stack.sendSuccess(() -> Component.translatable("commands.sanity.get.success", player.getDisplayName(), sanity), true);
-        return (int) sanity;
+        return (int) (sanity * 100f);
     }
 
     private static int addSanity(CommandSourceStack stack, Collection<? extends ServerPlayer> targets, float value) {
