@@ -1,7 +1,9 @@
-package croissantnova.sanitydim.sources.passive;
+package croissantnova.sanitydim.sources.passive.lso;
 
 import croissantnova.sanitydim.api.SanityCalculatorBase;
 import croissantnova.sanitydim.capability.ISanity;
+import croissantnova.sanitydim.compat.LSOCompatAPI;
+import croissantnova.sanitydim.sources.passive.IPassiveSanitySource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +14,9 @@ public class ThirstSanitySource implements IPassiveSanitySource {
 
     @Override
     public float get(@NotNull ServerPlayer player, @NotNull ISanity sanityCap, @NotNull ResourceLocation dim) {
-        return new SanityCalculator(player, sanityCap, dim).calculate();
+        return LSOCompatAPI.isModLoaded()
+                ? new SanityCalculator(player, sanityCap, dim).calculate()
+                : 0f;
     }
 
     private static class SanityCalculator extends SanityCalculatorBase {

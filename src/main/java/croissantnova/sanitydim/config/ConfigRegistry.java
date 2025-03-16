@@ -36,8 +36,8 @@ public class ConfigRegistry
     public final DoubleValue m_jukeboxUnsettling;
     public final ConfigValue<List<? extends String>> m_passiveBlocks;
 
-    public final PassiveSanitySource passiveSanitySource;
-    public static class PassiveSanitySource {
+    public final PassiveLSOCompat passive_lsoCompat;
+    public static class PassiveLSOCompat {
         public final DoubleValue bodyPartSlightlyWounded;
         public final DoubleValue bodyPartWounded;
         public final DoubleValue bodyPartHeavilyWounded;
@@ -51,7 +51,7 @@ public class ConfigRegistry
 
         private final ForgeConfigSpec.Builder builder;
 
-        public PassiveSanitySource(ForgeConfigSpec.Builder builder) {
+        public PassiveLSOCompat(ForgeConfigSpec.Builder builder) {
             this.builder = builder;
             bodyPartSlightlyWounded = builder
                     .comment("Having a slightly wounded body part gives this amount of sanity per second")
@@ -185,6 +185,12 @@ public class ConfigRegistry
             "This value applies only when the player's hydration level is at or below the threshold."
     );
 
+    public final ModConfigValue<Double> passive_sunlight = ModConfigValue.createPassiveDouble(
+            "sanity.passive.sunlight",
+            0.05,
+            "Defines how much sanity is gained per second when the player is in the sunlight."
+    );
+
     public ConfigRegistry(ForgeConfigSpec.Builder builder)
     {
         builder.comment(
@@ -249,8 +255,6 @@ public class ConfigRegistry
                 .comment("Nearby jukebox playing an unsettling melody gives this amount of sanity per second (this takes priority over pleasant melodies)")
                 .defineInRange("jukebox_unsettling", -.11, -100.0, 100.0);
 
-        passiveSanitySource = new PassiveSanitySource(builder);
-
         List<String> path = new ArrayList<>();
         path.add("blocks");
 
@@ -271,10 +275,16 @@ public class ConfigRegistry
         passive_wellFed.build(builder);
         passive_wellFedThreshold.build(builder);
         passive_lowHydration.build(builder);
+        passive_sunlight.build(builder);
+
+
+        builder.comment("These values are only used if you have Legendary Survival Overhaul installed.")
+                .push("legendary_survival_overhaul_compat");
+        passive_lsoCompat = new PassiveLSOCompat(builder);
 
 
 
-        builder.pop();
+        builder.pop(2);
         builder.comment("Configuration for active sanity sources").push("active");
 
         m_sleeping = builder

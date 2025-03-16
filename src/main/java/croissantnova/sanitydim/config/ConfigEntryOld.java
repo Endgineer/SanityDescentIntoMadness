@@ -20,7 +20,7 @@ public enum ConfigEntryOld {
     ),
     PASSIVE_BODY_PART_SLIGHTLY_WOUNDED(
             "sanity.passive.body_part_slightly_wounded",
-            new ConfigManager.ProxyValueEntry<>(() -> ConfigManager.getConfigValues().passiveSanitySource.bodyPartSlightlyWounded.get(), ConfigManager::finalizePassive)
+            new ConfigManager.ProxyValueEntry<>(() -> ConfigManager.getConfigValues().passive_lsoCompat.bodyPartSlightlyWounded.get(), ConfigManager::finalizePassive)
     )
     ;
 

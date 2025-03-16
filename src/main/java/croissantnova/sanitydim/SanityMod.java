@@ -2,6 +2,7 @@ package croissantnova.sanitydim;
 
 import com.mojang.logging.LogUtils;
 import croissantnova.sanitydim.client.GuiHandler;
+import croissantnova.sanitydim.client.SanityHintProvider;
 import croissantnova.sanitydim.config.ConfigManager;
 import croissantnova.sanitydim.entity.EntityRegistry;
 import croissantnova.sanitydim.event.EventHandler;

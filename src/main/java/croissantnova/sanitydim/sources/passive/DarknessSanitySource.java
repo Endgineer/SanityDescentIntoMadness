@@ -14,8 +14,7 @@ public class DarknessSanitySource implements IPassiveSanitySource
     @Override
     public float get(@Nonnull ServerPlayer player, @Nonnull ISanity cap, @Nonnull ResourceLocation dim)
     {
-        Vec3 eyePos = player.getEyePosition();
-        BlockPos blockPos = BlockPos.containing(eyePos.x, eyePos.y, eyePos.z);
+        BlockPos blockPos = BlockPos.containing(player.getX(), player.getEyeY(), player.getZ());
 
         if (player.level().getMaxLocalRawBrightness(blockPos) <= ConfigProxy.getDarknessThreshold(dim)) {
             return ConfigProxy.getDarkness(dim);

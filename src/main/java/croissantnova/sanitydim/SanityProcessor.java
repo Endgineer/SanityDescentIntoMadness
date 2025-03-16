@@ -9,6 +9,9 @@ import croissantnova.sanitydim.net.InnerEntityCapImplPacket;
 import croissantnova.sanitydim.net.PacketHandler;
 import croissantnova.sanitydim.net.SanityPacket;
 import croissantnova.sanitydim.sources.passive.*;
+import croissantnova.sanitydim.sources.passive.lso.BrokenLimbsSanitySource;
+import croissantnova.sanitydim.sources.passive.lso.TemperatureSanitySource;
+import croissantnova.sanitydim.sources.passive.lso.ThirstSanitySource;
 import croissantnova.sanitydim.util.MathHelper;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
@@ -56,7 +59,7 @@ public final class SanityProcessor
             new Jukebox(),
             new BlockStuck(),
             new MovingOnCarpetSanitySource(),
-            new BodyDamageSanitySource(),
+            new BrokenLimbsSanitySource(),
             new TemperatureSanitySource(),
             new ThirstSanitySource(),
             new NearEntitySanitySource()

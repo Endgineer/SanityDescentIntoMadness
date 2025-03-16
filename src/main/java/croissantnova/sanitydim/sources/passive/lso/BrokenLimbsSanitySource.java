@@ -1,17 +1,23 @@
-package croissantnova.sanitydim.sources.passive;
+package croissantnova.sanitydim.sources.passive.lso;
 
 import croissantnova.sanitydim.capability.ISanity;
+import croissantnova.sanitydim.compat.LSOCompatAPI;
 import croissantnova.sanitydim.config.ConfigEntryOld2;
+import croissantnova.sanitydim.sources.passive.IPassiveSanitySource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyDamageUtil;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyPartEnum;
 
-public class BodyDamageSanitySource implements IPassiveSanitySource {
+public class BrokenLimbsSanitySource implements IPassiveSanitySource {
 
     @Override
     public float get(@NotNull ServerPlayer player, @NotNull ISanity cap, @NotNull ResourceLocation dim) {
+        if (!LSOCompatAPI.isModLoaded()) {
+            return 0f;
+        }
+
         float sanityAmount = 0;
 
         for (BodyPartEnum bodyPart : BodyPartEnum.values()) {

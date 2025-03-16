@@ -1,5 +1,6 @@
 package croissantnova.sanitydim.util;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +21,24 @@ public class PlayerHelper {
 
     public static ResourceLocation getDim(ServerPlayer player) {
         return player.level().dimension().location();
+    }
+
+    @SuppressWarnings("deprecation")
+    public static float getSolarLightLevel(ServerPlayer player) {
+        return player.getLightLevelDependentMagicValue();
+    }
+
+    /**
+     * Uses similar code to {@code net.minecraft.world.entity.Mob#isSunBurnTick()}
+     */
+    public static boolean isPlayerInSunlight(ServerPlayer player) {
+        if (player.level().isDay() && !player.level().isClientSide) {
+            float solarLightLevel = PlayerHelper.getSolarLightLevel(player);
+            BlockPos blockpos = BlockPos.containing(player.getX(), player.getEyeY(), player.getZ());
+            
+            return solarLightLevel > 0.5F && player.level().canSeeSky(blockpos);
+        }
+        return false;
     }
 
     public static void playSound(ServerPlayer player, SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch) {

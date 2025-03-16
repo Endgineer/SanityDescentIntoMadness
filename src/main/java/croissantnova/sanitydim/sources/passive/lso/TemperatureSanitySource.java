@@ -1,41 +1,30 @@
-package croissantnova.sanitydim.sources.passive;
+package croissantnova.sanitydim.sources.passive.lso;
 
 import croissantnova.sanitydim.capability.ISanity;
+import croissantnova.sanitydim.compat.LSOCompatAPI;
 import croissantnova.sanitydim.config.ConfigEntryOld2;
+import croissantnova.sanitydim.sources.passive.IPassiveSanitySource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureEnum;
-import sfiomn.legendarysurvivaloverhaul.common.capabilities.temperature.TemperatureProvider;
 
 public class TemperatureSanitySource implements IPassiveSanitySource {
-    private ResourceLocation dim;
-    private float sanityChange;
-    private float temperature;
 
     @Override
     public float get(@NotNull ServerPlayer player, @NotNull ISanity cap, @NotNull ResourceLocation dim) {
-        this.dim = dim;
-        sanityChange = 0;
+        if (!LSOCompatAPI.isModLoaded()) {
+            return 0f;
+        }
 
-        player.getCapability(TemperatureProvider.TEMPERATURE_CAPABILITY).ifPresent(temperatureCapability -> {
-            temperature = temperatureCapability.getTemperatureLevel();
-            for (TemperatureEnum temperatureStage : TemperatureEnum.values()) {
-                sanityChange = getTemperatureSanity(temperatureStage, getConfigForTemperatureEnum(temperatureStage));
-                if (sanityChange != 0) {
-                    break;
-                }
-            }
-        });
-
-        return sanityChange;
+        TemperatureEnum temperatureStage = LSOCompatAPI.getTemperatureStage(player);
+        return temperatureStage != null
+                ? getTemperatureSanity(temperatureStage, dim)
+                : 0f;
     }
 
-    private float getTemperatureSanity(@NotNull TemperatureEnum temperatureStage, ConfigEntryOld2<Float> configEntryOld2) {
-        if (temperatureStage.matches(temperature)) {
-            return configEntryOld2.getConfigValue(dim);
-        }
-        return 0;
+    private float getTemperatureSanity(@NotNull TemperatureEnum temperatureStage, ResourceLocation dim) {
+        return getConfigForTemperatureEnum(temperatureStage).getConfigValue(dim);
     }
 
     private ConfigEntryOld2<Float> getConfigForTemperatureEnum(@NotNull TemperatureEnum tempEnum) {
