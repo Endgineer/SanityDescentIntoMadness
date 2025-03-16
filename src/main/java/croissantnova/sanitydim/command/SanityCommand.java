@@ -14,15 +14,13 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.Collection;
 import java.util.Collections;
 
-public class SanityCommand
-{
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher)
-    {
+public class SanityCommand {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("sanity")
                 .requires(stack -> stack.hasPermission(2))
                 .then(Commands.literal("set")
                         .then(Commands.argument("value", FloatArgumentType.floatArg(0f, 100f))
-                                .executes(stack -> setSanity(stack.getSource(), Collections.singleton((ServerPlayer)stack.getSource().getEntityOrException()), FloatArgumentType.getFloat(stack, "value")))
+                                .executes(stack -> setSanity(stack.getSource(), Collections.singleton((ServerPlayer) stack.getSource().getEntityOrException()), FloatArgumentType.getFloat(stack, "value")))
                         )
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .then(Commands.argument("value", FloatArgumentType.floatArg(0f, 100f))
@@ -30,9 +28,15 @@ public class SanityCommand
                                 )
                         )
                 )
+                .then(Commands.literal("get")
+                        .executes(stack -> getSanity(stack.getSource(), (ServerPlayer) stack.getSource().getEntityOrException()))
+                        .then(Commands.argument("target", EntityArgument.player())
+                                .executes(stack -> getSanity(stack.getSource(), EntityArgument.getPlayer(stack, "target")))
+                        )
+                )
                 .then(Commands.literal("add")
                         .then(Commands.argument("value", FloatArgumentType.floatArg(-100f, 100f))
-                                .executes(stack -> addSanity(stack.getSource(), Collections.singleton((ServerPlayer)stack.getSource().getEntityOrException()), FloatArgumentType.getFloat(stack, "value")))
+                                .executes(stack -> addSanity(stack.getSource(), Collections.singleton((ServerPlayer) stack.getSource().getEntityOrException()), FloatArgumentType.getFloat(stack, "value")))
                         )
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .then(Commands.argument("value", FloatArgumentType.floatArg(-100f, 100f))
@@ -48,46 +52,41 @@ public class SanityCommand
         );
     }
 
-    private static int setSanity(CommandSourceStack stack, Collection<? extends ServerPlayer> targets, float value)
-    {
-        for (ServerPlayer player : targets)
-        {
+    private static int setSanity(CommandSourceStack stack, Collection<? extends ServerPlayer> targets, float value) {
+        for (ServerPlayer player : targets) {
             SanityAPI.setSanity(player, (100f - value) / 100f);
         }
 
-        if (targets.size() == 1)
-        {
+        if (targets.size() == 1) {
             stack.sendSuccess(() -> Component.translatable("commands.sanity.set.success.single", targets.iterator().next().getDisplayName(), value), true);
-        }
-        else
-        {
+        } else {
             stack.sendSuccess(() -> Component.translatable("commands.sanity.set.success.multiple", value, targets.size()), true);
         }
 
-        return (int)value;
+        return (int) value;
     }
 
-    private static int addSanity(CommandSourceStack stack, Collection<? extends ServerPlayer> targets, float value)
-    {
-        for (ServerPlayer player : targets)
-        {
+    private static int getSanity(CommandSourceStack stack, ServerPlayer player) {
+        float sanity = SanityAPI.getSanity(player);
+        stack.sendSuccess(() -> Component.translatable("commands.sanity.get.success", player.getDisplayName(), sanity), true);
+        return (int) sanity;
+    }
+
+    private static int addSanity(CommandSourceStack stack, Collection<? extends ServerPlayer> targets, float value) {
+        for (ServerPlayer player : targets) {
             SanityAPI.addSanity(player, -value / 100f);
         }
 
-        if (targets.size() == 1)
-        {
+        if (targets.size() == 1) {
             stack.sendSuccess(() -> Component.translatable("commands.sanity.add.success.single", value, targets.iterator().next().getDisplayName()), true);
-        }
-        else
-        {
+        } else {
             stack.sendSuccess(() -> Component.translatable("commands.sanity.add.success.multiple", targets.size(), value), true);
         }
 
-        return (int)value;
+        return (int) value;
     }
 
-    private static int reloadConfig(CommandSourceStack stack)
-    {
+    private static int reloadConfig(CommandSourceStack stack) {
         ConfigManager.loadConfigs();
         stack.sendSuccess(() -> Component.translatable("commands.sanity.config.reload"), true);
         return 1;
