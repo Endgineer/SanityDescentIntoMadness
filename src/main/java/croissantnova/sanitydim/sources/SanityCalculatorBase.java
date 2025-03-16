@@ -1,4 +1,4 @@
-package croissantnova.sanitydim.api;
+package croissantnova.sanitydim.sources;
 
 import croissantnova.sanitydim.capability.ISanity;
 import croissantnova.sanitydim.config.ConfigManager;

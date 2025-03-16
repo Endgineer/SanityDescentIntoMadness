@@ -1,6 +1,6 @@
 package croissantnova.sanitydim.sources.passive.lso;
 
-import croissantnova.sanitydim.api.SanityCalculatorBase;
+import croissantnova.sanitydim.sources.SanityCalculatorBase;
 import croissantnova.sanitydim.capability.ISanity;
 import croissantnova.sanitydim.compat.LSOCompatAPI;
 import croissantnova.sanitydim.sources.passive.IPassiveSanitySource;
