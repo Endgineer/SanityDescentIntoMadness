@@ -50,7 +50,7 @@ public class SanityMod
 
     static
     {
-        ConfigManager.init();
+        ConfigManager.initialize();
     }
 
     private void setup(final FMLCommonSetupEvent event)

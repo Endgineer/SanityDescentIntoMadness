@@ -7,8 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import static croissantnova.sanitydim.api.SanityAPI.MAX_SANITY;
 import static croissantnova.sanitydim.api.SanityAPI.MIN_SANITY;
@@ -40,25 +38,6 @@ public abstract class ModConfigValue<T> {
 
     public T getValue(ResourceLocation dim) {
         return ConfigManager.proxy(proxyKey, dim);
-    }
-
-
-    public static <T> ModConfigValue<List<? extends T>> createList(
-            String name,
-            Supplier<List<? extends T>> defaultSupplier,
-            Predicate<Object> elementValidator,
-            String... comments) {
-        return new ModConfigValue<>(name, ConfigManager::noFinalize, true) {
-            @Override
-            public void build(ForgeConfigSpec.Builder builder) {
-                for (String comment : comments) {
-                    builder.comment(comment);
-                }
-                List<String> path = Collections.singletonList(name.split("\\.")[2]);
-                configValue = builder
-                        .defineListAllowEmpty(path, defaultSupplier, elementValidator);
-            }
-        };
     }
 
 

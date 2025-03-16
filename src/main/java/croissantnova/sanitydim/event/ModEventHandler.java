@@ -4,6 +4,8 @@ import croissantnova.sanitydim.SanityMod;
 import croissantnova.sanitydim.client.render.RendererRottingStalker;
 import croissantnova.sanitydim.client.render.RendererSneakingTerror;
 import croissantnova.sanitydim.config.ConfigManager;
+import croissantnova.sanitydim.config.custom.PassiveSanityEntity;
+import croissantnova.sanitydim.config.custom.PassiveSanityEntityProcessor;
 import croissantnova.sanitydim.entity.EntityRegistry;
 import croissantnova.sanitydim.entity.RottingStalker;
 import croissantnova.sanitydim.entity.SneakingTerror;
@@ -16,6 +18,9 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+
+import java.util.List;
 
 public class ModEventHandler
 {

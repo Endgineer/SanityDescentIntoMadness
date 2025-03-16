@@ -3,7 +3,6 @@ package croissantnova.sanitydim.config;
 import croissantnova.sanitydim.config.custom.PassiveSanityEntity;
 import croissantnova.sanitydim.config.custom.PassiveSanityEntityProcessor;
 import croissantnova.sanitydim.config.value.ModConfigProcessableValue;
-import croissantnova.sanitydim.config.value.ModConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
@@ -14,6 +13,7 @@ import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import static croissantnova.sanitydim.api.SanityAPI.*;
 
@@ -162,26 +162,18 @@ public class ConfigValues
     public final BooleanValue m_playSounds;
     public final DoubleValue m_insanityVolume;
 
-    public final ModConfigProcessableValue<List<? extends String>, List<PassiveSanityEntity>> passive_sanityEntities = new ModConfigProcessableValue<List<? extends String>, List<PassiveSanityEntity>>(
+    public final ModConfigProcessableValue<List<? extends String>, List<PassiveSanityEntity>> passive_sanityEntities = ModConfigProcessableValue.createListAllowEmpty(
             "sanity.passive.entities",
-            ConfigManager::noFinalize
-    ) {
-        @Override
-        public void build(ForgeConfigSpec.Builder builder) {
-            configValue = builder
-                    .comment("Define a list of entities that affect sanity of players standing near them")
-                    .comment("An entity should be included as follows: A;B;C")
-                    .comment("A = entity registry name (e.g. minecraft:enderman)")
-                    .comment("B = radius (in blocks as a double)")
-                    .comment("C = how much sanity is gained per second")
-                    .defineListAllowEmpty(Collections.singletonList("entities"), passiveSanityEntitiesDefault(), ConfigManager::stringEntryIsValid);
-        }
-
-        @Override
-        public List<PassiveSanityEntity> process() {
-            return PassiveSanityEntityProcessor.process(configValue.get());
-        }
-    };
+            PassiveSanityEntityProcessor::processList,
+            ConfigManager::noFinalize,
+            passiveSanityEntitiesDefault(),
+            ConfigManager::stringEntryIsValid,
+            "Define a list of entities that affect sanity of players standing near them",
+            "An entity should be included as follows: A;B;C",
+            "A = entity registry name (e.g. minecraft:enderman)",
+            "B = how much sanity is gained per second",
+            "C = radius (in blocks as a double)"
+    );
 
     public ConfigValues(ForgeConfigSpec.Builder builder)
     {

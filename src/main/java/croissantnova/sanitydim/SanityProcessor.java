@@ -37,7 +37,7 @@ import java.util.function.Function;
 
 public final class SanityProcessor
 {
-    private static int garlandTimer;
+    private static int garlandTimer = 0;
     private static final RandomSource RAND = RandomSource.create();
 
     public static final int MAX_GARLAND_TIMER = 60;
@@ -64,7 +64,7 @@ public final class SanityProcessor
 
     private SanityProcessor() {}
 
-    private static float calcPassive(@NotNull ServerPlayer player, ISanity sanity)
+    private static float calculatePassiveSanity(@NotNull ServerPlayer player, ISanity sanity)
     {
         ResourceLocation dim = player.level().dimension().location();
         float passive = 0;
@@ -81,8 +81,9 @@ public final class SanityProcessor
         if (headItem.is(ItemRegistry.GARLAND.get())) {
             // TODO: un-hardcode
             passive -= .00005f * ConfigProxy.getPosMul(dim);
-            if (garlandTimer <= 0)
-                headItem.hurtAndBreak(player.isInWaterOrRain() ? 2 : 1, player, ent -> {});
+            if (garlandTimer <= 0) {
+                headItem.hurtAndBreak(player.isInWaterOrRain() ? 2 : 1, player, p -> {});
+            }
         }
         if (garlandTimer <= 0) {
             garlandTimer = MAX_GARLAND_TIMER;
@@ -139,7 +140,7 @@ public final class SanityProcessor
         {
             ResourceLocation dim = player.level().dimension().location();
 
-            float passive = calcPassive(player, s);
+            float passive = calculatePassiveSanity(player, s);
             float snapshot = s.getSanity();
             // passive pre-multiplied so no need for SanityProcessor#addSanity
             s.setSanity(s.getSanity() + passive);

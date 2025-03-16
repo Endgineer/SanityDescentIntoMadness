@@ -1,8 +1,6 @@
 package croissantnova.sanitydim.config;
 
 import croissantnova.sanitydim.SanityMod;
-import croissantnova.sanitydim.config.custom.PassiveSanityEntity;
-import croissantnova.sanitydim.config.custom.PassiveSanityEntityProcessor;
 import croissantnova.sanitydim.config.value.ModConfigProcessableValue;
 import croissantnova.sanitydim.config.value.ModConfigValue;
 import net.minecraft.resources.ResourceLocation;
@@ -14,8 +12,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.io.File;
 import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -33,9 +33,22 @@ public abstract class ConfigManager {
     public static final List<Pair<?, ForgeConfigSpec>> configList = new ArrayList<>();
     public static Pair<ConfigValues, ForgeConfigSpec> configValues;
 
-    public static void init() {
+    public static void initialize() {
         configList.add(configValues = new ForgeConfigSpec.Builder().configure(ConfigValues::new));
+    }
 
+    public static void loadProcessors() {
+        ModConfigProcessableValue.CONFIG_VALUES.forEach(ModConfigProcessableValue::loadConfig);
+        defPassiveBlocks = ConfigManager.processPassiveBlocks(getConfigValues().m_passiveBlocks.get());
+        defItems = ConfigManager.processItems(getConfigValues().m_items.get());
+        defItemCats = ConfigManager.processItemCats(getConfigValues().m_itemCats.get());
+        defIdToItemCat = ConfigManager.getMapFromItemCats(defItemCats);
+        defBrokenBlocks = ConfigManager.processBrokenBlocks(getConfigValues().m_brokenBlocks.get());
+        defBrokenBlockCats = ConfigManager.processBrokenBlockCats(getConfigValues().m_brokenBlockCats.get());
+        defIdToBrokenBlockCat = ConfigManager.getMapFromBrokenBlockCats(defBrokenBlockCats);
+    }
+
+    public static void loadProxies() {
         // sanity
         proxies.put("sanity.positive_multiplier", new ProxyValueEntry<>(() -> getConfigValues().m_posMul.get(), ConfigManager::noFinalize));
         proxies.put("sanity.negative_multiplier", new ProxyValueEntry<>(() -> getConfigValues().m_negMul.get(), ConfigManager::noFinalize));
@@ -127,7 +140,11 @@ public abstract class ConfigManager {
         proxies.put("sanity.client.render_post", new ProxyValueEntry<>(() -> getConfigValues().m_renderPost.get(), ConfigManager::noFinalize));
         proxies.put("sanity.client.play_sounds", new ProxyValueEntry<>(() -> getConfigValues().m_playSounds.get(), ConfigManager::noFinalize));
         proxies.put("sanity.client.insanity_volume", new ProxyValueEntry<>(() -> getConfigValues().m_insanityVolume.get(), ConfigManager::noFinalize));
+    }
 
+    public static void loadConfigs() {
+        loadProcessors();
+        loadProxies();
         DimensionConfig.init();
     }
 
@@ -140,32 +157,33 @@ public abstract class ConfigManager {
     }
 
     public static void onConfigLoading(final ModConfigEvent.Loading event) {
-        defPassiveBlocks = ConfigManager.processPassiveBlocks(getConfigValues().m_passiveBlocks.get());
-        defItems = ConfigManager.processItems(getConfigValues().m_items.get());
-        defItemCats = ConfigManager.processItemCats(getConfigValues().m_itemCats.get());
-        defIdToItemCat = ConfigManager.getMapFromItemCats(defItemCats);
-        defBrokenBlocks = ConfigManager.processBrokenBlocks(getConfigValues().m_brokenBlocks.get());
-        defBrokenBlockCats = ConfigManager.processBrokenBlockCats(getConfigValues().m_brokenBlockCats.get());
-        defIdToBrokenBlockCat = ConfigManager.getMapFromBrokenBlockCats(defBrokenBlockCats);
+        SanityMod.LOGGER.debug("Loading configurations");
+        loadConfigs();
     }
 
     public static void onConfigReloading(final ModConfigEvent.Reloading event) {
+        SanityMod.LOGGER.debug("Reloading configurations");
+        loadConfigs();
     }
 
     public static boolean stringEntryIsValid(Object entry) {
-        return entry instanceof String s && !s.isEmpty() && !s.isBlank();
+        return entry instanceof String s && !s.isBlank();
     }
 
     public static Double finalizeActive(Double value) {
-        return -value / 100f;
+        return -value / 100.0;
     }
 
     public static Double finalizePassive(Double value) {
+        return -value / 2000.0;
+    }
+
+    public static Float finalizePassive(Float value) {
         return -value / 2000f;
     }
 
     public static Double finalizeCooldown(Double value) {
-        return (double) Math.round(value * 20f);
+        return (double) Math.round(value * 20.0);
     }
 
     public static <T> T noFinalize(T value) {

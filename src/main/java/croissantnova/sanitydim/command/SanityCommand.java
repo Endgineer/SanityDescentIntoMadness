@@ -7,6 +7,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 
 import croissantnova.sanitydim.capability.SanityProvider;
+import croissantnova.sanitydim.config.ConfigManager;
 import croissantnova.sanitydim.config.DimensionConfig;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -85,7 +86,7 @@ public class SanityCommand
 
     private static int reloadConfig(CommandSourceStack stack)
     {
-        DimensionConfig.init();
+        ConfigManager.loadConfigs();
         stack.sendSuccess(() -> Component.translatable("commands.sanity.config.reload"), true);
         return 1;
     }

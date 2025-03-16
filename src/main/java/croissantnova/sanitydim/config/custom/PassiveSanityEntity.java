@@ -1,9 +1,12 @@
 package croissantnova.sanitydim.config.custom;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.registries.ForgeRegistries;
 
-public class PassiveSanityEntity {
-    public ResourceLocation id;
-    public float radius;
-    public float sanity;
+public record PassiveSanityEntity(ResourceLocation id, float radius, float sanity) {
+
+    public EntityType<?> getEntityType() {
+        return ForgeRegistries.ENTITY_TYPES.getValue(id);
+    }
 }
