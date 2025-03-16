@@ -2,6 +2,7 @@ package croissantnova.sanitydim.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
+import croissantnova.sanitydim.api.SanityAPI;
 import croissantnova.sanitydim.capability.SanityProvider;
 import croissantnova.sanitydim.config.ConfigManager;
 import net.minecraft.commands.CommandSourceStack;
@@ -51,10 +52,7 @@ public class SanityCommand
     {
         for (ServerPlayer player : targets)
         {
-            player.getCapability(SanityProvider.CAP).ifPresent(s ->
-            {
-                s.setSanity((100f - value) / 100f);
-            });
+            SanityAPI.setSanity(player, (100f - value) / 100f);
         }
 
         if (targets.size() == 1)
@@ -73,10 +71,7 @@ public class SanityCommand
     {
         for (ServerPlayer player : targets)
         {
-            player.getCapability(SanityProvider.CAP).ifPresent(s ->
-            {
-                s.setSanity(s.getSanity() - value / 100f);
-            });
+            SanityAPI.addSanity(player, -value / 100f);
         }
 
         if (targets.size() == 1)
