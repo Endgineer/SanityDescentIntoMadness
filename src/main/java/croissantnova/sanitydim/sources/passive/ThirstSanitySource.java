@@ -1,29 +1,48 @@
 package croissantnova.sanitydim.sources.passive;
 
+import croissantnova.sanitydim.api.SanityCalculatorBase;
 import croissantnova.sanitydim.capability.ISanity;
-import croissantnova.sanitydim.config.ConfigEntryOld2;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
+import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstProvider;
 
 public class ThirstSanitySource implements IPassiveSanitySource {
-    private float sanityChange;
 
     @Override
-    public float get(@NotNull ServerPlayer player, @NotNull ISanity cap, @NotNull ResourceLocation dim) {
-        sanityChange = 0;
+    public float get(@NotNull ServerPlayer player, @NotNull ISanity sanityCap, @NotNull ResourceLocation dim) {
+        return new SanityCalculator(player, sanityCap, dim).calculate();
+    }
 
-        player.getCapability(ThirstProvider.THIRST_CAPABILITY).ifPresent(thirstCapability -> {
+    private static class SanityCalculator extends SanityCalculatorBase {
+
+        protected SanityCalculator(ServerPlayer player, ISanity sanityCap, ResourceLocation dim) {
+            super(player, sanityCap, dim);
+        }
+
+        @Override
+        protected float calculate() {
+            return player.getCapability(ThirstProvider.THIRST_CAPABILITY)
+                    .map(this::getSanity)
+                    .orElse(0f);
+        }
+
+        private float getSanity(ThirstCapability thirstCapability) {
             int hydrationLevel = thirstCapability.getHydrationLevel();
-            if (hydrationLevel <= 6) {
-                float value = ConfigEntryOld2.passiveSanitySource.lowThirst.getConfigValue(dim);
-                // 100% at 6 hydration, 200% at 0 hydration
-                float interpolation = 1f + (6 - hydrationLevel) / 6f;
-                sanityChange = value * interpolation;
-            }
-        });
 
-        return sanityChange;
+            if (hydrationLevel <= 6) {
+                float value = configValues.passive_lowHydration.get(dim).floatValue();
+                // 100% at 6 hydration, 200% at 0 hydration
+                float interpolation = (6 - hydrationLevel) / 6f + 1f;
+                return value * interpolation;
+            }
+
+            if (hydrationLevel >= configValues.passive_wellHydratedThreshold.get(dim)) {
+                return configValues.passive_wellHydrated.get(dim).floatValue();
+            }
+
+            return 0f;
+        }
     }
 }

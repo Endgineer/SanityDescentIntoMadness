@@ -45,7 +45,7 @@ public final class SanityProcessor
     public static final List<IPassiveSanitySource> PASSIVE_SANITY_SOURCES = new ArrayList<>(Arrays.asList(
             new Passive(),
             new InRain(),
-            new Hungry(),
+            new HungerSanitySource(),
             new EnderManAnger(),
             new Pet(),
             new Monster(),

@@ -155,12 +155,12 @@ public abstract class ConfigManager {
     }
 
     public static void onConfigLoading(final ModConfigEvent.Loading event) {
-        SanityMod.LOGGER.debug("Loading configurations");
+        SanityMod.LOGGER.info("Loading configurations");
         loadConfigs();
     }
 
     public static void onConfigReloading(final ModConfigEvent.Reloading event) {
-        SanityMod.LOGGER.debug("Reloading configurations");
+        SanityMod.LOGGER.info("Reloading configurations");
         loadConfigs();
     }
 

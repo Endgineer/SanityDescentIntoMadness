@@ -20,14 +20,14 @@ public abstract class ModConfigValue<T> {
     private final Function<T, T> finalizer;
     protected ForgeConfigSpec.ConfigValue<T> configValue;
 
-    public ModConfigValue(String proxyKey, Function<T, T> finalizer) {
+    private ModConfigValue(String proxyKey, Function<T, T> finalizer) {
         CONFIG_VALUES.add(this);
         this.proxyKey = proxyKey;
         this.finalizer = finalizer;
     }
 
     /**
-     * Needs to initialize {@link ModConfigProcessableValue#configValue} through a definition call
+     * Needs to initialize {@link ModConfigValue#configValue} through a definition call
      */
     public abstract void build(ForgeConfigSpec.Builder builder);
 
@@ -38,7 +38,7 @@ public abstract class ModConfigValue<T> {
         ));
     }
 
-    public T getValue(ResourceLocation dim) {
+    public T get(ResourceLocation dim) {
         return ConfigManager.proxy(proxyKey, dim);
     }
 
@@ -57,12 +57,13 @@ public abstract class ModConfigValue<T> {
     }
 
     /**
-     * Assumes min and max values are sanity min and max (-100, 100)
+     * Creates a passive double configuration value with predefined sanity
+     * minimum and maximum bounds (-100, 100).
      *
-     * @param name
-     * @param defaultValue
-     * @param comments
-     * @return
+     * @param name         the unique name identifying this configuration value
+     * @param defaultValue the default value to be used if none is specified
+     * @param comments     optional comments to describe this configuration value
+     * @return a {@link ModConfigValue} instance representing the configuration value
      */
     public static ModConfigValue<Double> createPassiveDouble(String name, double defaultValue, String... comments) {
         return createPassiveDouble(name, defaultValue, MIN_SANITY, MAX_SANITY, comments);

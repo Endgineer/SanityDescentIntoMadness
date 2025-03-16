@@ -91,11 +91,6 @@ public class ConfigEntryOld2<T> {
                 () -> ConfigManager.getConfigValues().passiveSanitySource.bodyPartDead.get()
         );
 
-        public final ConfigEntryOld2<Float> lowThirst = createFloatPassive(
-                "sanity.passive.low_thirst",
-                () -> ConfigManager.getConfigValues().passiveSanitySource.lowHydration.get()
-        );
-
         public final ConfigEntryOld2<Float> heatStrokeTemperature = createFloatPassive(
                 "sanity.passive.heat_stroke_temperature",
                 () -> ConfigManager.getConfigValues().passiveSanitySource.heatStrokeTemperature.get()
@@ -115,19 +110,6 @@ public class ConfigEntryOld2<T> {
         public final ConfigEntryOld2<Float> normalTemperature = createFloatPassive(
                 "sanity.passive.normal_temperature",
                 () -> ConfigManager.getConfigValues().passiveSanitySource.normalTemperature.get()
-        );
-
-        public final ConfigEntryOld2<Float> nearbyEndermen = createFloatPassive(
-                "sanity.passive.nearby_enderman",
-                () -> ConfigManager.getConfigValues().passiveSanitySource.nearbyEndermen.get()
-        );
-        public final ConfigEntryOld2<Float> nearbyAngryEndermen = createFloatPassive(
-                "sanity.passive.nearby_angry_enderman",
-                () -> ConfigManager.getConfigValues().passiveSanitySource.nearbyAngryEndermen.get()
-        );
-        public final ConfigEntryOld2<Double> nearbyEndermenDistance = createDoublePassive(
-                "sanity.passive.nearby_enderman.distance",
-                () -> ConfigManager.getConfigValues().passiveSanitySource.nearbyEndermenDistance.get()
         );
     }
 }

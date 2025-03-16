@@ -25,7 +25,7 @@ public abstract class ModConfigProcessableValue<T, P> {
     protected ForgeConfigSpec.ConfigValue<T> configValue;
     private P processedValue;
 
-    public ModConfigProcessableValue(String proxyKey, Function<T, P> processor, Function<P, P> finalizer) {
+    private ModConfigProcessableValue(String proxyKey, Function<T, P> processor, Function<P, P> finalizer) {
         CONFIG_VALUES.add(this);
         this.proxyKey = proxyKey;
         this.processor = processor;
@@ -41,18 +41,14 @@ public abstract class ModConfigProcessableValue<T, P> {
         processedValue = processor.apply(configValue.get());
     }
 
-    public P getProcessedValue() {
-        return processedValue;
-    }
-
     public void loadProxy(@NotNull Map<String, ConfigManager.ProxyValueEntry<?>> proxies) {
         proxies.put(proxyKey, new ConfigManager.ProxyValueEntry<>(
-                this::getProcessedValue,
+                () -> processedValue,
                 finalizer
         ));
     }
 
-    public P getValue(ResourceLocation dimension) {
+    public P get(ResourceLocation dimension) {
         return ConfigManager.proxy(proxyKey, dimension);
     }
 

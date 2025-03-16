@@ -35,7 +35,7 @@ public class NearEntitySanitySource implements IPassiveSanitySource {
         }
 
         private float calculate() {
-            List<PassiveSanityEntity> passiveSanityEntityList = ConfigManager.getConfigValues().passive_sanityEntities.getValue(dim);
+            List<PassiveSanityEntity> passiveSanityEntityList = ConfigManager.getConfigValues().passive_sanityEntities.get(dim);
 
             passiveSanityEntityList.forEach(this::applySanityFrom);
 

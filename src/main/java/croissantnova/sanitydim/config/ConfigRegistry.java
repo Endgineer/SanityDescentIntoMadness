@@ -3,6 +3,7 @@ package croissantnova.sanitydim.config;
 import croissantnova.sanitydim.config.custom.PassiveSanityEntity;
 import croissantnova.sanitydim.config.custom.PassiveSanityEntityProcessor;
 import croissantnova.sanitydim.config.value.ModConfigProcessableValue;
+import croissantnova.sanitydim.config.value.ModConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.*;
 
@@ -42,17 +43,11 @@ public class ConfigRegistry
         public final DoubleValue bodyPartHeavilyWounded;
         public final DoubleValue bodyPartDead;
 
-        public final DoubleValue lowHydration;
-
         public final DoubleValue frostbiteTemperature;
         public final DoubleValue coldTemperature;
         public final DoubleValue normalTemperature;
         public final DoubleValue hotTemperature;
         public final DoubleValue heatStrokeTemperature;
-
-        public final DoubleValue nearbyEndermen;
-        public final DoubleValue nearbyAngryEndermen;
-        public final DoubleValue nearbyEndermenDistance;
 
         private final ForgeConfigSpec.Builder builder;
 
@@ -60,39 +55,22 @@ public class ConfigRegistry
             this.builder = builder;
             bodyPartSlightlyWounded = builder
                     .comment("Having a slightly wounded body part gives this amount of sanity per second")
-                    .defineInRange("body_part_slightly_wounded", -0.01, MIN_SANITY, MAX_SANITY);
+                    .defineInRange("body_part_slightly_wounded", -0.0, MIN_SANITY, MAX_SANITY);
             bodyPartWounded = builder
                     .comment("Having a wounded body part gives this amount of sanity per second")
-                    .defineInRange("body_part_wounded", -0.025, MIN_SANITY, MAX_SANITY);
+                    .defineInRange("body_part_wounded", -0.01, MIN_SANITY, MAX_SANITY);
             bodyPartHeavilyWounded = builder
                     .comment("Having a heavily wounded body part gives this amount of sanity per second")
-                    .defineInRange("body_part_heavily_wounded", -0.05, MIN_SANITY, MAX_SANITY);
+                    .defineInRange("body_part_heavily_wounded", -0.025, MIN_SANITY, MAX_SANITY);
             bodyPartDead = builder
                     .comment("Having a dead body part gives this amount of sanity per second")
-                    .defineInRange("body_part_dead", -0.1, MIN_SANITY, MAX_SANITY);
+                    .defineInRange("body_part_dead", -0.05, MIN_SANITY, MAX_SANITY);
 
-            lowHydration = builder
-                    .comment("Players will gain this amount of sanity per second when their hydration is at 6 or below")
-                    .comment("Value will be multiplied by 20% for each point of hydration under 6 (200% sanity gain/loss at 0 hydration)")
-                    .defineInRange("low_hydration", -0.2, MIN_SANITY, MAX_SANITY);
-
-            heatStrokeTemperature = temperature("heat stroke", -0.5);
-            frostbiteTemperature = temperature("frostbite", -0.5);
-            hotTemperature = temperature("hot", -0.1);
-            coldTemperature = temperature("cold", -0.1);
+            heatStrokeTemperature = temperature("heat stroke", -0.1);
+            frostbiteTemperature = temperature("frostbite", -0.1);
+            hotTemperature = temperature("hot", -0.05);
+            coldTemperature = temperature("cold", -0.05);
             normalTemperature = temperature("normal", 0.05);
-
-            nearbyEndermen = builder
-                    .comment("Sanity exposure rate while near an enderman.")
-                    .comment("Stacks linearly with how many endermen are near the player.")
-                    .defineInRange("nearby_endermen", -0.05, MIN_SANITY, MAX_SANITY);
-            nearbyAngryEndermen = builder
-                    .comment("Sanity exposure rate while near an enderman.")
-                    .comment("Stacks linearly with how many endermen are near the player.")
-                    .defineInRange("nearby_angry_endermen", -0.1, MIN_SANITY, MAX_SANITY);
-            nearbyEndermenDistance = builder
-                    .comment("The radius (in blocks) an enderman has to be within in order to affect the player's sanity.")
-                    .defineInRange("nearby_enderman_distance", 4.0, 0.5, 1024.0);
         }
 
         private DoubleValue temperature(String name, double value) {
@@ -168,6 +146,45 @@ public class ConfigRegistry
             "C = radius (in blocks as a double)"
     );
 
+    public final ModConfigValue<Double> passive_wellHydrated = ModConfigValue.createPassiveDouble(
+            "sanity.passive.well_hydrated",
+            0.05,
+            "Defines how much sanity is gained per second when the player is well hydrated.",
+            "This value applies only when the player's hydration level is above the threshold."
+    );
+
+    public final ModConfigValue<Double> passive_wellHydratedThreshold = ModConfigValue.createPassiveDouble(
+            "sanity.passive.well_hydrated_threshold",
+            20,
+            0.0,
+            20.0,
+            "Defines what hydration level the player must have to be considered well-hydrated.",
+            "Players with their hydration levels at or above this threshold gain bonus sanity per second."
+    );
+
+    public final ModConfigValue<Double> passive_wellFed = ModConfigValue.createPassiveDouble(
+            "sanity.passive.well_fed",
+            0.05,
+            "Defines how much sanity is gained per second when the player is well fed.",
+            "This value applies only when the player's food level is above the threshold."
+    );
+
+    public final ModConfigValue<Double> passive_wellFedThreshold = ModConfigValue.createPassiveDouble(
+            "sanity.passive.well_fed_threshold",
+            20,
+            0.0,
+            20.0,
+            "Defines what food level the player must have to be considered well-fed.",
+            "Players with their food levels at or above this threshold gain bonus sanity per second."
+    );
+
+    public final ModConfigValue<Double> passive_lowHydration = ModConfigValue.createPassiveDouble(
+            "sanity.passive.low_hydration",
+            -0.2,
+            "Defines how much sanity is gained per second when the player is low on hydration.",
+            "This value applies only when the player's hydration level is at or below the threshold."
+    );
+
     public ConfigRegistry(ForgeConfigSpec.Builder builder)
     {
         builder.comment(
@@ -215,7 +232,7 @@ public class ConfigRegistry
                 .defineInRange("darkness_threshold", 4, 0, 15);
         m_lightness = builder
                 .comment("Players will gain this amount of sanity per second while being in the light")
-                .defineInRange("lightness", 0.0, -100.0, 100.0);
+                .defineInRange("lightness", 0.05, -100.0, 100.0);
         m_lightnessThreshold = builder
                 .comment("Minimum light level considered to be lightness (inclusive)")
                 .defineInRange("lightness_threshold", 4, 0, 15);
@@ -248,6 +265,12 @@ public class ConfigRegistry
                 .defineListAllowEmpty(path, ConfigRegistry::passiveBlocksDefault, ConfigManager::stringEntryIsValid);
 
         passive_sanityEntities.build(builder);
+
+        passive_wellHydrated.build(builder);
+        passive_wellHydratedThreshold.build(builder);
+        passive_wellFed.build(builder);
+        passive_wellFedThreshold.build(builder);
+        passive_lowHydration.build(builder);
 
 
 
@@ -287,12 +310,12 @@ public class ConfigRegistry
                 .comment(
                         "Players gain this amount of sanity when killing a rotting stalker."
                 )
-                .defineInRange("rotting_stalker_kill_ratio", 0.1, -100.0, 100);
+                .defineInRange("rotting_stalker_kill_ratio", 0.2, -100.0, 100);
         m_sneakingTerrorKillRatio = builder
                 .comment(
                         "Players gain this amount of sanity when killing a sneaking terror."
                 )
-                .defineInRange("sneaking_terror_kill_ratio", 0.1, -100.0, 100);
+                .defineInRange("sneaking_terror_kill_ratio", 0.2, -100.0, 100);
         m_petDeath = builder
                 .comment("Players gain this amount of sanity upon their pets' death")
                 .defineInRange("pet_death", -60.0, -100.0, 100.0);
