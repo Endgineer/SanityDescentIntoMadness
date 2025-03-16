@@ -78,4 +78,12 @@ public abstract class ModConfigProcessableValue<T, P> {
             }
         };
     }
+
+    public static <E extends String, P> ModConfigProcessableValue<List<? extends E>, P> createListAllowEmpty(
+            String name,
+            Function<List<? extends E>, P> processor,
+            List<? extends E> defaultValue,
+            String... comments) {
+        return createListAllowEmpty(name, processor, ConfigManager::noFinalize, defaultValue, ConfigManager::stringEntryIsValid, comments);
+    }
 }

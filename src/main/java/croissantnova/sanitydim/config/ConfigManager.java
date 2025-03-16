@@ -29,10 +29,10 @@ public abstract class ConfigManager {
     protected static final Map<String, ProxyValueEntry<?>> proxies = new HashMap<>();
 
     public static final List<Pair<?, ForgeConfigSpec>> configList = new ArrayList<>();
-    public static Pair<ConfigValues, ForgeConfigSpec> configValues;
+    public static Pair<ConfigRegistry, ForgeConfigSpec> configValues;
 
     public static void initialize() {
-        configList.add(configValues = new ForgeConfigSpec.Builder().configure(ConfigValues::new));
+        configList.add(configValues = new ForgeConfigSpec.Builder().configure(ConfigRegistry::new));
     }
 
     public static void loadProcessors() {
@@ -150,7 +150,7 @@ public abstract class ConfigManager {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, configValues.getRight(), SanityMod.MODID + File.separator + "default.toml");
     }
 
-    public static ConfigValues getConfigValues() {
+    public static ConfigRegistry getConfigValues() {
         return configValues.getLeft();
     }
 

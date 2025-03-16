@@ -12,7 +12,7 @@ import java.util.List;
 import static croissantnova.sanitydim.api.SanityAPI.MAX_SANITY;
 import static croissantnova.sanitydim.api.SanityAPI.MIN_SANITY;
 
-public class ConfigValues
+public class ConfigRegistry
 {
     public final DoubleValue m_posMul;
     public final DoubleValue m_negMul;
@@ -160,9 +160,7 @@ public class ConfigValues
     public final ModConfigProcessableValue<List<? extends String>, List<PassiveSanityEntity>> passive_sanityEntities = ModConfigProcessableValue.createListAllowEmpty(
             "sanity.passive.entities",
             PassiveSanityEntityProcessor::processList,
-            ConfigManager::noFinalize,
             passiveSanityEntitiesDefault(),
-            ConfigManager::stringEntryIsValid,
             "Define a list of entities that affect sanity of players standing near them",
             "An entity should be included as follows: A;B;C",
             "A = entity registry name (e.g. minecraft:enderman)",
@@ -170,7 +168,7 @@ public class ConfigValues
             "C = radius (in blocks as a double)"
     );
 
-    public ConfigValues(ForgeConfigSpec.Builder builder)
+    public ConfigRegistry(ForgeConfigSpec.Builder builder)
     {
         builder.comment(
                 "Sanity configuration",
@@ -247,7 +245,7 @@ public class ConfigValues
                 "Supports boolean block state properties (can be omitted together with brackets)",
                 "Prefix with TAG_ and follow with a tag registry name to define all blocks with the tag",
                 "NOTE: not everything may work correctly with any configuration, e.g. multiblocks like tall flowers and beds; needs testing")
-                .defineListAllowEmpty(path, ConfigValues::passiveBlocksDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, ConfigRegistry::passiveBlocksDefault, ConfigManager::stringEntryIsValid);
 
         passive_sanityEntities.build(builder);
 
@@ -347,7 +345,7 @@ public class ConfigValues
                 "Where A is how much sanity is gained upon usage and B is a custom category",
                 "Items with the same categories share the same cooldown",
                 "The sanity gained will be multiplied by (timeSinceLastUsage / categoryCooldown) capping at 1.0")
-                .defineListAllowEmpty(path, ConfigValues::itemsDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, ConfigRegistry::itemsDefault, ConfigManager::stringEntryIsValid);
 
         path.clear();
         path.add("item_categories");
@@ -356,7 +354,7 @@ public class ConfigValues
                 "Define a list of custom categories for items specified in <items>",
                 "A category should be included as follows: A;B",
                 "Where A is a category id (integer) and B is a cooldown (in seconds) all items in this category share")
-                .defineListAllowEmpty(path, ConfigValues::itemCatsDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, ConfigRegistry::itemCatsDefault, ConfigManager::stringEntryIsValid);
 
         path.clear();
         path.add("broken_blocks");
@@ -371,7 +369,7 @@ public class ConfigValues
                 "Blocks with the same categories share the same cooldown",
                 "The sanity gained will be multiplied by (timeSinceLastUsage / categoryCooldown) capping at 1.0",
                 "NOTE: not everything may work correctly with any configuration, e.g. multiblocks like tall flowers and beds need testing")
-                .defineListAllowEmpty(path, ConfigValues::brokenBlocksDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, ConfigRegistry::brokenBlocksDefault, ConfigManager::stringEntryIsValid);
 
         path.clear();
         path.add("broken_block_categories");
@@ -380,7 +378,7 @@ public class ConfigValues
                 "Define a list of custom categories for blocks specified in <broken_blocks>",
                 "A category should be included as follows: A;B",
                 "Where A is a category id (integer) and B is a cooldown (in seconds) all blocks in this category share")
-                .defineListAllowEmpty(path, ConfigValues::brokenBlockCatsDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, ConfigRegistry::brokenBlockCatsDefault, ConfigManager::stringEntryIsValid);
 
         builder.pop();
         builder.comment("Multiplayer configuration").push("multiplayer");
