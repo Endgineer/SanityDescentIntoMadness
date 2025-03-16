@@ -89,7 +89,7 @@ public abstract class DimensionConfig
             configToDimStored.put(entry.getKey(), new HashMap<>());
         }
 
-        Path dimPath = Paths.get(FMLPaths.CONFIGDIR.get().toString(), SanityMod.MODID + File.separator + "dimension");
+        Path dimPath = Paths.get(FMLPaths.CONFIGDIR.get().toString(), SanityMod.MOD_ID + File.separator + "dimension");
         try
         {
             Files.createDirectories(dimPath);

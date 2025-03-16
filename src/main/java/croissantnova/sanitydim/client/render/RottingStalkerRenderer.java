@@ -10,7 +10,7 @@ public class RottingStalkerRenderer extends InnerEntityRenderer<RottingStalker>
 {
     public RottingStalkerRenderer(EntityRendererProvider.Context renderManager)
     {
-        super(renderManager, new DefaultedEntityGeoModel<>(new ResourceLocation(SanityMod.MODID, "rotting_stalker"), true));
+        super(renderManager, new DefaultedEntityGeoModel<>(new ResourceLocation(SanityMod.MOD_ID, "rotting_stalker"), true));
 
         addRenderLayer(new CustomGlowingGeoLayer<>(this));
     }

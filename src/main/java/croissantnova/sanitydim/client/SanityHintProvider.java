@@ -1,18 +1,12 @@
 package croissantnova.sanitydim.client;
 
-import com.ibm.icu.impl.Pair;
 import croissantnova.sanitydim.SanityMod;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.common.Mod;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = SanityMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public enum SanityHintProvider {
 
     PARANOID(new ArrayList<>()),
@@ -26,7 +20,7 @@ public enum SanityHintProvider {
 
     private void load() {
         for (int i = 0; ; i++) {
-            String baseKey = String.format("gui.%s.hint.%s.%s", SanityMod.MODID, this.toString().toLowerCase(), i);
+            String baseKey = String.format("gui.%s.hint.%s.%s", SanityMod.MOD_ID, this.toString().toLowerCase(), i);
             String swishKey = baseKey + ".swish";
 
             if (translationKeyExists(baseKey)) {

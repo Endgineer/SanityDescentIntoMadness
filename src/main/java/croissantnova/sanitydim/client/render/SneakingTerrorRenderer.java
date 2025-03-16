@@ -10,7 +10,7 @@ public class SneakingTerrorRenderer extends InnerEntityRenderer<SneakingTerror>
 {
     public SneakingTerrorRenderer(EntityRendererProvider.Context renderManager)
     {
-        super(renderManager, new DefaultedEntityGeoModel<>(new ResourceLocation(SanityMod.MODID, "sneaking_terror"), true));
+        super(renderManager, new DefaultedEntityGeoModel<>(new ResourceLocation(SanityMod.MOD_ID, "sneaking_terror"), true));
 
         addRenderLayer(new CustomGlowingGeoLayer<>(this));
     }

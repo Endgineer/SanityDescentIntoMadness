@@ -147,7 +147,7 @@ public abstract class ConfigManager {
     }
 
     public static void register() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, configValues.getRight(), SanityMod.MODID + File.separator + "default.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, configValues.getRight(), SanityMod.MOD_ID + File.separator + "default.toml");
     }
 
     public static ConfigRegistry getConfigValues() {
@@ -269,13 +269,13 @@ public abstract class ConfigManager {
 
             ConfigPassiveBlock block = new ConfigPassiveBlock();
             if (name.startsWith("TAG_") && name.length() > 4) {
-                block.m_name = new ResourceLocation(name.substring(4));
-                block.m_isTag = true;
-            } else block.m_name = new ResourceLocation(name);
-            block.m_sanity = sanity;
-            block.m_rad = rad;
-            block.m_props = props;
-            block.m_naturallyGend = Boolean.parseBoolean(params[3]);
+                block.name = new ResourceLocation(name.substring(4));
+                block.isTag = true;
+            } else block.name = new ResourceLocation(name);
+            block.sanity = sanity;
+            block.radius = rad;
+            block.blockProperties = props;
+            block.naturallyGenerated = Boolean.parseBoolean(params[3]);
             list.add(block);
         }
 

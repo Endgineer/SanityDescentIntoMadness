@@ -1,4 +1,4 @@
-package croissantnova.sanitydim.sources.active;
+package croissantnova.sanitydim.event;
 
 import croissantnova.sanitydim.SanityProcessor;
 import croissantnova.sanitydim.capability.SanityProvider;

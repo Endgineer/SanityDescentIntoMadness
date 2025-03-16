@@ -34,8 +34,8 @@ public class GuiHandler
     private static final float PASSIVE_THRESHOLD = .0002f;
     private static final float BT_DELAY = 5f * 20;
 
-    public static final ResourceLocation SANITY_INDICATOR = new ResourceLocation(SanityMod.MODID, "textures/sanity_indicator.png");
-    public static final ResourceLocation BLOOD_TENDRILS_OVERLAY = new ResourceLocation(SanityMod.MODID, "textures/overlay/blood_tendrils.png");
+    public static final ResourceLocation SANITY_INDICATOR = new ResourceLocation(SanityMod.MOD_ID, "textures/sanity_indicator.png");
+    public static final ResourceLocation BLOOD_TENDRILS_OVERLAY = new ResourceLocation(SanityMod.MOD_ID, "textures/overlay/blood_tendrils.png");
 
     private final Minecraft m_mc;
     private ISanity m_cap;
@@ -410,9 +410,9 @@ public class GuiHandler
 
     public void initOverlays(final RegisterGuiOverlaysEvent event)
     {
-        event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), SanityMod.MODID.concat(".sanity_indicator"), this::renderSanityIndicator);
-        event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), SanityMod.MODID.concat(".hint"), this::renderHint);
-        event.registerAbove(VanillaGuiOverlay.VIGNETTE.id(), SanityMod.MODID.concat(".blood_tendrils_overlay"), this::renderBloodTendrilsOverlay);
+        event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), SanityMod.MOD_ID.concat(".sanity_indicator"), this::renderSanityIndicator);
+        event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), SanityMod.MOD_ID.concat(".hint"), this::renderHint);
+        event.registerAbove(VanillaGuiOverlay.VIGNETTE.id(), SanityMod.MOD_ID.concat(".blood_tendrils_overlay"), this::renderBloodTendrilsOverlay);
     }
 
     public void initPostProcessor()

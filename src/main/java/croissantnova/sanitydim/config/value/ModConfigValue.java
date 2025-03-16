@@ -43,15 +43,60 @@ public abstract class ModConfigValue<T> {
     }
 
 
+    protected void commentate(ForgeConfigSpec.Builder builder, String... comments) {
+        for (String comment : comments) {
+            builder.comment(comment);
+        }
+    }
+
+    protected String toPath(String name) {
+        String[] parts = name.split("\\.");
+        return parts[parts.length - 1];
+    }
+
+
+    public static ModConfigValue<Integer> createInteger(String name, int defaultValue, int minValue, int maxValue, String... comments) {
+        return new ModConfigValue<>(name, ConfigManager::noFinalize) {
+            @Override
+            public void build(ForgeConfigSpec.Builder builder) {
+                commentate(builder, comments);
+                configValue = builder.defineInRange(toPath(name), defaultValue, minValue, maxValue);
+            }
+        };
+    }
+
+    public static ModConfigValue<Double> createDouble(String name, double defaultValue, double minValue, double maxValue, String... comments) {
+        return new ModConfigValue<>(name, ConfigManager::noFinalize) {
+            @Override
+            public void build(ForgeConfigSpec.Builder builder) {
+                commentate(builder, comments);
+                configValue = builder.defineInRange(toPath(name), defaultValue, minValue, maxValue);
+            }
+        };
+    }
+
+
+    public static ModConfigValue<Double> createActiveDouble(String name, double defaultValue, double minValue, double maxValue, String... comments) {
+        return new ModConfigValue<>(name, ConfigManager::finalizeActive) {
+            @Override
+            public void build(ForgeConfigSpec.Builder builder) {
+                commentate(builder, comments);
+                configValue = builder.defineInRange(toPath(name), defaultValue, minValue, maxValue);
+            }
+        };
+    }
+
+    public static ModConfigValue<Double> createActiveDouble(String name, double defaultValue, String... comments) {
+        return createActiveDouble(name, defaultValue, MIN_SANITY, MAX_SANITY, comments);
+    }
+
+
     public static ModConfigValue<Double> createPassiveDouble(String name, double defaultValue, double minValue, double maxValue, String... comments) {
         return new ModConfigValue<>(name, ConfigManager::finalizePassive) {
             @Override
             public void build(ForgeConfigSpec.Builder builder) {
-                for (String comment : comments) {
-                    builder.comment(comment);
-                }
-                configValue = builder
-                        .defineInRange(name.split("\\.")[2], defaultValue, minValue, maxValue);
+                commentate(builder, comments);
+                configValue = builder.defineInRange(toPath(name), defaultValue, minValue, maxValue);
             }
         };
     }

@@ -6,8 +6,6 @@ import croissantnova.sanitydim.capability.*;
 import croissantnova.sanitydim.client.SoundPlayback;
 import croissantnova.sanitydim.command.SanityCommand;
 import croissantnova.sanitydim.entity.NightmareEntity;
-import croissantnova.sanitydim.sources.active.PlayerHurtAnimalEvent;
-import croissantnova.sanitydim.sources.active.PlayerKillNightmareEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -39,7 +37,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.TradeWithVillagerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.event.level.SleepFinishedTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -118,13 +115,6 @@ public class EventHandler
     {
         if (event.getCausedByPlayer() instanceof ServerPlayer sp)
             SanityProcessor.handlePlayerBredAnimals(sp);
-    }
-
-    @SubscribeEvent
-    public void onSleepFinished(final SleepFinishedTimeEvent event)
-    {
-        if (!event.getLevel().isClientSide() && event.getLevel() instanceof ServerLevel sl)
-            SanityProcessor.handlePlayerSlept(sl);
     }
 
     @SubscribeEvent

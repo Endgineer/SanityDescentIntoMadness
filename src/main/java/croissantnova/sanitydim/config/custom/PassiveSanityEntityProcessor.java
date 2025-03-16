@@ -37,8 +37,8 @@ public class PassiveSanityEntityProcessor {
 
         return new PassiveSanityEntity(
                 new ResourceLocation(parameters[INDEX_ID]),
-                radius,
-                ConfigManager.finalizePassive(sanity)
+                ConfigManager.finalizePassive(sanity),
+                radius
         );
     }
 

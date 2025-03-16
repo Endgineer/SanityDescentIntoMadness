@@ -12,9 +12,11 @@ import croissantnova.sanitydim.sources.passive.*;
 import croissantnova.sanitydim.sources.passive.lso.BrokenLimbsSanitySource;
 import croissantnova.sanitydim.sources.passive.lso.TemperatureSanitySource;
 import croissantnova.sanitydim.sources.passive.lso.ThirstSanitySource;
+import croissantnova.sanitydim.util.DeathScoreHelper;
 import croissantnova.sanitydim.util.MathHelper;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -41,7 +43,6 @@ import java.util.function.Function;
 public final class SanityProcessor
 {
     private static int garlandTimer = 0;
-    private static final RandomSource RAND = RandomSource.create();
 
     public static final int MAX_GARLAND_TIMER = 60;
     public static final float SANITY_TARGET_THRESHOLD = .87f;
@@ -62,7 +63,9 @@ public final class SanityProcessor
             new BrokenLimbsSanitySource(),
             new TemperatureSanitySource(),
             new ThirstSanitySource(),
-            new NearEntitySanitySource()
+            new NearEntitySanitySource(),
+            new SunlightSanitySource(),
+            new WornArmorSanitySource()
     ));
 
     private SanityProcessor() {}
@@ -153,6 +156,7 @@ public final class SanityProcessor
             }
             if (s instanceof IPersistentSanity ps)
             {
+                tickDeathScore(player);
                 int[] cds = ps.getActiveSourcesCooldowns();
                 for (int i = 0; i < cds.length; ++i)
                     cds[i] = Mth.clamp(cds[i] - 1, 0, Integer.MAX_VALUE);
@@ -180,6 +184,19 @@ public final class SanityProcessor
             }
         });
         InnerEntitySpawner.trySpawnForPlayer(player);
+    }
+
+    private static void tickDeathScore(ServerPlayer player) {
+        DeathScoreHelper dsh = new DeathScoreHelper(player);
+        if (!dsh.isDeathSanityEnabled() || !dsh.isDeathStackingEnabled()) {
+            return;
+        }
+
+        boolean playerLostADeath = dsh.decrementDeathScore();
+
+        if (playerLostADeath) {
+            player.displayClientMessage(dsh.getDecrementText(), true);
+        }
     }
 
     public static void tickLevel(final ServerLevel level)
@@ -282,17 +299,6 @@ public final class SanityProcessor
                 addSanity(s, sanitySupplier.apply(dimLoc), player);
 //                s.setSanity(s.getSanity() + sanitySupplier.apply(dimLoc));
         });
-    }
-
-    public static void handlePlayerSlept(ServerLevel level)
-    {
-        for (ServerPlayer player : level.players())
-        {
-            if (player.isCreative() || player.isSpectator())
-                continue;
-
-            SanityProcessor.handleActiveSourceForPlayer(player, ActiveSanitySources.SLEEPING, ConfigProxy::getSleepingCooldown, ConfigProxy::getSleeping);
-        }
     }
 
     public static void handlePlayerHurt(ServerPlayer player, float amount)

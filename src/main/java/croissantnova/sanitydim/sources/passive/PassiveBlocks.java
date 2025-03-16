@@ -28,28 +28,28 @@ public class PassiveBlocks implements IPassiveSanitySource
 
         for (ConfigPassiveBlock block : ConfigProxy.getPassiveBlocks(dim))
         {
-            if (block.m_sanity == 0.0f)
+            if (block.sanity == 0.0f)
                 continue;
 
             Block regBlock = null;
-            if (!block.m_isTag && ((regBlock = ForgeRegistries.BLOCKS.getValue(block.m_name)) == null || regBlock.defaultBlockState().isAir()))
+            if (!block.isTag && ((regBlock = ForgeRegistries.BLOCKS.getValue(block.name)) == null || regBlock.defaultBlockState().isAir()))
                 continue;
 
             boolean flag = false;
-            for (float x = (float)player.position().x - block.m_rad; x < player.position().x + block.m_rad; ++x)
+            for (float x = (float)player.position().x - block.radius; x < player.position().x + block.radius; ++x)
             {
                 if (flag) break;
-                for (float y = (float)player.position().y - block.m_rad; y < player.position().y + block.m_rad; ++y)
+                for (float y = (float)player.position().y - block.radius; y < player.position().y + block.radius; ++y)
                 {
                     if (flag) break;
-                    for (float z = (float)player.position().z - block.m_rad; z < player.position().z + block.m_rad; ++z)
+                    for (float z = (float)player.position().z - block.radius; z < player.position().z + block.radius; ++z)
                     {
                         BlockPos posAt = new BlockPos((int)x, (int)y, (int)z);
                         BlockState stateAt = player.level().getBlockState(posAt);
 
-                        if (block.m_isTag && stateAt.getTags().anyMatch(tag -> tag.location().equals(block.m_name)) || regBlock == stateAt.getBlock())
+                        if (block.isTag && stateAt.getTags().anyMatch(tag -> tag.location().equals(block.name)) || regBlock == stateAt.getBlock())
                         {
-                            if (block.m_naturallyGend)
+                            if (block.naturallyGenerated)
                             {
                                 AtomicBoolean placedArtificially = new AtomicBoolean(false);
                                 player.level().getChunkAt(posAt).getCapability(SanityLevelChunkProvider.CAP).ifPresent(sl ->
@@ -57,12 +57,13 @@ public class PassiveBlocks implements IPassiveSanitySource
                                     if (sl.getArtificiallyPlacedBlocks().contains(posAt))
                                         placedArtificially.set(true);
                                 });
-                                if (placedArtificially.get())
+                                if (placedArtificially.get()) {
                                     continue;
+                                }
                             }
 
                             boolean flag1 = false;
-                            for (Map.Entry<String, Boolean> entry : block.m_props.entrySet())
+                            for (Map.Entry<String, Boolean> entry : block.blockProperties.entrySet())
                             {
                                 BooleanProperty prop = BlockStateHelper.getBooleanProperty(stateAt, entry.getKey());
                                 if (prop != null && stateAt.getValue(prop) != entry.getValue())
@@ -82,7 +83,7 @@ public class PassiveBlocks implements IPassiveSanitySource
                                     player));
                             if (hit.getType() == HitResult.Type.MISS)
                             {
-                                result += block.m_sanity;
+                                result += block.sanity;
                                 flag = true;
                                 break;
                             }

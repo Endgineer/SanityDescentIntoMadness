@@ -47,7 +47,7 @@ public class FlowerArmorMaterial implements ArmorMaterial
     @NotNull
     public String getName()
     {
-        return SanityMod.MODID + ":flower";
+        return SanityMod.MOD_ID + ":flower";
     }
 
     @Override

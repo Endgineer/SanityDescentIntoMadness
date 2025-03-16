@@ -4,13 +4,14 @@ import croissantnova.sanitydim.capability.SanityProvider;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class SanityAPI {
 
     public static final int MAX_SANITY = 100;
     public static final int MIN_SANITY = -100;
+    public static final int MAX_SANITY_INTERNAL = 1;
+    public static final int MIN_SANITY_INTERNAL = 0;
 
 
     public static void setSanity(@NotNull ServerPlayer player, float sanity) {

@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 public class EntityRegistry
 {
-    public static final DeferredRegister<EntityType<?>> DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, SanityMod.MODID);
+    public static final DeferredRegister<EntityType<?>> DEFERRED_REGISTER = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, SanityMod.MOD_ID);
 
     public static final RegistryObject<EntityType<RottingStalker>> ROTTING_STALKER
             = DEFERRED_REGISTER.register("rotting_stalker",

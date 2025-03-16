@@ -13,6 +13,6 @@ public class SunlightSanitySource implements IPassiveSanitySource {
     public float get(@NotNull ServerPlayer player, @NotNull ISanity cap, @NotNull ResourceLocation dim) {
         return PlayerHelper.isPlayerInSunlight(player) ?
                 ConfigManager.getConfigValues().passive_sunlight.get(dim).floatValue() :
-                0;
+                0f;
     }
 }

@@ -2,7 +2,6 @@ package croissantnova.sanitydim;
 
 import com.mojang.logging.LogUtils;
 import croissantnova.sanitydim.client.GuiHandler;
-import croissantnova.sanitydim.client.SanityHintProvider;
 import croissantnova.sanitydim.config.ConfigManager;
 import croissantnova.sanitydim.entity.EntityRegistry;
 import croissantnova.sanitydim.event.EventHandler;
@@ -20,14 +19,14 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-@Mod(SanityMod.MODID)
+@Mod(SanityMod.MOD_ID)
 public class SanityMod
 {
     @OnlyIn(Dist.CLIENT)
     private GuiHandler m_gui;
 
     private static SanityMod m_inst;
-    public static final String MODID = "sanitydim";
+    public static final String MOD_ID = "sanitydim";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public SanityMod()

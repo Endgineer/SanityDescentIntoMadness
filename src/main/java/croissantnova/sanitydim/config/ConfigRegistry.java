@@ -153,7 +153,7 @@ public class ConfigRegistry
             "This value applies only when the player's hydration level is above the threshold."
     );
 
-    public final ModConfigValue<Double> passive_wellHydratedThreshold = ModConfigValue.createPassiveDouble(
+    public final ModConfigValue<Double> passive_wellHydratedThreshold = ModConfigValue.createDouble(
             "sanity.passive.well_hydrated_threshold",
             20,
             0.0,
@@ -169,7 +169,7 @@ public class ConfigRegistry
             "This value applies only when the player's food level is above the threshold."
     );
 
-    public final ModConfigValue<Double> passive_wellFedThreshold = ModConfigValue.createPassiveDouble(
+    public final ModConfigValue<Double> passive_wellFedThreshold = ModConfigValue.createDouble(
             "sanity.passive.well_fed_threshold",
             20,
             0.0,
@@ -189,6 +189,50 @@ public class ConfigRegistry
             "sanity.passive.sunlight",
             0.05,
             "Defines how much sanity is gained per second when the player is in the sunlight."
+    );
+
+    public final ModConfigValue<Double> passive_wornArmor = ModConfigValue.createPassiveDouble(
+            "sanity.passive.worn_armor",
+            -0.1,
+            "Defines the sanity effect when wearing damaged armor.",
+            "The effect scales with the armor's damage percentage (e.g., 80% damage applies 80% of the value).",
+            "Applied individually to each armor piece (e.g., four pieces at 50% damage will net a 200% modifier on the defined value)."
+    );
+
+
+    // we love insanity death loops
+    public final ModConfigValue<Double> active_respawnedNearLastDeath = ModConfigValue.createActiveDouble(
+            "sanity.active.respawned_near_last_death",
+            -100.0,
+            "Defines how much sanity is lost when a player respawns near their last death location.",
+            "The closer the respawn is to the death location, the greater the sanity penalty.",
+            "At maximum distance, no penalty is applied. At minimum distance, the full penalty is applied."
+    );
+    public final ModConfigValue<Double> active_respawnedNearLastDeath_distance = ModConfigValue.createDouble(
+            "sanity.active.respawned_near_last_death.distance",
+            0.0,
+            0.0,
+            1024.0,
+            "Defines the distance (in blocks) within which the penalty for respawning near the last death location is applied.",
+            "If the player respawns farther than this distance, no penalty is given.",
+            "Set to 0 to disable this penalty."
+    );
+    public final ModConfigValue<Double> active_sanityPerDeath = ModConfigValue.createActiveDouble(
+            "sanity.active.sanityPerDeath",
+            -10,
+            "Defines the penalty given when dying.",
+            "Stacks linearly based on how many deaths the player has sustained unless `scorePerDeath = 0`."
+    );
+    public final ModConfigValue<Integer> active_died_scorePerDeath = ModConfigValue.createInteger(
+            "sanity.active.died.scorePerDeath",
+            24000,
+            0,
+            Integer.MAX_VALUE,
+            "How many ticks it takes for a full death to go away",
+            "Note: Deaths are always rounded up when applying the penalty but remain as a float when incrementing and decrementing the score.",
+            "Note: Setting the value to 0 disables the stacking death penalty.",
+            "Note: Death score caps out at `(100 / sanityPerDeath) * scorePerDeath`.",
+            "Note: Successfully sleeping without being on sleep cooldown (see sanity.active.sleeping_cd) will decrement one full death."
     );
 
     public ConfigRegistry(ForgeConfigSpec.Builder builder)
@@ -276,6 +320,7 @@ public class ConfigRegistry
         passive_wellFedThreshold.build(builder);
         passive_lowHydration.build(builder);
         passive_sunlight.build(builder);
+        passive_wornArmor.build(builder);
 
 
         builder.comment("These values are only used if you have Legendary Survival Overhaul installed.")
@@ -286,6 +331,11 @@ public class ConfigRegistry
 
         builder.pop(2);
         builder.comment("Configuration for active sanity sources").push("active");
+
+        active_respawnedNearLastDeath.build(builder);
+        active_respawnedNearLastDeath_distance.build(builder);
+        active_sanityPerDeath.build(builder);
+        active_died_scorePerDeath.build(builder);
 
         m_sleeping = builder
                 .comment("Sleeping restores this amount of sanity")
