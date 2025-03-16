@@ -17,25 +17,34 @@ public class SanityCommand
 {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher)
     {
-        dispatcher.register(Commands.literal("sanity").requires(stack ->
-        {
-            return stack.hasPermission(2);
-        }).then(Commands.literal("set").then(Commands.argument("value", FloatArgumentType.floatArg(0f, 100f)).executes(stack ->
-        {
-            return setSanity(stack.getSource(), Collections.singleton((ServerPlayer)stack.getSource().getEntityOrException()), FloatArgumentType.getFloat(stack, "value"));
-        })).then(Commands.argument("targets", EntityArgument.players()).then(Commands.argument("value", FloatArgumentType.floatArg(0f, 100f)).executes(stack ->
-        {
-            return setSanity(stack.getSource(), EntityArgument.getPlayers(stack, "targets"), FloatArgumentType.getFloat(stack, "value"));
-        })))).then(Commands.literal("add").then(Commands.argument("value", FloatArgumentType.floatArg(-100f, 100f)).executes(stack ->
-        {
-            return addSanity(stack.getSource(), Collections.singleton((ServerPlayer)stack.getSource().getEntityOrException()), FloatArgumentType.getFloat(stack, "value"));
-        })).then(Commands.argument("targets", EntityArgument.players()).then(Commands.argument("value", FloatArgumentType.floatArg(-100f, 100f)).executes(stack ->
-        {
-            return addSanity(stack.getSource(), EntityArgument.getPlayers(stack, "targets"), FloatArgumentType.getFloat(stack, "value"));
-        })))).then(Commands.literal("config").then(Commands.literal("reload").executes(stack ->
-        {
-            return reloadConfig(stack.getSource());
-        }))));
+        dispatcher.register(Commands.literal("sanity")
+                .requires(stack -> stack.hasPermission(2))
+                .then(Commands.literal("set")
+                        .then(Commands.argument("value", FloatArgumentType.floatArg(0f, 100f))
+                                .executes(stack -> setSanity(stack.getSource(), Collections.singleton((ServerPlayer)stack.getSource().getEntityOrException()), FloatArgumentType.getFloat(stack, "value")))
+                        )
+                        .then(Commands.argument("targets", EntityArgument.players())
+                                .then(Commands.argument("value", FloatArgumentType.floatArg(0f, 100f))
+                                        .executes(stack -> setSanity(stack.getSource(), EntityArgument.getPlayers(stack, "targets"), FloatArgumentType.getFloat(stack, "value")))
+                                )
+                        )
+                )
+                .then(Commands.literal("add")
+                        .then(Commands.argument("value", FloatArgumentType.floatArg(-100f, 100f))
+                                .executes(stack -> addSanity(stack.getSource(), Collections.singleton((ServerPlayer)stack.getSource().getEntityOrException()), FloatArgumentType.getFloat(stack, "value")))
+                        )
+                        .then(Commands.argument("targets", EntityArgument.players())
+                                .then(Commands.argument("value", FloatArgumentType.floatArg(-100f, 100f))
+                                        .executes(stack -> addSanity(stack.getSource(), EntityArgument.getPlayers(stack, "targets"), FloatArgumentType.getFloat(stack, "value")))
+                                )
+                        )
+                )
+                .then(Commands.literal("config")
+                        .then(Commands.literal("reload")
+                                .executes(stack -> reloadConfig(stack.getSource()))
+                        )
+                )
+        );
     }
 
     private static int setSanity(CommandSourceStack stack, Collection<? extends ServerPlayer> targets, float value)
