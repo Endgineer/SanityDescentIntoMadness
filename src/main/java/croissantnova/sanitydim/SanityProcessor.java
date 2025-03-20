@@ -65,7 +65,8 @@ public final class SanityProcessor
             new ThirstSanitySource(),
             new NearEntitySanitySource(),
             new SunlightSanitySource(),
-            new WornArmorSanitySource()
+            new WornArmorSanitySource(),
+            new StatusEffectSanitySource()
     ));
 
     private SanityProcessor() {}

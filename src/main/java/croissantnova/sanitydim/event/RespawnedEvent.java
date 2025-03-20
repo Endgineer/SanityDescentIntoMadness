@@ -3,7 +3,7 @@ package croissantnova.sanitydim.event;
 import croissantnova.sanitydim.SanityMod;
 import croissantnova.sanitydim.api.SanityAPI;
 import croissantnova.sanitydim.config.ConfigManager;
-import croissantnova.sanitydim.config.ConfigRegistry;
+import croissantnova.sanitydim.config.registry.ConfigRegistry;
 import croissantnova.sanitydim.util.DeathScoreHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;

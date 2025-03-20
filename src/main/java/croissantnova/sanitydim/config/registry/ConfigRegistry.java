@@ -1,7 +1,11 @@
-package croissantnova.sanitydim.config;
+package croissantnova.sanitydim.config.registry;
 
+import croissantnova.sanitydim.config.ConfigManager;
+import croissantnova.sanitydim.config.SanityIndicatorLocation;
 import croissantnova.sanitydim.config.custom.PassiveSanityEntity;
 import croissantnova.sanitydim.config.custom.PassiveSanityEntityProcessor;
+import croissantnova.sanitydim.config.custom.PassiveSanityStatusEffect;
+import croissantnova.sanitydim.config.custom.PassiveSanityStatusEffectProcessor;
 import croissantnova.sanitydim.config.value.ModConfigProcessableValue;
 import croissantnova.sanitydim.config.value.ModConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -142,8 +146,20 @@ public class ConfigRegistry
             "Define a list of entities that affect sanity of players standing near them",
             "An entity should be included as follows: A;B;C",
             "A = entity registry name (e.g. minecraft:enderman)",
-            "B = how much sanity is gained per second",
+            "B = how much sanity is gained per second passively",
             "C = radius (in blocks as a double)"
+    );
+
+    public final ModConfigProcessableValue<List<? extends String>, List<PassiveSanityStatusEffect>> passive_statusEffects = ModConfigProcessableValue.createListAllowEmpty(
+            "sanity.passive.status_effects",
+            PassiveSanityStatusEffectProcessor.INSTANCE::processList,
+            ConfigDefaults.STATUS_EFFECTS,
+            "Define a list of status effects that affect sanity of players who have them",
+            "A status effect should be included as follows: A;B;C",
+            "A = status effect registry name (e.g. minecraft:blindness)",
+            "B = how much sanity is gained per second passively",
+            "C = the minimum amplifier in order to get the sanity effect",
+            "Note: The defined status effect with the highest amplifier that matches the player's current amplifier is chosen"
     );
 
     public final ModConfigValue<Double> passive_wellHydrated = ModConfigValue.createPassiveDouble(
@@ -313,6 +329,7 @@ public class ConfigRegistry
                 .defineListAllowEmpty(path, ConfigRegistry::passiveBlocksDefault, ConfigManager::stringEntryIsValid);
 
         passive_sanityEntities.build(builder);
+        passive_statusEffects.build(builder);
 
         passive_wellHydrated.build(builder);
         passive_wellHydratedThreshold.build(builder);

@@ -3,7 +3,7 @@ package croissantnova.sanitydim.sources.passive;
 import croissantnova.sanitydim.capability.ISanity;
 import croissantnova.sanitydim.config.ConfigManager;
 import croissantnova.sanitydim.config.ConfigProxy;
-import croissantnova.sanitydim.config.ConfigRegistry;
+import croissantnova.sanitydim.config.registry.ConfigRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 

@@ -36,14 +36,14 @@ public class ThirstSanitySource implements IPassiveSanitySource {
             int hydrationLevel = thirstCapability.getHydrationLevel();
 
             if (hydrationLevel <= 6) {
-                float value = configValues.passive_lowHydration.get(dim).floatValue();
+                float value = config.passive_lowHydration.get(dim).floatValue();
                 // 100% at 6 hydration, 200% at 0 hydration
                 float interpolation = (6 - hydrationLevel) / 6f + 1f;
                 return value * interpolation;
             }
 
-            if (hydrationLevel >= configValues.passive_wellHydratedThreshold.get(dim)) {
-                return configValues.passive_wellHydrated.get(dim).floatValue();
+            if (hydrationLevel >= config.passive_wellHydratedThreshold.get(dim)) {
+                return config.passive_wellHydrated.get(dim).floatValue();
             }
 
             return 0f;

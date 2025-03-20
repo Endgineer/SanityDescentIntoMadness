@@ -34,7 +34,7 @@ public class NearEntitySanitySource implements IPassiveSanitySource {
             this.dim = dim;
         }
 
-        private float calculate() {
+        public float calculate() {
             List<PassiveSanityEntity> passiveSanityEntityList = ConfigManager.getConfigValues().passive_sanityEntities.get(dim);
 
             passiveSanityEntityList.forEach(this::applySanityFrom);
@@ -54,7 +54,7 @@ public class NearEntitySanitySource implements IPassiveSanitySource {
             sanityChange += nearbyEntities.size() * entityConfig.sanity();
         }
 
-        private void handleFailedEntity(PassiveSanityEntity entityConfig) {
+        private void handleFailedEntity(@NotNull PassiveSanityEntity entityConfig) {
             if (!failedEntities.contains(entityConfig.id())) {
                 failedEntities.add(entityConfig.id());
                 SanityMod.LOGGER.error("Entity with ID {} is not registered, check your passive sanity config!", entityConfig.id());

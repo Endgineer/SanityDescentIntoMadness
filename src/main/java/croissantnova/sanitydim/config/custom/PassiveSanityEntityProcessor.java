@@ -25,7 +25,7 @@ public class PassiveSanityEntityProcessor {
     private static PassiveSanityEntity parse(String entry) {
         String[] parameters = splitBySemicolon(entry);
         if (parameters.length != PARAMETER_COUNT) {
-            SanityMod.LOGGER.error("config format error in {} -> the number of parameters is not 3", entry);
+            SanityMod.LOGGER.error("config format error in {} -> the number of parameters is not {}", entry, PARAMETER_COUNT);
             return null;
         }
 

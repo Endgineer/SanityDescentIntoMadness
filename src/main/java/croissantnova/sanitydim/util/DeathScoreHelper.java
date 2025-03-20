@@ -4,7 +4,7 @@ import croissantnova.sanitydim.api.SanityAPI;
 import croissantnova.sanitydim.capability.IPersistentSanity;
 import croissantnova.sanitydim.capability.SanityProvider;
 import croissantnova.sanitydim.config.ConfigManager;
-import croissantnova.sanitydim.config.ConfigRegistry;
+import croissantnova.sanitydim.config.registry.ConfigRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;

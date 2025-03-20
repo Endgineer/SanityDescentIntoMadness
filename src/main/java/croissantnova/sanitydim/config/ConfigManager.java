@@ -1,6 +1,7 @@
 package croissantnova.sanitydim.config;
 
 import croissantnova.sanitydim.SanityMod;
+import croissantnova.sanitydim.config.registry.ConfigRegistry;
 import croissantnova.sanitydim.config.value.ModConfigProcessableValue;
 import croissantnova.sanitydim.config.value.ModConfigValue;
 import net.minecraft.resources.ResourceLocation;
