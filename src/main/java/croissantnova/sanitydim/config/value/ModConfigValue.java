@@ -13,7 +13,7 @@ import java.util.function.Function;
 import static croissantnova.sanitydim.api.SanityAPI.MAX_SANITY;
 import static croissantnova.sanitydim.api.SanityAPI.MIN_SANITY;
 
-public abstract class ModConfigValue<T> {
+public abstract class ModConfigValue<T> implements IConfigValue {
     public static final List<ModConfigValue<?>> CONFIG_VALUES = new ArrayList<>();
 
     private final String proxyKey;
@@ -40,13 +40,6 @@ public abstract class ModConfigValue<T> {
 
     public T get(ResourceLocation dim) {
         return ConfigManager.proxy(proxyKey, dim);
-    }
-
-
-    protected void commentate(ForgeConfigSpec.Builder builder, String... comments) {
-        for (String comment : comments) {
-            builder.comment(comment);
-        }
     }
 
     protected String toPath(String name) {

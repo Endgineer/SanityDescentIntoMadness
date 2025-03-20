@@ -15,7 +15,7 @@ import java.util.function.Predicate;
 /**
  * @param <P> The processed type resulting from processing the configuration value; e.g. {@code List<PassiveSanityEntity>}
  */
-public abstract class ModConfigProcessableValue<T, P> {
+public abstract class ModConfigProcessableValue<T, P> implements IConfigValue {
     public static final List<ModConfigProcessableValue<?, ?>> CONFIG_VALUES = new ArrayList<>();
 
     private final String proxyKey;
@@ -67,9 +67,7 @@ public abstract class ModConfigProcessableValue<T, P> {
         return new ModConfigProcessableValue<>(name, processor, finalizer) {
             @Override
             public void build(ForgeConfigSpec.Builder builder) {
-                for (String comment : comments) {
-                    builder.comment(comment);
-                }
+                commentate(builder, comments);
                 configValue = builder.defineListAllowEmpty(toPath(name), defaultValue, elementValidator);
             }
         };
