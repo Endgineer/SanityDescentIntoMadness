@@ -55,20 +55,4 @@ public final class PlayerHelper {
         }
         return false;
     }
-
-    // Side Effects
-
-    public static void playSound(@NotNull ServerPlayer player, @NotNull SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch) {
-        Holder<SoundEvent> soundHolder = Holder.direct(SoundEvent.createVariableRangeEvent(soundEvent.getLocation()));
-        player.connection.send(new ClientboundSoundPacket(
-                soundHolder,
-                soundSource,
-                player.getX(),
-                player.getY(),
-                player.getZ(),
-                volume,
-                pitch,
-                rng.nextLong()
-        ));
-    }
 }
