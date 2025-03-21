@@ -47,11 +47,6 @@ description='''Brings the sanity mechanic from Don't Starve into Minecraft'''
     mandatory=true
     versionRange="[4.7,)"
     side="BOTH"
-[[dependencies.sanitydim]]
-    modId="legendarysurvivaloverhaul"
-    mandatory=false
-    versionRange="[2.2,)"
-    side="BOTH"
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.sanitydim]] #optional
     # the modid of the dependency
