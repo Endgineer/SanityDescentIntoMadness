@@ -13,6 +13,12 @@ A Minecraft mod that brings the sanity mechanic from [Don't Starve](https://stor
 <img alt="" src="https://img.shields.io/badge/geckolib-4.7-52da6a?style=for-the-badge">
 </a>
 
+## Optional Requirements
+
+<a aria-label="Legendary Survival Overhaul" href="https://www.curseforge.com/minecraft/mc-mods/legendary-survival-overhaul">
+<img alt="" src="https://img.shields.io/badge/Legendary_Survival_Overhaul-1.20.1--2.2.28-blue">
+</a>
+
 ## Description
 
 This mod adds a new vital for you to manage - sanity, your mental health scale.
@@ -40,9 +46,11 @@ You're free to include this mod in your modpacks.
 ## Credits
 
 croissantnova - programmer and artist,<br/>
-[toujourspareil](https://twitter.com/toujourspareil_) - artist.
+[toujourspareil](https://twitter.com/toujourspareil_) - artist.<br/>
+[Desynq](https://github.com/Desynq) - maintainer
 <br/><br/>
 Sound effects provided by [Zapsplat](https://www.zapsplat.com/)
 
 ## License
-See [license](https://raw.githubusercontent.com/croissantnova/SanityDescentIntoMadness/main/LICENSE).
+
+See [license](LICENSE).

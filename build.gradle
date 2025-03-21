@@ -160,7 +160,7 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
-    implementation fg.deobf("curse.maven:legendary-survival-overhaul-840254:5562515")
+    implementation fg.deobf("curse.maven:legendary-survival-overhaul-840254:6286507")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
