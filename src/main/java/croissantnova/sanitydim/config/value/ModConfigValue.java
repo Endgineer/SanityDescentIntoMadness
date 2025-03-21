@@ -13,7 +13,7 @@ import java.util.function.Function;
 import static croissantnova.sanitydim.api.SanityAPI.MAX_SANITY;
 import static croissantnova.sanitydim.api.SanityAPI.MIN_SANITY;
 
-public abstract class ModConfigValue<T> implements IConfigValue {
+public abstract class ModConfigValue<T> implements IConfigValue<T> {
     public static final List<ModConfigValue<?>> CONFIG_VALUES = new ArrayList<>();
 
     private final String proxyKey;
