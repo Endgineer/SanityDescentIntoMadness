@@ -260,7 +260,7 @@ public abstract class ConfigProxy
         return ConfigManager.proxyd2f("sanity.multiplayer.insane_player_company", dim);
     }
 
-    public static boolean getSaneSeeInnerEntities(ResourceLocation dim)
+    public static boolean canSaneSeeNightmares(ResourceLocation dim)
     {
         return ConfigManager.proxyb("sanity.entity.sane_see_inner_entities", dim);
     }

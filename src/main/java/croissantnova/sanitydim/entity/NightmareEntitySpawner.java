@@ -1,8 +1,8 @@
 package croissantnova.sanitydim.entity;
 
-import croissantnova.sanitydim.capability.ISanity;
-import croissantnova.sanitydim.capability.SanityProvider;
+import croissantnova.sanitydim.api.SanityState;
 import croissantnova.sanitydim.config.ConfigProxy;
+import croissantnova.sanitydim.util.LevelHelper;
 import croissantnova.sanitydim.util.PlayerHelper;
 import croissantnova.sanitydim.util.TickHelper;
 import net.minecraft.core.BlockPos;
@@ -13,16 +13,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class InnerEntitySpawner
+public class NightmareEntitySpawner
 {
     private static final RandomSource RANDOM_SOURCE = RandomSource.create();
 
@@ -35,7 +32,6 @@ public class InnerEntitySpawner
     public static final int SNEAKING_TERROR_SPAWN_SCORE = 1;
     public static final int MAX_SPAWN_SCORE = 5;
 
-    public static final float SPAWN_THRESHOLD = 0.75f;
     public static final Map<ServerPlayer, Integer> PLAYER_SPAWN_TIMEOUT = new HashMap<>();
 
 
@@ -60,37 +56,37 @@ public class InnerEntitySpawner
     // every tick try to spawn an inner entity
     // gives MAX_SPAWN_POS_TRIES to getConfigValue a valid spawn position for the entity or try all over again next tick
     // SPAWN_CHANCE roughly determines chance to spawn every tick after spawn timeout is over
-    public static void trySpawnForPlayer(ServerPlayer player)
-    {
-        new InnerEntitySpawner(player);
+    public static void trySpawn(@NotNull ServerPlayer player) {
+        new NightmareEntitySpawner(player);
     }
 
 
 
 
 
-    private final ServerPlayer player;
+    private final @NotNull ServerPlayer player;
+    private final @NotNull Level level;
     private final float spawnChance;
 
-    private InnerEntitySpawner(ServerPlayer player) {
+    private NightmareEntitySpawner(@NotNull ServerPlayer player) {
         this.player = player;
+        this.level = player.level();
         this.spawnChance = getSpawnChance(PlayerHelper.getDim(player));
-        trySpawnForPlayer();
+        trySpawn();
     }
 
-    private void trySpawnForPlayer() {
-        if (player == null || player.isCreative() || player.isSpectator() || player.level().getDifficulty().equals(Difficulty.PEACEFUL)) {
+    private void trySpawn() {
+        if (PlayerHelper.isImmortal(player) || LevelHelper.isPeaceful(level)) {
             return;
         }
-        if (!isNightmareTime(player.level())) {
+        if (!isNightmareTime(level)) {
             return;
         }
 
         // buffer period between spawns to stop entity spam
         PLAYER_SPAWN_TIMEOUT.putIfAbsent(player, 0);
         int spawnTimeout = PLAYER_SPAWN_TIMEOUT.get(player);
-        if (spawnTimeout > 0)
-        {
+        if (spawnTimeout > 0) {
             PLAYER_SPAWN_TIMEOUT.put(player, spawnTimeout - 1);
             return;
         }
@@ -99,45 +95,39 @@ public class InnerEntitySpawner
             return;
         }
 
-        Optional<ISanity> o = player.getCapability(SanityProvider.CAP).resolve();
-        if (o.isEmpty()) {
-            return;
-        }
-        ISanity sanityCapability = o.get();
-
-        if (sanityCapability.getSanity() < SPAWN_THRESHOLD || hasMaxInnerEntities()) {
+        if (SanityState.INSANE.isBelowState(player) || hasMaxInnerEntities()) {
             return;
         }
 
-        NightmareEntity entity = createNewRandomInnerEntity(player);
-        if (entity == null) {
-            return;
-        }
+        createNewRandomInnerEntity().ifPresent(this::trySpawn);
+    }
 
-        // adds paranoia since the nightmare entity may or may not spawn depending on obstructions in environment
+    private void trySpawn(NightmareEntity entity) {
         playSpawnAttemptSound();
+        getRandomSpawnPos().ifPresent(spawnPos -> trySpawn(entity, spawnPos));
+    }
 
-        BlockPos spawnPos = getRandomSpawnPos();
-        if (spawnPos == null) {
+    private void trySpawn(NightmareEntity entity, BlockPos spawnPos) {
+        entity.setPos(spawnPos.getCenter());
+
+        if (!entity.checkSpawnObstruction(level) || !level.noCollision(entity)) {
             return;
         }
 
-        entity.setPos(new Vec3(spawnPos.getX() + 0.5f, spawnPos.getY() + 0.5f, spawnPos.getZ() + 0.5f));
-        if (!entity.checkSpawnObstruction(player.level()) || !player.level().noCollision(entity)) {
-            return;
-        }
-
-        if (((ServerLevel)player.level()).tryAddFreshEntityWithPassengers(entity)) {
+        boolean entitySpawnedSuccessfully = ((ServerLevel) level).tryAddFreshEntityWithPassengers(entity);
+        if (entitySpawnedSuccessfully) {
             PLAYER_SPAWN_TIMEOUT.put(player, SPAWN_TIMEOUT);
         }
     }
+
+
 
     private void playSpawnAttemptSound() {
         PlayerHelper.playSound(player, SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 16f, 1f);
     }
 
     private boolean hasMaxInnerEntities() {
-        List<NightmareEntity> entities = getInnerEntitiesInRadius(player.level(), player.blockPosition(), DETECTION_RADIUS);
+        List<NightmareEntity> entities = getInnerEntitiesInRadius(level, player.blockPosition(), DETECTION_RADIUS);
         int score = 0;
         for (NightmareEntity entity : entities) {
             if (entity instanceof RottingStalker) {
@@ -171,25 +161,28 @@ public class InnerEntitySpawner
         return 0;
     }
 
-    private NightmareEntity createNewRandomInnerEntity(@NotNull ServerPlayer player) {
+    private Optional<NightmareEntity> createNewRandomInnerEntity() {
         int index = RANDOM_SOURCE.nextInt(EntityRegistry.INNER_ENTITIES.size());
-        return EntityRegistry.INNER_ENTITIES.get(index).get().create(player.level());
+        return Optional.ofNullable(
+                EntityRegistry.INNER_ENTITIES.get(index).get().create(level)
+        );
     }
 
-    private @Nullable BlockPos getRandomSpawnPos() {
+    private Optional<BlockPos> getRandomSpawnPos() {
         BlockPos playerPos = player.blockPosition();
         ArrayList<BlockPos> possiblePositions = getPossiblePositions(playerPos);
 
         Collections.shuffle(possiblePositions, new Random());
 
         for (BlockPos trialPos : possiblePositions) {
-            int spawnHeight = getHeightForSpawning(player.level(), trialPos);
+            int spawnHeight = getHeightForSpawning(level, trialPos);
             if (spawnHeight != 0) {
-                return new BlockPos(trialPos.getX(), spawnHeight, trialPos.getZ());
+                return Optional.of(
+                        new BlockPos(trialPos.getX(), spawnHeight, trialPos.getZ())
+                );
             }
         }
-
-        return null;
+        return Optional.empty();
     }
 
     private static @NotNull ArrayList<BlockPos> getPossiblePositions(@NotNull BlockPos playerPos) {

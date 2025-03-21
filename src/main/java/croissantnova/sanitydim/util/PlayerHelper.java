@@ -8,30 +8,45 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
+import org.jetbrains.annotations.NotNull;
 
-public class PlayerHelper {
+public final class PlayerHelper {
+
+    private PlayerHelper() {}
+
     private static final RandomSource rng = RandomSource.create();
 
-    public static boolean isHoldingSword(ServerPlayer player) {
-        ItemStack mainHandItem = player.getMainHandItem();
-        return mainHandItem.getItem() instanceof SwordItem;
-    }
-
-    public static ResourceLocation getDim(ServerPlayer player) {
+    public static @NotNull ResourceLocation getDim(@NotNull Player player) {
         return player.level().dimension().location();
     }
 
     @SuppressWarnings("deprecation")
-    public static float getSolarLightLevel(ServerPlayer player) {
+    public static float getSolarLightLevel(@NotNull Player player) {
         return player.getLightLevelDependentMagicValue();
+    }
+
+    // Booleans
+
+    public static boolean isHoldingSword(@NotNull Player player) {
+        ItemStack mainHandItem = player.getMainHandItem();
+        return mainHandItem.getItem() instanceof SwordItem;
+    }
+
+    public static boolean isMortal(@NotNull Player player) {
+        return !isImmortal(player);
+    }
+
+    public static boolean isImmortal(@NotNull Player player) {
+        return player.isCreative() || player.isSpectator();
     }
 
     /**
      * Uses similar code to {@code net.minecraft.world.entity.Mob#isSunBurnTick()}
      */
-    public static boolean isPlayerInSunlight(ServerPlayer player) {
+    public static boolean isPlayerInSunlight(@NotNull Player player) {
         if (player.level().isDay() && !player.level().isClientSide) {
             float solarLightLevel = PlayerHelper.getSolarLightLevel(player);
             BlockPos blockpos = BlockPos.containing(player.getX(), player.getEyeY(), player.getZ());
@@ -43,7 +58,7 @@ public class PlayerHelper {
 
     // Side Effects
 
-    public static void playSound(ServerPlayer player, SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch) {
+    public static void playSound(@NotNull ServerPlayer player, @NotNull SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch) {
         Holder<SoundEvent> soundHolder = Holder.direct(SoundEvent.createVariableRangeEvent(soundEvent.getLocation()));
         player.connection.send(new ClientboundSoundPacket(
                 soundHolder,

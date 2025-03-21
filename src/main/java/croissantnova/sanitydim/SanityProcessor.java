@@ -2,7 +2,7 @@ package croissantnova.sanitydim;
 
 import croissantnova.sanitydim.capability.*;
 import croissantnova.sanitydim.config.*;
-import croissantnova.sanitydim.entity.InnerEntitySpawner;
+import croissantnova.sanitydim.entity.NightmareEntitySpawner;
 import croissantnova.sanitydim.entity.NightmareEntity;
 import croissantnova.sanitydim.item.ItemRegistry;
 import croissantnova.sanitydim.net.InnerEntityCapImplPacket;
@@ -16,12 +16,10 @@ import croissantnova.sanitydim.util.DeathScoreHelper;
 import croissantnova.sanitydim.util.MathHelper;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.TamableAnimal;
@@ -137,9 +135,9 @@ public final class SanityProcessor
         sanityCapability.setSanity(sanityCapability.getSanity() + value * getSanityMultiplier(player, value));
     }
 
-    public static void tickPlayer(final ServerPlayer player)
+    public static void tickPlayer(final @NotNull ServerPlayer player)
     {
-        if (player == null || player.isCreative() || player.isSpectator()) {
+        if (player.isCreative() || player.isSpectator()) {
             return;
         }
 
@@ -184,7 +182,7 @@ public final class SanityProcessor
                 shareSanity(player, (Sanity)s);
             }
         });
-        InnerEntitySpawner.trySpawnForPlayer(player);
+        NightmareEntitySpawner.trySpawn(player);
     }
 
     private static void tickDeathScore(ServerPlayer player) {

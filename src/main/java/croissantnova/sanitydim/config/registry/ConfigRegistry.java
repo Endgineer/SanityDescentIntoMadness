@@ -2,11 +2,6 @@ package croissantnova.sanitydim.config.registry;
 
 import croissantnova.sanitydim.config.ConfigManager;
 import croissantnova.sanitydim.config.SanityIndicatorLocation;
-import croissantnova.sanitydim.config.custom.PassiveSanityEntity;
-import croissantnova.sanitydim.config.custom.PassiveSanityEntityProcessor;
-import croissantnova.sanitydim.config.custom.PassiveSanityStatusEffect;
-import croissantnova.sanitydim.config.custom.PassiveSanityStatusEffectProcessor;
-import croissantnova.sanitydim.config.value.ModConfigProcessableValue;
 import croissantnova.sanitydim.config.value.ModConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.*;
@@ -119,9 +114,9 @@ public class ConfigRegistry
     public final DoubleValue m_sanePlayerCompany;
     public final DoubleValue m_insanePlayerCompany;
 
-    public final BooleanValue m_saneSeeInnerEntities;
-    public final IntValue m_innerEntitiesSpawnChanceSeconds;
-    public final IntValue m_innerEntitiesDespawnNearbyMobsDistance;
+    public final BooleanValue entities_saneSeeNightmares;
+    public final IntValue entities_spawnChanceSeconds;
+    public final IntValue entities_despawnMobsDistance;
 
     public final BooleanValue m_renderIndicator;
     public final BooleanValue m_twitchIndicator;
@@ -414,21 +409,21 @@ public class ConfigRegistry
 
         builder.comment("Entities configuration").push("entity");
 
-        m_saneSeeInnerEntities = builder
+        entities_saneSeeNightmares = builder
                 .comment(
                         "Whether sane players should be able to see and battle inner entities",
                         "Mobs will still be there server-side and will count towards passive sanity",
                         "Players who are targeted by inner entities see them regardless")
-                .define("sane_see_inner_entities", false);
+                .define("sane_see_nightmares", false);
 
-        m_innerEntitiesSpawnChanceSeconds = builder
+        entities_spawnChanceSeconds = builder
                 .comment(
                         "How many seconds it should take for it to be a 95% chance that an inner entity has spawned.",
                         "Useful to stop inner entities from spawning predictably after the timeout counter has ended."
                 )
                 .defineInRange("spawn_chance_seconds", 30, 1, 1200);
 
-        m_innerEntitiesDespawnNearbyMobsDistance = builder
+        entities_despawnMobsDistance = builder
                 .comment(
                         "The distance (in blocks) that entities in #sanitydim:inner_entity_despawnable have to be within to despawn when near inner entities.",
                         "Setting this value to 0 disables this feature."

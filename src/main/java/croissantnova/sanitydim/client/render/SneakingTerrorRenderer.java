@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
-public class SneakingTerrorRenderer extends InnerEntityRenderer<SneakingTerror>
+public class SneakingTerrorRenderer extends NightmareEntityRenderer<SneakingTerror>
 {
     public SneakingTerrorRenderer(EntityRendererProvider.Context renderManager)
     {

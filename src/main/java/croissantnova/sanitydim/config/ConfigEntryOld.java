@@ -8,7 +8,7 @@ import java.util.Map;
 public enum ConfigEntryOld {
     INNER_ENTITY_DESPAWN_MOBS_DISTANCE(
             "sanity.entity.despawn_nearby_mobs_distance",
-            new ConfigManager.ProxyValueEntry<>(() -> ConfigManager.getConfigValues().m_innerEntitiesDespawnNearbyMobsDistance.get(), ConfigManager::noFinalize)
+            new ConfigManager.ProxyValueEntry<>(() -> ConfigManager.getConfigValues().entities_despawnMobsDistance.get(), ConfigManager::noFinalize)
     ),
     ROTTING_STALKER_KILL_RATIO(
             "sanity.active.rotting_stalker_kill_ratio",
