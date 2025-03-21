@@ -13,7 +13,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * @param <P> The processed type resulting from processing the configuration value; e.g. {@code List<PassiveSanityEntity>}
+ * @param <T> The type of the raw configuration value stored in the `configValue`.
+ * @param <P> The processed type resulting from transforming the raw configuration value, optionally finalized; e.g., {@code List<PassiveSanityEntity>}.
  */
 public abstract class ModConfigProcessableValue<T, P> implements IConfigValue<P> {
     public static final List<ModConfigProcessableValue<?, ?>> CONFIG_VALUES = new ArrayList<>();

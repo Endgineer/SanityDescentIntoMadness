@@ -21,8 +21,8 @@ public class HungerSanitySource implements IPassiveSanitySource
             return ConfigProxy.getHungry(dim);
         }
 
-        if (foodLevel >= config.passive_wellFedThreshold.get(dim)) {
-            return config.passive_wellFed.get(dim).floatValue();
+        if (foodLevel >= config.passiveConfig.wellFedThreshold.get(dim)) {
+            return config.passiveConfig.wellFed.get(dim).floatValue();
         }
 
         return 0;

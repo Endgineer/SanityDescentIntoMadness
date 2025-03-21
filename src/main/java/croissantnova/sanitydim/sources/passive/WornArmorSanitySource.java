@@ -15,7 +15,7 @@ public class WornArmorSanitySource implements IPassiveSanitySource
     public float get(@Nonnull ServerPlayer player, @Nonnull ISanity cap, @Nonnull ResourceLocation dim)
     {
         float sanityChange = 0f;
-        float configValue = ConfigManager.getConfigValues().passive_wornArmor.get(dim).floatValue();
+        float configValue = ConfigManager.getConfigValues().passiveConfig.wornArmor.get(dim).floatValue();
 
         for (ItemStack armorItem : player.getArmorSlots()) {
             float maxDamage = armorItem.getMaxDamage();

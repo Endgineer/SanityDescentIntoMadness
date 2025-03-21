@@ -41,6 +41,8 @@ public class PlayerHelper {
         return false;
     }
 
+    // Side Effects
+
     public static void playSound(ServerPlayer player, SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch) {
         Holder<SoundEvent> soundHolder = Holder.direct(SoundEvent.createVariableRangeEvent(soundEvent.getLocation()));
         player.connection.send(new ClientboundSoundPacket(

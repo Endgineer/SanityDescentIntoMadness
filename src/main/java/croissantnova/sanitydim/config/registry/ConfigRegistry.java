@@ -139,82 +139,6 @@ public class ConfigRegistry
     public final BooleanValue m_playSounds;
     public final DoubleValue m_insanityVolume;
 
-    public final ModConfigProcessableValue<List<? extends String>, List<PassiveSanityEntity>> passive_sanityEntities = ModConfigProcessableValue.createListAllowEmpty(
-            "sanity.passive.entities",
-            PassiveSanityEntityProcessor::processList,
-            DefaultConfig.PASSIVE_SANITY_ENTITIES.getElements(),
-            "Define a list of entities that affect sanity of players standing near them",
-            "An entity should be included as follows: A;B;C",
-            "A = entity registry name (e.g. minecraft:enderman)",
-            "B = how much sanity is gained per second passively",
-            "C = radius (in blocks as a double)"
-    );
-
-    public final ModConfigProcessableValue<List<? extends String>, List<PassiveSanityStatusEffect>> passive_statusEffects = ModConfigProcessableValue.createListAllowEmpty(
-            "sanity.passive.status_effects",
-            PassiveSanityStatusEffectProcessor.INSTANCE::processList,
-            DefaultConfig.STATUS_EFFECTS.getElements(),
-            "Define a list of status effects that affect sanity of players who have them",
-            "A status effect should be included as follows: A;B;C",
-            "A = status effect registry name (e.g. minecraft:blindness)",
-            "B = how much sanity is gained per second passively",
-            "C = the minimum amplifier in order to get the sanity effect",
-            "Note: The defined status effect with the highest amplifier that matches the player's current amplifier is chosen"
-    );
-
-    public final ModConfigValue<Double> passive_wellHydrated = ModConfigValue.createPassiveDouble(
-            "sanity.passive.well_hydrated",
-            0.05,
-            "Defines how much sanity is gained per second when the player is well hydrated.",
-            "This value applies only when the player's hydration level is above the threshold."
-    );
-
-    public final ModConfigValue<Double> passive_wellHydratedThreshold = ModConfigValue.createDouble(
-            "sanity.passive.well_hydrated_threshold",
-            20,
-            0.0,
-            20.0,
-            "Defines what hydration level the player must have to be considered well-hydrated.",
-            "Players with their hydration levels at or above this threshold gain bonus sanity per second."
-    );
-
-    public final ModConfigValue<Double> passive_wellFed = ModConfigValue.createPassiveDouble(
-            "sanity.passive.well_fed",
-            0.05,
-            "Defines how much sanity is gained per second when the player is well fed.",
-            "This value applies only when the player's food level is above the threshold."
-    );
-
-    public final ModConfigValue<Double> passive_wellFedThreshold = ModConfigValue.createDouble(
-            "sanity.passive.well_fed_threshold",
-            20,
-            0.0,
-            20.0,
-            "Defines what food level the player must have to be considered well-fed.",
-            "Players with their food levels at or above this threshold gain bonus sanity per second."
-    );
-
-    public final ModConfigValue<Double> passive_lowHydration = ModConfigValue.createPassiveDouble(
-            "sanity.passive.low_hydration",
-            -0.2,
-            "Defines how much sanity is gained per second when the player is low on hydration.",
-            "This value applies only when the player's hydration level is at or below the threshold."
-    );
-
-    public final ModConfigValue<Double> passive_sunlight = ModConfigValue.createPassiveDouble(
-            "sanity.passive.sunlight",
-            0.05,
-            "Defines how much sanity is gained per second when the player is in the sunlight."
-    );
-
-    public final ModConfigValue<Double> passive_wornArmor = ModConfigValue.createPassiveDouble(
-            "sanity.passive.worn_armor",
-            -0.1,
-            "Defines the sanity effect when wearing damaged armor.",
-            "The effect scales with the armor's damage percentage (e.g., 80% damage applies 80% of the value).",
-            "Applied individually to each armor piece (e.g., four pieces at 50% damage will net a 200% modifier on the defined value)."
-    );
-
 
     // we love insanity death loops
     public final ModConfigValue<Double> active_respawnedNearLastDeath = ModConfigValue.createActiveDouble(
@@ -250,6 +174,7 @@ public class ConfigRegistry
             "Note: Death score caps out at `(100 / sanityPerDeath) * scorePerDeath`.",
             "Note: Successfully sleeping without being on sleep cooldown (see sanity.active.sleeping_cd) will decrement one full death."
     );
+    public final PassiveConfig passiveConfig;
 
     public ConfigRegistry(ForgeConfigSpec.Builder builder)
     {
@@ -328,16 +253,7 @@ public class ConfigRegistry
                 "NOTE: not everything may work correctly with any configuration, e.g. multiblocks like tall flowers and beds; needs testing")
                 .defineListAllowEmpty(path, DefaultConfig.PASSIVE_BLOCKS.getElements(), ConfigManager::stringEntryIsValid);
 
-        passive_sanityEntities.build(builder);
-        passive_statusEffects.build(builder);
-
-        passive_wellHydrated.build(builder);
-        passive_wellHydratedThreshold.build(builder);
-        passive_wellFed.build(builder);
-        passive_wellFedThreshold.build(builder);
-        passive_lowHydration.build(builder);
-        passive_sunlight.build(builder);
-        passive_wornArmor.build(builder);
+        passiveConfig = new PassiveConfig(builder);
 
 
         builder.comment("These values are only used if you have Legendary Survival Overhaul installed.")

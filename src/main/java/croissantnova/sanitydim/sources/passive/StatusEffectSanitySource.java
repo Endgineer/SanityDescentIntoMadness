@@ -24,7 +24,7 @@ public class StatusEffectSanitySource implements IPassiveSanitySource {
 
         public SanityCalculator(ServerPlayer player, ISanity sanityCap, ResourceLocation dim) {
             super(player, sanityCap, dim);
-            passiveSanityStatusEffects = config.passive_statusEffects.get(dim);
+            passiveSanityStatusEffects = config.passiveConfig.statusEffects.get(dim);
         }
 
         public float calculate() {
