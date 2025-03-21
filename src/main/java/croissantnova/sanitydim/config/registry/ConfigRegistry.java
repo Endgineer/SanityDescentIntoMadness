@@ -142,7 +142,7 @@ public class ConfigRegistry
     public final ModConfigProcessableValue<List<? extends String>, List<PassiveSanityEntity>> passive_sanityEntities = ModConfigProcessableValue.createListAllowEmpty(
             "sanity.passive.entities",
             PassiveSanityEntityProcessor::processList,
-            passiveSanityEntitiesDefault(),
+            DefaultConfig.PASSIVE_SANITY_ENTITIES.getElements(),
             "Define a list of entities that affect sanity of players standing near them",
             "An entity should be included as follows: A;B;C",
             "A = entity registry name (e.g. minecraft:enderman)",
@@ -153,7 +153,7 @@ public class ConfigRegistry
     public final ModConfigProcessableValue<List<? extends String>, List<PassiveSanityStatusEffect>> passive_statusEffects = ModConfigProcessableValue.createListAllowEmpty(
             "sanity.passive.status_effects",
             PassiveSanityStatusEffectProcessor.INSTANCE::processList,
-            ConfigDefaults.STATUS_EFFECTS,
+            DefaultConfig.STATUS_EFFECTS.getElements(),
             "Define a list of status effects that affect sanity of players who have them",
             "A status effect should be included as follows: A;B;C",
             "A = status effect registry name (e.g. minecraft:blindness)",
@@ -326,7 +326,7 @@ public class ConfigRegistry
                 "Supports boolean block state properties (can be omitted together with brackets)",
                 "Prefix with TAG_ and follow with a tag registry name to define all blocks with the tag",
                 "NOTE: not everything may work correctly with any configuration, e.g. multiblocks like tall flowers and beds; needs testing")
-                .defineListAllowEmpty(path, ConfigRegistry::passiveBlocksDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, DefaultConfig.PASSIVE_BLOCKS.getElements(), ConfigManager::stringEntryIsValid);
 
         passive_sanityEntities.build(builder);
         passive_statusEffects.build(builder);
@@ -445,7 +445,7 @@ public class ConfigRegistry
                 "Where A is how much sanity is gained upon usage and B is a custom category",
                 "Items with the same categories share the same cooldown",
                 "The sanity gained will be multiplied by (timeSinceLastUsage / categoryCooldown) capping at 1.0")
-                .defineListAllowEmpty(path, ConfigRegistry::itemsDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, DefaultConfig.ITEMS.getElements(), ConfigManager::stringEntryIsValid);
 
         path.clear();
         path.add("item_categories");
@@ -454,7 +454,7 @@ public class ConfigRegistry
                 "Define a list of custom categories for items specified in <items>",
                 "A category should be included as follows: A;B",
                 "Where A is a category id (integer) and B is a cooldown (in seconds) all items in this category share")
-                .defineListAllowEmpty(path, ConfigRegistry::itemCatsDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, DefaultConfig.ITEM_CATEGORY_COOLDOWNS.getElements(), ConfigManager::stringEntryIsValid);
 
         path.clear();
         path.add("broken_blocks");
@@ -469,7 +469,7 @@ public class ConfigRegistry
                 "Blocks with the same categories share the same cooldown",
                 "The sanity gained will be multiplied by (timeSinceLastUsage / categoryCooldown) capping at 1.0",
                 "NOTE: not everything may work correctly with any configuration, e.g. multiblocks like tall flowers and beds need testing")
-                .defineListAllowEmpty(path, ConfigRegistry::brokenBlocksDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, DefaultConfig.BROKEN_BLOCKS.getElements(), ConfigManager::stringEntryIsValid);
 
         path.clear();
         path.add("broken_block_categories");
@@ -478,7 +478,7 @@ public class ConfigRegistry
                 "Define a list of custom categories for blocks specified in <broken_blocks>",
                 "A category should be included as follows: A;B",
                 "Where A is a category id (integer) and B is a cooldown (in seconds) all blocks in this category share")
-                .defineListAllowEmpty(path, ConfigRegistry::brokenBlockCatsDefault, ConfigManager::stringEntryIsValid);
+                .defineListAllowEmpty(path, DefaultConfig.BROKEN_BLOCK_CATEGORY_COOLDOWNS.getElements(), ConfigManager::stringEntryIsValid);
 
         builder.pop();
         builder.comment("Multiplayer configuration").push("multiplayer");
@@ -577,74 +577,5 @@ public class ConfigRegistry
                 .defineInRange("insanity_volume", .6, .0, 1.0);
 
         builder.pop();
-    }
-
-    private static List<String> passiveSanityEntitiesDefault() {
-        List<String> list = new ArrayList<>();
-
-        list.add("minecraft:enderman;-0.025;4");
-
-        return list;
-    }
-
-    private static List<String> passiveBlocksDefault()
-    {
-        List<String> list = new ArrayList<>();
-
-        list.add("minecraft:campfire[lit=true];0.1;4;false");
-
-        return list;
-    }
-
-    private static List<String> itemsDefault()
-    {
-        List<String> list = new ArrayList<>();
-
-        list.add("minecraft:pufferfish;-5;0");
-        list.add("minecraft:poisonous_potato;-5;0");
-        list.add("minecraft:spider_eye;-5;0");
-        list.add("minecraft:rotten_flesh;-5;0");
-        list.add("minecraft:chorus_fruit;-3;0");
-        list.add("minecraft:ender_pearl;-1;0");
-        list.add("minecraft:honey_bottle;6;1");
-        list.add("minecraft:golden_carrot;7;1");
-        list.add("minecraft:golden_apple;8;1");
-        list.add("minecraft:enchanted_golden_apple;13;1");
-
-        return list;
-    }
-
-    private static List<String> itemCatsDefault()
-    {
-        List<String> list = new ArrayList<>();
-
-        list.add("0;0");
-        list.add("1;800.0");
-
-        return list;
-    }
-
-    private static List<String> brokenBlocksDefault()
-    {
-        List<String> list = new ArrayList<>();
-
-        list.add("minecraft:infested_stone;-8;0;false;false");
-        list.add("minecraft:infested_cobblestone;-8;0;false;false");
-        list.add("minecraft:infested_stone_bricks;-8;0;false;false");
-        list.add("minecraft:infested_cracked_stone_bricks;-8;0;false;false");
-        list.add("minecraft:infested_mossy_stone_bricks;-8;0;false;false");
-        list.add("minecraft:infested_chiseled_stone_bricks;-8;0;false;false");
-        list.add("minecraft:infested_deepslate;-8;0;false;false");
-
-        return list;
-    }
-
-    private static List<String> brokenBlockCatsDefault()
-    {
-        List<String> list = new ArrayList<>();
-
-        list.add("0;0");
-
-        return list;
     }
 }
