@@ -10,7 +10,7 @@ import croissantnova.sanitydim.entity.SneakingTerror;
 import croissantnova.sanitydim.util.PlayerHelper;
 import net.minecraft.server.level.ServerPlayer;
 
-public class PlayerKillNightmareEvent {
+public final class PlayerKillNightmareEvent {
 
     private final ServerPlayer player;
     private final NightmareEntity nightmareEntity;

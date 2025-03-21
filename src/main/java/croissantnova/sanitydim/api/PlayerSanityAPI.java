@@ -4,18 +4,20 @@ import croissantnova.sanitydim.capability.SanityProvider;
 import croissantnova.sanitydim.config.ConfigProxy;
 import croissantnova.sanitydim.util.PlayerHelper;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SanityAPI {
+public final class PlayerSanityAPI {
 
-    public static final int MAX_SANITY = 100;
+    private PlayerSanityAPI() {}
+
     public static final int MIN_SANITY = -100;
-    public static final int MAX_SANITY_INTERNAL = 1;
+    public static final int MAX_SANITY = 100;
     public static final int MIN_SANITY_INTERNAL = 0;
+    public static final int MAX_SANITY_INTERNAL = 1;
 
+    // Sanity Arithmetic
 
     public static void setSanity(@NotNull Player player, float sanity) {
         player.getCapability(SanityProvider.CAP).ifPresent(cap -> {
@@ -37,25 +39,47 @@ public class SanityAPI {
         setSanity(player, getSanity(player) + sanity);
     }
 
+    // Nightmare Entity
 
-    // Booleans
-
-    public static boolean bypassesNightmareInvisibilityToSane(Player player) {
+    public static boolean bypassesNightmareInvisibilityToSane(@NotNull Player player) {
         return ConfigProxy.canSaneSeeNightmares(player.level().dimension().location());
     }
 
     public static boolean canSeeNightmares(@NotNull Player player) {
         return PlayerHelper.isImmortal(player)
                 || bypassesNightmareInvisibilityToSane(player)
-                || SanityState.PARANOID.isAtStateOrHigher(player);
+                || isAtStateOrAbove(player, SanityState.PARANOID);
     }
 
     public static boolean canBeTargetedByNightmares(@NotNull Player player) {
         return PlayerHelper.isMortal(player)
-                && SanityState.INSANE.isAtStateOrHigher(player);
+                && isAtStateOrAbove(player, SanityState.INSANE);
     }
 
-    public static boolean isNightmareTime(Level level) {
-        return level.isNight() || level.isThundering();
+    // Sanity State
+
+    public static boolean isAtState(@NotNull Player player, @NotNull SanityState state) {
+        float sanity = getSanity(player);
+        return state.isAt(sanity);
+    }
+
+    public static boolean isAtStateOrAbove(@NotNull Player player, @NotNull SanityState state) {
+        float sanity = getSanity(player);
+        return state.isAtOrAbove(sanity);
+    }
+
+    public static boolean isAtStateOrBelow(@NotNull Player player, @NotNull SanityState state) {
+        float sanity = getSanity(player);
+        return state.isAtOrBelow(sanity);
+    }
+
+    public static boolean isBelowState(@NotNull Player player, @NotNull SanityState state) {
+        float sanity = getSanity(player);
+        return state.isBelow(sanity);
+    }
+
+    public static boolean isAboveState(@NotNull Player player, @NotNull SanityState state) {
+        float sanity = getSanity(player);
+        return state.isAbove(sanity);
     }
 }

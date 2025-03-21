@@ -9,8 +9,8 @@ import net.minecraftforge.common.ForgeConfigSpec.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static croissantnova.sanitydim.api.SanityAPI.MAX_SANITY;
-import static croissantnova.sanitydim.api.SanityAPI.MIN_SANITY;
+import static croissantnova.sanitydim.api.PlayerSanityAPI.MAX_SANITY;
+import static croissantnova.sanitydim.api.PlayerSanityAPI.MIN_SANITY;
 
 public class ConfigRegistry
 {

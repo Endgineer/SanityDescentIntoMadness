@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static croissantnova.sanitydim.api.SanityAPI.MAX_SANITY;
-import static croissantnova.sanitydim.api.SanityAPI.MIN_SANITY;
+import static croissantnova.sanitydim.api.PlayerSanityAPI.MAX_SANITY;
+import static croissantnova.sanitydim.api.PlayerSanityAPI.MIN_SANITY;
 
 public abstract class ModConfigValue<T> implements IConfigValue<T> {
     public static final List<ModConfigValue<?>> CONFIG_VALUES = new ArrayList<>();

@@ -1,7 +1,7 @@
 package croissantnova.sanitydim.event;
 
 import croissantnova.sanitydim.SanityMod;
-import croissantnova.sanitydim.api.SanityAPI;
+import croissantnova.sanitydim.api.PlayerSanityAPI;
 import croissantnova.sanitydim.config.ConfigManager;
 import croissantnova.sanitydim.config.registry.ConfigRegistry;
 import croissantnova.sanitydim.util.DeathScoreHelper;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Mod.EventBusSubscriber(modid = SanityMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class RespawnedEvent {
+public final class RespawnedEvent {
 
     @SubscribeEvent
     public static void respawnedEvent(PlayerEvent.PlayerRespawnEvent event) {
@@ -47,7 +47,7 @@ public class RespawnedEvent {
         }
 
         if (sanityChange.get() != 0f) {
-            SanityAPI.addSanity((ServerPlayer) player, sanityChange.get());
+            PlayerSanityAPI.addSanity((ServerPlayer) player, sanityChange.get());
             if (damned) {
                 player.displayClientMessage(Component.literal("Your soul feels damned..."), true);
             }
@@ -78,6 +78,6 @@ public class RespawnedEvent {
         float distancePercentage = 1f - (float) (distance / maxDistance);
 
         float sanityChange = config.active_respawnedNearLastDeath.get(dim).floatValue() * distancePercentage;
-        SanityAPI.addSanity((ServerPlayer) player, sanityChange);
+        PlayerSanityAPI.addSanity((ServerPlayer) player, sanityChange);
     }
 }

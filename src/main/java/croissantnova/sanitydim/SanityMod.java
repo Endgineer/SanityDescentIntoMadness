@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 @Mod(SanityMod.MOD_ID)
@@ -29,13 +30,13 @@ public class SanityMod
     public static final String MOD_ID = "sanitydim";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public SanityMod()
+    public SanityMod(@NotNull FMLJavaModLoadingContext context)
     {
         m_inst = this;
 
         ConfigManager.register();
 
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus modEventBus = context.getModEventBus();
         modEventBus.addListener(this::setup);
         modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(ModEventHandler::addEntityAttributes);

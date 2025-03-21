@@ -12,7 +12,7 @@ import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 
-public class PlayerHurtAnimalEvent {
+public final class PlayerHurtAnimalEvent {
 
     private final ServerPlayer player;
     private final Animal animal;

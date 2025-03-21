@@ -1,72 +1,141 @@
 package croissantnova.sanitydim.api;
 
-import croissantnova.sanitydim.util.MathHelper;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents the sanity state of a player or entity based on a sanity range.
+ * <p>
+ * Each state is defined within a specific range of sanity values:
+ * - The lower bound is inclusive.
+ * - The upper bound is exclusive.
+ * <p>
+ * Available states:<br>
+ * 1. SANE: [0.0, 0.4)<br>
+ * 2. PARANOID: [0.4, 0.7)<br>
+ * 3. INSANE: [0.7, Float.MAX_VALUE)<br>
+ * <p>
+ * Methods in this class allow checking if a sanity value falls
+ * within, below, or above a specific state. Additionally, you can determine
+ * the state based on a sanity value.
+ */
 public enum SanityState {
     SANE(0f),
     PARANOID(0.4f),
     INSANE(0.7f);
 
-    private final float min;
+    private final float lowerBound;
 
-    SanityState(float min) {
-        this.min = min;
+    /**
+     * Constructs a SanityState with the specified lower bound.
+     *
+     * @param lowerBound The inclusive lower bound for this state.
+     */
+    SanityState(float lowerBound) {
+        this.lowerBound = lowerBound;
     }
 
-    public float getMin() {
-        return min;
+    /**
+     * Gets the inclusive lower bound of this state.
+     *
+     * @return The lower bound.
+     */
+    public float getLowerBound() {
+        return lowerBound;
     }
 
-    public float getMax() {
-        return this.ordinal() < values().length - 1
-                ? values()[this.ordinal() + 1].min
+    /**
+     * Gets the exclusive upper bound of this state.
+     *
+     * @return The upper bound, or {@code Float.MAX_VALUE} if this is the last state.
+     */
+    public float getUpperBound() {
+        return notLastOrdinal()
+                ? getNextUpperBound()
                 : Float.MAX_VALUE;
     }
 
     /**
-     * Checks whether the player's current sanity level falls within the range defined by this {@code SanityState}.
+     * Checks if this state is not the last state in the enumeration.
      *
-     * @param player The player whose sanity level is being checked.
-     * @return {@code true} if the player's sanity level is between the minimum and maximum thresholds
-     *         of this {@code SanityState}, inclusive of the lower bound and exclusive of the upper bound;
-     *         {@code false} otherwise.
+     * @return {@code true} if this is not the last state, {@code false} otherwise.
      */
-    public boolean isAtState(@NotNull Player player) {
-        float sanity = SanityAPI.getSanity(player);
-        float max = getMax();
-        return MathHelper.isWithin(sanity, min, max);
+    private boolean notLastOrdinal() {
+        return this.ordinal() < values().length - 1;
     }
 
     /**
-     * Checks if the player meets the minimum sanity threshold for this {@code SanityState}.
+     * Gets the lower bound of the next state in the enumeration.
      *
-     * @param player The player whose sanity level is being checked.
-     * @return {@code true} if the player's sanity level is greater than or equal to the minimum threshold for this {@code SanityState}, otherwise {@code false}.
+     * @return The lower bound of the next state.
      */
-    public boolean isAtStateOrHigher(@NotNull Player player) {
-        return SanityAPI.getSanity(player) >= min;
+    private float getNextUpperBound() {
+        return values()[this.ordinal() + 1].lowerBound;
     }
 
     /**
-     * Checks if the player's current sanity level is below the minimum threshold of this {@code SanityState}.
+     * Checks if the given sanity value falls within this state.
      *
-     * @param player The player whose sanity level is being checked.
-     * @return {@code true} if the player's sanity level is below the minimum threshold of this {@code SanityState}, otherwise {@code false}.
+     * @param sanity The sanity value to check.
+     * @return {@code true} if the value is within this state, {@code false} otherwise.
      */
-    public boolean isBelowState(@NotNull Player player) {
-        return SanityAPI.getSanity(player) < min;
+    public boolean isAt(float sanity) {
+        return sanity >= lowerBound && sanity < getUpperBound();
     }
 
     /**
-     * Checks if the player's current sanity level falls within the specified {@link SanityState}.
+     * Checks if the given sanity value is at or above this state's lower bound.
      *
-     * @param player The player whose sanity level is being checked.
-     * @param state  The sanity state range to check against.
-     * @return {@code true} if the player's sanity level falls within the specified sanity state range, otherwise {@code false}.
+     * @param sanity The sanity value to check.
+     * @return {@code true} if the value is at or above this state, {@code false} otherwise.
      */
-    public static boolean is(@NotNull Player player, @NotNull SanityState state) {
-        return state.isAtState(player);
+    public boolean isAtOrAbove(float sanity) {
+        return sanity >= lowerBound;
+    }
+
+    /**
+     * Checks if the given sanity value is at or below this state's upper bound.
+     *
+     * @param sanity The sanity value to check.
+     * @return {@code true} if the value is at or below this state, {@code false} otherwise.
+     */
+    public boolean isAtOrBelow(float sanity) {
+        return sanity < getUpperBound();
+    }
+
+    /**
+     * Checks if the given sanity value is below this state's lower bound.
+     *
+     * @param sanity The sanity value to check.
+     * @return {@code true} if the value is below this state, {@code false} otherwise.
+     */
+    public boolean isBelow(float sanity) {
+        return sanity < lowerBound;
+    }
+
+    /**
+     * Checks if the given sanity value is above this state's upper bound.
+     *
+     * @param sanity The sanity value to check.
+     * @return {@code true} if the value is above this state, {@code false} otherwise.
+     */
+    public boolean isAbove(float sanity) {
+        return sanity >= getUpperBound();
+    }
+
+    /**
+     * Determines the SanityState corresponding to the given sanity value.
+     *
+     * @param sanity The sanity value to evaluate.
+     * @return The corresponding SanityState.
+     * @throws IllegalArgumentException If the sanity value is outside the defined ranges.
+     */
+    public static @NotNull SanityState fromSanityValue(float sanity) {
+        for (SanityState state : values()) {
+            if (state.isAt(sanity)) {
+                return state;
+            }
+        }
+        throw new IllegalArgumentException("Sanity value is out of bounds: " + sanity);
     }
 }
+

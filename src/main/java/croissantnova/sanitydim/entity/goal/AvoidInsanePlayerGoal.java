@@ -1,6 +1,6 @@
 package croissantnova.sanitydim.entity.goal;
 
-import croissantnova.sanitydim.api.SanityAPI;
+import croissantnova.sanitydim.api.PlayerSanityAPI;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -14,7 +14,7 @@ public class AvoidInsanePlayerGoal extends AvoidEntityGoal<Player> {
     public AvoidInsanePlayerGoal(PathfinderMob pMob, float pMaxDistance, double pWalkSpeedModifier, double pSprintSpeedModifier) {
         super(pMob, Player.class, pMaxDistance, pWalkSpeedModifier, pSprintSpeedModifier);
         targetingConditions = TargetingConditions.forNonCombat().ignoreInvisibilityTesting().ignoreLineOfSight().range(pMaxDistance).selector(entity ->
-                entity instanceof Player player && SanityAPI.canBeTargetedByNightmares(player));
+                entity instanceof Player player && PlayerSanityAPI.canBeTargetedByNightmares(player));
     }
 
     @Override

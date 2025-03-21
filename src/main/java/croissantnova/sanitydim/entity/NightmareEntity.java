@@ -1,8 +1,8 @@
 package croissantnova.sanitydim.entity;
 
-import croissantnova.sanitydim.api.SanityAPI;
+import croissantnova.sanitydim.api.LevelSanityAPI;
+import croissantnova.sanitydim.api.PlayerSanityAPI;
 import croissantnova.sanitydim.api.SanityState;
-import croissantnova.sanitydim.capability.SanityProvider;
 import croissantnova.sanitydim.config.ConfigProxy;
 import croissantnova.sanitydim.sound.SoundRegistry;
 import croissantnova.sanitydim.util.EntityHelper;
@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -32,7 +31,7 @@ public abstract class NightmareEntity extends Monster {
                 && !ConfigProxy.canSaneSeeNightmares(player.level().dimension().location())
                 && !(player.isCreative() || player.isSpectator())
                 && getTarget() != player) {
-            m_skipAttackInteraction.set(SanityState.is(player, SanityState.SANE));
+            m_skipAttackInteraction.set(PlayerSanityAPI.isAtStateOrBelow(player, SanityState.SANE));
 
             return m_skipAttackInteraction.get();
         }
@@ -60,7 +59,7 @@ public abstract class NightmareEntity extends Monster {
         super.tick();
         if (this.level().isClientSide) return;
 
-        if (!SanityAPI.isNightmareTime(this.level())) {
+        if (!LevelSanityAPI.isNightmareTime(this.level())) {
             this.remove(RemovalReason.DISCARDED);
             return;
         }

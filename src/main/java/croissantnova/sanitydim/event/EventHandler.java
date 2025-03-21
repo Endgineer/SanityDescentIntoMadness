@@ -83,11 +83,18 @@ public class EventHandler
     @SubscribeEvent
     public void onLivingDamage(final LivingDamageEvent event)
     {
-        Entity entity = event.getEntity();
-        if (entity instanceof ServerPlayer player) {
+        Entity hurtEntity = event.getEntity();
+        Entity sourceEntity = event.getSource().getEntity();
+
+        if (hurtEntity instanceof ServerPlayer player) {
             SanityProcessor.handlePlayerHurt(player, event.getAmount());
+            
+            if (sourceEntity instanceof NightmareEntity nightmareEntity) {
+                new NightmareHurtPlayerEvent(player, nightmareEntity);
+            }
         }
-        else if (entity instanceof Animal animal && event.getSource().getEntity() instanceof ServerPlayer player) {
+        else if (hurtEntity instanceof Animal animal
+                && sourceEntity instanceof ServerPlayer player) {
             new PlayerHurtAnimalEvent(player, animal, event.getAmount());
         }
     }

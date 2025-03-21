@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = SanityMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class CloneEvent {
+public final class CloneEvent {
 
     @SubscribeEvent
     public static void onClone(PlayerEvent.Clone event) {

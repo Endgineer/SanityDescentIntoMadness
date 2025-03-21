@@ -13,7 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = SanityMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class SleepFinishedEvent {
+public final class SleepFinishedEvent {
 
     @SubscribeEvent
     public static void onSleepFinished(final SleepFinishedTimeEvent event)

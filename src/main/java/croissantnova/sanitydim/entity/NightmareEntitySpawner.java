@@ -1,12 +1,13 @@
 package croissantnova.sanitydim.entity;
 
+import croissantnova.sanitydim.api.PlayerSanityAPI;
 import croissantnova.sanitydim.api.SanityState;
 import croissantnova.sanitydim.config.ConfigProxy;
+import croissantnova.sanitydim.sound.SoundPacketBuilder;
 import croissantnova.sanitydim.util.LevelHelper;
 import croissantnova.sanitydim.util.PlayerHelper;
 import croissantnova.sanitydim.util.TickHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -22,6 +24,7 @@ import java.util.*;
 public class NightmareEntitySpawner
 {
     private static final RandomSource RANDOM_SOURCE = RandomSource.create();
+    private static final Random RANDOM = new Random();
 
     public static final int SPAWN_RADIUS = 16;
     public static final int DETECTION_RADIUS = 64;
@@ -95,7 +98,7 @@ public class NightmareEntitySpawner
             return;
         }
 
-        if (SanityState.INSANE.isBelowState(player) || hasMaxInnerEntities()) {
+        if (PlayerSanityAPI.isBelowState(player, SanityState.INSANE) || hasMaxInnerEntities()) {
             return;
         }
 
@@ -103,12 +106,15 @@ public class NightmareEntitySpawner
     }
 
     private void trySpawn(NightmareEntity entity) {
-        playSpawnAttemptSound();
-        getRandomSpawnPos().ifPresent(spawnPos -> trySpawn(entity, spawnPos));
+        getRandomSpawnPos().ifPresentOrElse(
+                spawnPos -> trySpawn(entity, spawnPos),
+                this::playSpawnAttemptSound
+        );
     }
 
-    private void trySpawn(NightmareEntity entity, BlockPos spawnPos) {
+    private void trySpawn(@NotNull NightmareEntity entity, @NotNull BlockPos spawnPos) {
         entity.setPos(spawnPos.getCenter());
+        playSpawnAttemptSound(entity.position());
 
         if (!entity.checkSpawnObstruction(level) || !level.noCollision(entity)) {
             return;
@@ -123,7 +129,18 @@ public class NightmareEntitySpawner
 
 
     private void playSpawnAttemptSound() {
-        PlayerHelper.playSound(player, SoundEvents.AMBIENT_CAVE.get(), SoundSource.HOSTILE, 16f, 1f);
+        Vec3 randomPos = player.position().add(RANDOM_SOURCE.nextDouble() * SPAWN_RADIUS - 1, 0, RANDOM_SOURCE.nextDouble() * SPAWN_RADIUS - 1);
+        playSpawnAttemptSound(randomPos);
+    }
+
+    private void playSpawnAttemptSound(@NotNull Vec3 pos) {
+        SoundPacketBuilder.builder()
+                .setSoundEvent(SoundEvents.AMBIENT_CAVE.get())
+                .setSoundSource(SoundSource.HOSTILE)
+                .setVec3(pos)
+                .setVolume(16f)
+                .setPitch(1f)
+                .sendPacket(player);
     }
 
     private boolean hasMaxInnerEntities() {
@@ -141,48 +158,24 @@ public class NightmareEntitySpawner
     }
 
 
-
-
-    private int getHeightForSpawning(Level level, @NotNull BlockPos blockPos) {
-        BlockPos.MutableBlockPos mutable = blockPos.mutable();
-        for (int i = 0; i < SPAWN_RADIUS; i++) {
-            if (!level.getBlockState(mutable).isAir() && level.getBlockState(mutable.move(Direction.UP)).isAir())
-            {
-                return mutable.getY();
-            }
-        }
-        for (int i = 0; i < SPAWN_RADIUS; i++)
-        {
-            if (level.getBlockState(mutable).isAir() && !level.getBlockState(mutable.move(Direction.DOWN)).isAir())
-            {
-                return mutable.getY() - 1;
-            }
-        }
-        return 0;
-    }
-
-    private Optional<NightmareEntity> createNewRandomInnerEntity() {
+    private @NotNull Optional<NightmareEntity> createNewRandomInnerEntity() {
         int index = RANDOM_SOURCE.nextInt(EntityRegistry.INNER_ENTITIES.size());
         return Optional.ofNullable(
                 EntityRegistry.INNER_ENTITIES.get(index).get().create(level)
         );
     }
 
-    private Optional<BlockPos> getRandomSpawnPos() {
+    private @NotNull Optional<BlockPos> getRandomSpawnPos() {
         BlockPos playerPos = player.blockPosition();
-        ArrayList<BlockPos> possiblePositions = getPossiblePositions(playerPos);
+        List<BlockPos> possiblePositions = getPossiblePositions(playerPos);
 
-        Collections.shuffle(possiblePositions, new Random());
+        Collections.shuffle(possiblePositions, RANDOM);
 
-        for (BlockPos trialPos : possiblePositions) {
-            int spawnHeight = getHeightForSpawning(level, trialPos);
-            if (spawnHeight != 0) {
-                return Optional.of(
-                        new BlockPos(trialPos.getX(), spawnHeight, trialPos.getZ())
-                );
-            }
-        }
-        return Optional.empty();
+        return possiblePositions.stream()
+                .map(pos -> SpawnHeightRetriever.getHeightForSpawning(level, pos, SPAWN_RADIUS)
+                        .map(height -> new BlockPos(pos.getX(), height, pos.getZ())))
+                .flatMap(Optional::stream)
+                .findFirst();
     }
 
     private static @NotNull ArrayList<BlockPos> getPossiblePositions(@NotNull BlockPos playerPos) {

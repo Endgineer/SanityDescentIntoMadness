@@ -1,10 +1,8 @@
 package croissantnova.sanitydim.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import croissantnova.sanitydim.api.SanityAPI;
+import croissantnova.sanitydim.api.PlayerSanityAPI;
 import croissantnova.sanitydim.capability.InnerEntityCapImplProvider;
-import croissantnova.sanitydim.capability.SanityProvider;
-import croissantnova.sanitydim.config.ConfigProxy;
 import croissantnova.sanitydim.entity.NightmareEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -34,7 +32,7 @@ public class NightmareEntityRenderer<T extends NightmareEntity & GeoAnimatable> 
         LocalPlayer player = minecraftClientInstance.player;
         return player != null
                 && entity != null
-                && (SanityAPI.canSeeNightmares(player) || isTargeting(entity, player));
+                && (PlayerSanityAPI.canSeeNightmares(player) || isTargeting(entity, player));
     }
 
     private boolean isTargeting(T entity, Player player) {
