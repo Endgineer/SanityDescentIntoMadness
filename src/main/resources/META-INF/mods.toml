@@ -43,9 +43,14 @@ authors="croissantnova" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''Brings the sanity mechanic from Don't Starve into Minecraft'''
 [[dependencies.sanitydim]]
-    "modId"="geckolib"
+    modId="geckolib"
     mandatory=true
     versionRange="[4.7,)"
+    side="BOTH"
+[[dependencies.sanitydim]]
+    modId="legendarysurvivaloverhaul"
+    mandatory=false
+    versionRange="[2.2,)"
     side="BOTH"
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.sanitydim]] #optional
