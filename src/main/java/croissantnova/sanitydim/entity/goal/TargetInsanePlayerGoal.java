@@ -11,11 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class TargetInsanePlayerGoal extends TargetGoal {
     private final float sanityThreshold;
@@ -86,7 +82,8 @@ public class TargetInsanePlayerGoal extends TargetGoal {
             }
         }
 
-        if (otherMob.isAlliedTo(Objects.requireNonNull(mob.getTarget()))) {
+        Optional<LivingEntity> target = Optional.ofNullable(mob.getTarget());
+        if (target.isPresent() && otherMob.isAlliedTo(target.get())) {
             return false;
         }
 
