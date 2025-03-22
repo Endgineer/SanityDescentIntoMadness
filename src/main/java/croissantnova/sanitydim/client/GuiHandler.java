@@ -25,6 +25,7 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import org.joml.Matrix4f;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -330,9 +331,13 @@ public class GuiHandler
         m_prevSanity = m_cap.getSanity();
     }
 
+    public void triggerInsomniaHint() {
+
+    }
+
     private void tickHint(float dt)
     {
-        if (m_cap.getSanity() <= .4f || !ConfigProxy.getRenderHint(m_mc.player.level().dimension().location()))
+        if (m_cap.getSanity() <= .4f || !ConfigProxy.getRenderHint(Objects.requireNonNull(m_mc.player).level().dimension().location()))
             return;
 
         if (m_hintTimer <= 0f && m_showingHintTimer <= 0f)

@@ -82,4 +82,13 @@ public final class PlayerSanityAPI {
         float sanity = getSanity(player);
         return state.isAbove(sanity);
     }
+
+    // Other
+
+    public static int getMaxSleepCounter(@NotNull Player player) {
+        if (isAtStateOrAbove(player, SanityState.INSANE)) {
+            return 600;
+        }
+        return 100;
+    }
 }

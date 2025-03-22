@@ -8,7 +8,8 @@
 	"commands.sanity.add.success.multiple": "Added %s sanity to %s players",
 	"commands.sanity.get.success": "Player %s has %s sanity",
 	"commands.sanity.config.reload": "Reloaded dimension configs successfully",
-	
+
+
 	"gui.sanitydim.hint.paranoid.0.swish": "What are these sounds?",
 	"gui.sanitydim.hint.paranoid.1": "I'm feeling a bit uneasy",
 	"gui.sanitydim.hint.paranoid.2": "What was that?",
@@ -21,6 +22,7 @@
 	"gui.sanitydim.hint.paranoid.9": "Was that me?",
 	"gui.sanitydim.hint.paranoid.10": "Weird...",
 	"gui.sanitydim.hint.paranoid.11": "Did I just see something?",
+
 	"gui.sanitydim.hint.insane.0.swish": "SOMEONE'S BEHIND ME",
 	"gui.sanitydim.hint.insane.1": "One, two, three, four...",
 	"gui.sanitydim.hint.insane.2": "...five, six, seven, eight...",
@@ -30,6 +32,18 @@
 	"gui.sanitydim.hint.insane.6": "WHY WON'T THEY GO AWAY?!",
 	"gui.sanitydim.hint.insane.7": "TOO LOUD TOO LOUD TOO LOUD",
 	"gui.sanitydim.hint.insane.8": "THE VOICES... I CAN'T...",
+
+	"gui.sanitydim.hint.insomnia.0": "WHY CAN'T I SLEEP!!",
+	"gui.sanitydim.hint.insomnia.1": "PLEASE JUST LET ME SLEEP!!!",
+	"gui.sanitydim.hint.insomnia.2": "THEY WON'T LET ME SLEEP...",
+	"gui.sanitydim.hint.insomnia.3": "THERE'S SOMETHING WATCHING ME SLEEP!!",
+	"gui.sanitydim.hint.insomnia.4": "I CAN'T CLOSE MY EYES...",
+	"gui.sanitydim.hint.insomnia.5": "IT'S WATCHING ME",
+	"gui.sanitydim.hint.insomnia.6": "I NEED TO STAY AWAKE",
+	"gui.sanitydim.hint.insomnia.7.swish": "THERE'S SOMETHING UNDER MY BED",
+	"gui.sanitydim.hint.insomnia.8": "One sheep, two sheep, three sheep...",
+	"gui.sanitydim.hint.insomnia.9": "IT'S NOT WORKING",
+	"gui.sanitydim.hint.insomnia.10.swish": "THEY'RE HERE!!",
 
 
 	"item.sanitydim.tooltip.press_shift": "§7Press §9SHIFT§7 for more information",

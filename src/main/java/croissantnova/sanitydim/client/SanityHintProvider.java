@@ -10,7 +10,8 @@ import java.util.List;
 public enum SanityHintProvider {
 
     PARANOID(new ArrayList<>()),
-    INSANE(new ArrayList<>());
+    INSANE(new ArrayList<>()),
+    INSOMNIA(new ArrayList<>());
 
     private final List<SanityHint> hints;
 
