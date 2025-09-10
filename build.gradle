@@ -134,6 +134,9 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
+    implementation fg.deobf("curse.maven:thirst-was-taken-679270:6660408")
+    implementation fg.deobf("curse.maven:serene-seasons-291874:6398227")
+    implementation fg.deobf("curse.maven:cold-sweat-506194:6947085")
 }
 
 tasks.named('processResources', ProcessResources).configure {
