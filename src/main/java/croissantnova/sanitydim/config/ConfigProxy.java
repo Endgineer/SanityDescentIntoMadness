@@ -262,10 +262,10 @@ public abstract class ConfigProxy
 
     public static boolean canSaneSeeNightmares(ResourceLocation dim)
     {
-        return ConfigManager.proxyb("sanity.entity.sane_see_inner_entities", dim);
+        return ConfigManager.proxyb("sanity.entity.sane_see_nightmare_entities", dim);
     }
 
-    public static int getInnerEntitySpawnChanceSeconds(ResourceLocation dim) {
+    public static int getNightmareEntitySpawnChanceSeconds(ResourceLocation dim) {
         return ConfigManager.proxyi("sanity.entity.spawn_chance_seconds", dim);
     }
 

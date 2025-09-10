@@ -21,9 +21,9 @@ public class PacketHandler
         CHANNEL_INSTANCE.registerMessage(packetId++, SanityPacket.class, SanityPacket::encode, SanityPacket::decode, SanityPacket::handle);
         CHANNEL_INSTANCE.registerMessage(
                 packetId++,
-                InnerEntityCapImplPacket.class,
-                InnerEntityCapImplPacket::encode,
-                InnerEntityCapImplPacket::decode,
-                InnerEntityCapImplPacket::handle);
+                NightmareEntityCapImplPacket.class,
+                NightmareEntityCapImplPacket::encode,
+                NightmareEntityCapImplPacket::decode,
+                NightmareEntityCapImplPacket::handle);
     }
 }

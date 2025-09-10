@@ -44,10 +44,10 @@ public class NightmareEntitySpawner
     }
 
     public static float getSpawnChance(ResourceLocation dim) {
-        return calculateSpawnChance(ConfigProxy.getInnerEntitySpawnChanceSeconds(dim));
+        return calculateSpawnChance(ConfigProxy.getNightmareEntitySpawnChanceSeconds(dim));
     }
 
-    public static @NotNull List<NightmareEntity> getInnerEntitiesInRadius(@NotNull Level level, BlockPos blockPos, int radius) {
+    public static @NotNull List<NightmareEntity> getNightmareEntitiesInRadius(@NotNull Level level, BlockPos blockPos, int radius) {
         return level.getEntitiesOfClass(NightmareEntity.class, new AABB(blockPos).inflate(radius));
     }
 
@@ -56,7 +56,7 @@ public class NightmareEntitySpawner
         return level.isNight() || level.isThundering();
     }
 
-    // every tick try to spawn an inner entity
+    // every tick try to spawn an nightmare entity
     // gives MAX_SPAWN_POS_TRIES to getConfigValue a valid spawn position for the entity or try all over again next tick
     // SPAWN_CHANCE roughly determines chance to spawn every tick after spawn timeout is over
     public static void trySpawn(@NotNull ServerPlayer player) {
@@ -98,11 +98,11 @@ public class NightmareEntitySpawner
             return;
         }
 
-        if (PlayerSanityAPI.isBelowState(player, SanityState.INSANE) || hasMaxInnerEntities()) {
+        if (PlayerSanityAPI.isBelowState(player, SanityState.INSANE) || hasMaxNightmareEntities()) {
             return;
         }
 
-        createNewRandomInnerEntity().ifPresent(this::trySpawn);
+        createNewRandomNightmareEntity().ifPresent(this::trySpawn);
     }
 
     private void trySpawn(NightmareEntity entity) {
@@ -143,8 +143,8 @@ public class NightmareEntitySpawner
                 .sendPacket(player);
     }
 
-    private boolean hasMaxInnerEntities() {
-        List<NightmareEntity> entities = getInnerEntitiesInRadius(level, player.blockPosition(), DETECTION_RADIUS);
+    private boolean hasMaxNightmareEntities() {
+        List<NightmareEntity> entities = getNightmareEntitiesInRadius(level, player.blockPosition(), DETECTION_RADIUS);
         int score = 0;
         for (NightmareEntity entity : entities) {
             if (entity instanceof RottingStalker) {
@@ -158,10 +158,10 @@ public class NightmareEntitySpawner
     }
 
 
-    private @NotNull Optional<NightmareEntity> createNewRandomInnerEntity() {
-        int index = RANDOM_SOURCE.nextInt(EntityRegistry.INNER_ENTITIES.size());
+    private @NotNull Optional<NightmareEntity> createNewRandomNightmareEntity() {
+        int index = RANDOM_SOURCE.nextInt(EntityRegistry.NIGHTMARE_ENTITIES.size());
         return Optional.ofNullable(
-                EntityRegistry.INNER_ENTITIES.get(index).get().create(level)
+                EntityRegistry.NIGHTMARE_ENTITIES.get(index).get().create(level)
         );
     }
 

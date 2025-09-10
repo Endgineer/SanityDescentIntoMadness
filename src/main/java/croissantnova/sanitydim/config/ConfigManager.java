@@ -104,7 +104,7 @@ public abstract class ConfigManager {
         proxies.put("sanity.multiplayer.insane_player_company", new ProxyValueEntry<>(() -> getConfigValues().m_insanePlayerCompany.get(), ConfigManager::finalizePassive));
 
         // sanity.entity
-        proxies.put("sanity.entity.sane_see_inner_entities", new ProxyValueEntry<>(() -> getConfigValues().entities_saneSeeNightmares.get(), ConfigManager::noFinalize));
+        proxies.put("sanity.entity.sane_see_nightmare_entities", new ProxyValueEntry<>(() -> getConfigValues().entities_saneSeeNightmares.get(), ConfigManager::noFinalize));
         proxies.put("sanity.entity.spawn_chance_seconds", new ProxyValueEntry<>(() -> getConfigValues().entities_spawnChanceSeconds.get(), ConfigManager::noFinalize));
 
         // reduces boilerplate and code duplication

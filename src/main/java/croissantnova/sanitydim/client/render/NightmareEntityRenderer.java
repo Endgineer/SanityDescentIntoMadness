@@ -2,7 +2,7 @@ package croissantnova.sanitydim.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import croissantnova.sanitydim.api.PlayerSanityAPI;
-import croissantnova.sanitydim.capability.InnerEntityCapImplProvider;
+import croissantnova.sanitydim.capability.NightmareEntityCapImplProvider;
 import croissantnova.sanitydim.entity.NightmareEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -36,7 +36,7 @@ public class NightmareEntityRenderer<T extends NightmareEntity & GeoAnimatable> 
     }
 
     private boolean isTargeting(T entity, Player player) {
-        return entity.getCapability(InnerEntityCapImplProvider.CAP)
+        return entity.getCapability(NightmareEntityCapImplProvider.CAP)
                 .map(iec -> iec.getPlayerTargetUUID()
                         .filter(uuid -> uuid.equals(player.getUUID()))
                         .isPresent()

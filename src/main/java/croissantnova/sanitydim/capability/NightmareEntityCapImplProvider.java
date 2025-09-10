@@ -11,13 +11,13 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class InnerEntityCapImplProvider implements ICapabilityProvider
+public class NightmareEntityCapImplProvider implements ICapabilityProvider
 {
-    public static final ResourceLocation KEY = new ResourceLocation(SanityMod.MOD_ID, "inner_entity_cap");
-    public static final Capability<IInnerEntityCap> CAP = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final ResourceLocation KEY = new ResourceLocation(SanityMod.MOD_ID, "nightmare_entity_cap");
+    public static final Capability<INightmareEntityCap> CAP = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private final InnerEntityCapImpl m_cap = new InnerEntityCapImpl();
-    private final LazyOptional<IInnerEntityCap> m_lazyOpt = LazyOptional.of(() -> m_cap);
+    private final NightmareEntityCapImpl m_cap = new NightmareEntityCapImpl();
+    private final LazyOptional<INightmareEntityCap> m_lazyOpt = LazyOptional.of(() -> m_cap);
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)

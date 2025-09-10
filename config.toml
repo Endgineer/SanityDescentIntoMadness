@@ -152,10 +152,10 @@
 			#Allowed Values: HOTBAR_LEFT, HOTBAR_RIGHT, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
 			location = "HOTBAR_LEFT"
 
-		#Inner monologue configuration
+		#Nightmare monologue configuration
 		[sanity.client.hints]
-			#Whether to render inner monologue/random thoughts
+			#Whether to render nightmare monologue/random thoughts
 			render = true
-			#Whether to twitch inner monologue/random thoughts at low sanity levels
+			#Whether to twitch nightmare monologue/random thoughts at low sanity levels
 			twitch = true
 

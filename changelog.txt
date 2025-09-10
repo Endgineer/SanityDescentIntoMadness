@@ -1,5 +1,5 @@
 mc1.20-forge46.0.14-1.1.0:
-- Added new inner entity: Sneaking Terror
+- Added new nightmare entity: Sneaking Terror
 - Added new GUI overlay element for indicating a sanity loss
 - Added new mechanic: on low sanity some passive animals now turn into shadow versions of themselves and run away from insane players
 - Added new mechanic: passive animals are now not tempted by food if the player holding it is insane
@@ -13,7 +13,7 @@ mc1.20-forge46.0.14-1.1.0:
 - Added config options for changing dimensions
 - Added config options for being struck by lightning
 - Added config options for breaking blocks (by default includes infested blocks)
-- Added config options for toggling visibility of inner entities for sane players
+- Added config options for toggling visibility of nightmare entities for sane players
 - Added config options for new GUI overlay element
 - Adjusted config options for passive blocks
 - Adjusted config options for breeding animals

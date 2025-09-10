@@ -68,7 +68,7 @@ public abstract class MixinClientLevel
                          soundEvent.equals(SoundEvents.PIG_HURT) || soundEvent.equals(SoundEvents.PIG_DEATH) ||
                          soundEvent.equals(SoundEvents.SHEEP_HURT) || soundEvent.equals(SoundEvents.SHEEP_DEATH))
                 {
-                    this.playSound(pX, pY, pZ, SoundRegistry.INNER_ENTITY_HURT.get(), pSource, 1.0f, pPitch, false, pSeed);
+                    this.playSound(pX, pY, pZ, SoundRegistry.NIGHTMARE_ENTITY_HURT.get(), pSource, 1.0f, pPitch, false, pSeed);
                 }
                 else return;
 

@@ -46,12 +46,12 @@ public abstract class NightmareEntity extends Monster {
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
-        return SoundRegistry.INNER_ENTITY_HURT.get();
+        return SoundRegistry.NIGHTMARE_ENTITY_HURT.get();
     }
 
     @Override
     protected @NotNull SoundEvent getDeathSound() {
-        return SoundRegistry.INNER_ENTITY_HURT.get();
+        return SoundRegistry.NIGHTMARE_ENTITY_HURT.get();
     }
 
     @Override

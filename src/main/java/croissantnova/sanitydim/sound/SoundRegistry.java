@@ -16,7 +16,7 @@ public class SoundRegistry
     public static final RegistryObject<SoundEvent> HEARTBEAT            = registerSoundEvent("heartbeat");
     public static final RegistryObject<SoundEvent> SWISH                = registerSoundEvent("swish");
     public static final RegistryObject<SoundEvent> FLOWERS_EQUIP        = registerSoundEvent("flowers_equip");
-    public static final RegistryObject<SoundEvent> INNER_ENTITY_HURT    = registerSoundEvent("inner_entity_hurt");
+    public static final RegistryObject<SoundEvent> NIGHTMARE_ENTITY_HURT    = registerSoundEvent("nightmare_entity_hurt");
 
     public static RegistryObject<SoundEvent> registerSoundEvent(String name)
     {

@@ -1,7 +1,7 @@
 package croissantnova.sanitydim.net;
 
-import croissantnova.sanitydim.capability.InnerEntityCapImpl;
-import croissantnova.sanitydim.capability.InnerEntityCapImplProvider;
+import croissantnova.sanitydim.capability.NightmareEntityCapImpl;
+import croissantnova.sanitydim.capability.NightmareEntityCapImplProvider;
 import croissantnova.sanitydim.entity.NightmareEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,37 +12,37 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class InnerEntityCapImplPacket
+public class NightmareEntityCapImplPacket
 {
     public int m_id;
-    public InnerEntityCapImpl m_cap;
+    public NightmareEntityCapImpl m_cap;
     public FriendlyByteBuf m_buf;
 
-    public InnerEntityCapImplPacket()
+    public NightmareEntityCapImplPacket()
     {
     }
 
-    public InnerEntityCapImplPacket(InnerEntityCapImpl cap)
+    public NightmareEntityCapImplPacket(NightmareEntityCapImpl cap)
     {
         this.m_cap = cap;
     }
 
-    public static void encode(InnerEntityCapImplPacket packet, FriendlyByteBuf buf)
+    public static void encode(NightmareEntityCapImplPacket packet, FriendlyByteBuf buf)
     {
         buf.writeInt(packet.m_id);
         packet.m_cap.serialize(buf);
     }
 
-    public static InnerEntityCapImplPacket decode(FriendlyByteBuf buf)
+    public static NightmareEntityCapImplPacket decode(FriendlyByteBuf buf)
     {
         int id = buf.readInt();
-        InnerEntityCapImplPacket packet = new InnerEntityCapImplPacket();
+        NightmareEntityCapImplPacket packet = new NightmareEntityCapImplPacket();
         packet.m_id = id;
         packet.m_buf = buf;
         return packet;
     }
 
-    public static void handle(InnerEntityCapImplPacket packet, Supplier<NetworkEvent.Context> ctx)
+    public static void handle(NightmareEntityCapImplPacket packet, Supplier<NetworkEvent.Context> ctx)
     {
         if (packet.m_buf == null)
             return;
@@ -60,9 +60,9 @@ public class InnerEntityCapImplPacket
                 if (!(ent instanceof NightmareEntity))
                     return;
 
-                ent.getCapability(InnerEntityCapImplProvider.CAP).ifPresent(iec ->
+                ent.getCapability(NightmareEntityCapImplProvider.CAP).ifPresent(iec ->
                 {
-                    if (iec instanceof InnerEntityCapImpl ieci)
+                    if (iec instanceof NightmareEntityCapImpl ieci)
                         ieci.deserialize(packet.m_buf);
                 });
             });

@@ -1,6 +1,6 @@
 package croissantnova.sanitydim.entity;
 
-import croissantnova.sanitydim.capability.InnerEntityCapImplProvider;
+import croissantnova.sanitydim.capability.NightmareEntityCapImplProvider;
 import croissantnova.sanitydim.entity.goal.TargetInsanePlayerGoal;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -59,7 +59,7 @@ public class RottingStalker extends NightmareEntity implements GeoEntity
 
             if (state.isMoving())
             {
-                getCapability(InnerEntityCapImplProvider.CAP).ifPresent(iec ->
+                getCapability(NightmareEntityCapImplProvider.CAP).ifPresent(iec ->
                 {
                     if (!iec.hasTarget() || isInWater())
                         anim.set(DefaultAnimations.WALK);

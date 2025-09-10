@@ -5,7 +5,7 @@ import croissantnova.sanitydim.config.*;
 import croissantnova.sanitydim.entity.NightmareEntitySpawner;
 import croissantnova.sanitydim.entity.NightmareEntity;
 import croissantnova.sanitydim.item.ItemRegistry;
-import croissantnova.sanitydim.net.InnerEntityCapImplPacket;
+import croissantnova.sanitydim.net.NightmareEntityCapImplPacket;
 import croissantnova.sanitydim.net.PacketHandler;
 import croissantnova.sanitydim.net.SanityPacket;
 import croissantnova.sanitydim.sources.passive.*;
@@ -204,9 +204,9 @@ public final class SanityProcessor
         {
             if (ent instanceof NightmareEntity ie)
             {
-                ie.getCapability(InnerEntityCapImplProvider.CAP).ifPresent(iec ->
+                ie.getCapability(NightmareEntityCapImplProvider.CAP).ifPresent(iec ->
                 {
-                    if (iec instanceof InnerEntityCapImpl ieci)
+                    if (iec instanceof NightmareEntityCapImpl ieci)
                     {
                         if (ieci.hasTarget() && ie.getTarget() == null || !ieci.hasTarget() && ie.getTarget() != null)
                         {
@@ -216,7 +216,7 @@ public final class SanityProcessor
 
                         if (ieci.getDirty())
                         {
-                            InnerEntityCapImplPacket packet = new InnerEntityCapImplPacket(ieci);
+                            NightmareEntityCapImplPacket packet = new NightmareEntityCapImplPacket(ieci);
                             packet.m_id = ent.getId();
                             PacketHandler.CHANNEL_INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> ent), packet);
                         }

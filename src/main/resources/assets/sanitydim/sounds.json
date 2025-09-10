@@ -26,7 +26,7 @@
 			"sanitydim:leaves_rustle"
 		]
 	},
-	"inner_entity_hurt": {
+	"nightmare_entity_hurt": {
 		"sounds": [
 			"sanitydim:whoosh"
 		]

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class InnerEntityCapImpl implements IInnerEntityCap
+public class NightmareEntityCapImpl implements INightmareEntityCap
 {
     private boolean dirty;
     private boolean hasTarget;

@@ -26,7 +26,7 @@ Failing to keep your sanity at high levels may have drastic consequences on your
 including fatal outcome.
 <br/><br/>
 As your sanity drops, you start hearing and seeing things, your vision becomes muddy and blurry,
-as well as your mind cloudy, until eventually you start getting attacked by the creations of your own mind, inner entities.
+as well as your mind cloudy, until eventually you start getting attacked by the creations of your own mind, nightmare entities.
 
 ![Sanity GIF](readme/sanity_animation.gif)
 

@@ -47,7 +47,7 @@ public class EventHandler
     public void registerCaps(final RegisterCapabilitiesEvent event)
     {
         event.register(ISanity.class);
-        event.register(IInnerEntityCap.class);
+        event.register(INightmareEntityCap.class);
         event.register(ISanityLevelChunk.class);
     }
 
@@ -57,7 +57,7 @@ public class EventHandler
         if (event.getObject() instanceof Player)
             event.addCapability(SanityProvider.KEY, new SanityProvider());
         else if (event.getObject() instanceof NightmareEntity)
-            event.addCapability(InnerEntityCapImplProvider.KEY, new InnerEntityCapImplProvider());
+            event.addCapability(NightmareEntityCapImplProvider.KEY, new NightmareEntityCapImplProvider());
     }
 
     @SubscribeEvent

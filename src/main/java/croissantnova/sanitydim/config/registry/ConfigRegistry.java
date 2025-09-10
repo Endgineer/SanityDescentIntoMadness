@@ -410,15 +410,15 @@ public class ConfigRegistry
 
         entities_saneSeeNightmares = builder
                 .comment(
-                        "Whether sane players should be able to see and battle inner entities",
+                        "Whether sane players should be able to see and battle nightmare entities",
                         "Mobs will still be there server-side and will count towards passive sanity",
-                        "Players who are targeted by inner entities see them regardless")
+                        "Players who are targeted by nightmare entities see them regardless")
                 .define("sane_see_nightmares", false);
 
         entities_spawnChanceSeconds = builder
                 .comment(
-                        "How many seconds it should take for it to be a 95% chance that an inner entity has spawned.",
-                        "Useful to stop inner entities from spawning predictably after the timeout counter has ended."
+                        "How many seconds it should take for it to be a 95% chance that an nightmare entity has spawned.",
+                        "Useful to stop nightmare entities from spawning predictably after the timeout counter has ended."
                 )
                 .defineInRange("spawn_chance_seconds", 30, 1, 1200);
 
@@ -445,13 +445,13 @@ public class ConfigRegistry
                 .defineEnum("location", SanityIndicatorLocation.HOTBAR_LEFT);
 
         builder.pop();
-        builder.comment("Inner monologue configuration").push("hints");
+        builder.comment("Nightmare monologue configuration").push("hints");
 
         m_renderHint = builder
-                .comment("Whether to render inner monologue/random thoughts")
+                .comment("Whether to render nightmare monologue/random thoughts")
                 .define("render", true);
         m_twitchHint = builder
-                .comment("Whether to twitch inner monologue/random thoughts at low sanity levels")
+                .comment("Whether to twitch nightmare monologue/random thoughts at low sanity levels")
                 .define("twitch", true);
 
         builder.pop();
