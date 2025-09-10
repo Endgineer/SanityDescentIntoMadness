@@ -63,13 +63,5 @@ public abstract class NightmareEntity extends Monster {
             this.remove(RemovalReason.DISCARDED);
             return;
         }
-
-        int despawnDistance = ConfigProxy.getInnerEntityDespawnMobsDistance(this.level().dimension().location());
-        if (despawnDistance <= 0) return;
-
-        List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().inflate(despawnDistance));
-        entities.stream()
-                .filter(EntityHelper::despawnsNearInnerEntities)
-                .forEach(entity -> entity.remove(RemovalReason.DISCARDED));
     }
 }

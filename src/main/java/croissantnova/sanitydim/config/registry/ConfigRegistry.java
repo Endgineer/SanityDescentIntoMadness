@@ -116,7 +116,6 @@ public class ConfigRegistry
 
     public final BooleanValue entities_saneSeeNightmares;
     public final IntValue entities_spawnChanceSeconds;
-    public final IntValue entities_despawnMobsDistance;
 
     public final BooleanValue m_renderIndicator;
     public final BooleanValue m_twitchIndicator;
@@ -422,13 +421,6 @@ public class ConfigRegistry
                         "Useful to stop inner entities from spawning predictably after the timeout counter has ended."
                 )
                 .defineInRange("spawn_chance_seconds", 30, 1, 1200);
-
-        entities_despawnMobsDistance = builder
-                .comment(
-                        "The distance (in blocks) that entities in #sanitydim:inner_entity_despawnable have to be within to despawn when near inner entities.",
-                        "Setting this value to 0 disables this feature."
-                )
-                .defineInRange("despawn_mobs_distance", 32, 0, 128);
 
         builder.pop();
 

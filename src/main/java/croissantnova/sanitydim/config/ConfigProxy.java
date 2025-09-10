@@ -269,10 +269,6 @@ public abstract class ConfigProxy
         return ConfigManager.proxyi("sanity.entity.spawn_chance_seconds", dim);
     }
 
-    public static int getInnerEntityDespawnMobsDistance(ResourceLocation dim) {
-        return ConfigManager.proxyi(ConfigEntryOld.INNER_ENTITY_DESPAWN_MOBS_DISTANCE.getProxyKey(), dim);
-    }
-
     public static boolean getRenderIndicator(ResourceLocation dim)
     {
         return ConfigManager.proxyb("sanity.client.indicator.render", dim);
