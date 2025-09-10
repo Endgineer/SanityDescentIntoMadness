@@ -25,6 +25,7 @@ public class ConfigRegistry
     public final DoubleValue m_enderManAnger;
     public final DoubleValue m_pet;
     public final DoubleValue m_monster;
+    public final DoubleValue m_depth;
     public final DoubleValue m_darkness;
     public final IntValue m_darknessThreshold;
     public final DoubleValue m_lightness;
@@ -209,6 +210,9 @@ public class ConfigRegistry
                 .comment("Players will gain this amount of sanity per second while being near any monsters")
                 .comment("This value is doubled if the monster is aggressive towards the player")
                 .defineInRange("monster", -.1, -100.0, 100.0);
+        m_depth = builder
+                .comment("Players will gain this amount of sanity per second while being in the depths")
+                .defineInRange("depth", -.15, -100.0, 100.0);
         m_darkness = builder
                 .comment("Players will gain this amount of sanity per second while being in the dark")
                 .defineInRange("darkness", -.15, -100.0, 100.0);

@@ -52,6 +52,11 @@ public abstract class ConfigProxy
         return ConfigManager.proxyd2f("sanity.passive.monster", dim);
     }
 
+    public static float getDepth(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.depth", dim);
+    }
+
     public static float getDarkness(ResourceLocation dim)
     {
         return ConfigManager.proxyd2f("sanity.passive.darkness", dim);

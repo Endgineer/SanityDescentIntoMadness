@@ -51,6 +51,7 @@ public final class SanityProcessor
             new EnderManAnger(),
             new Pet(),
             new Monster(),
+            new DepthSanitySource(),
             new DarknessSanitySource(),
             new Lightness(),
             new PassiveBlocks(),

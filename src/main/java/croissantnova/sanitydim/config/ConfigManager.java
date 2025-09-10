@@ -60,6 +60,7 @@ public abstract class ConfigManager {
         proxies.put("sanity.passive.ender_man_anger", new ProxyValueEntry<>(() -> getConfigValues().m_enderManAnger.get(), ConfigManager::finalizePassive));
         proxies.put("sanity.passive.pet", new ProxyValueEntry<>(() -> getConfigValues().m_pet.get(), ConfigManager::finalizePassive));
         proxies.put("sanity.passive.monster", new ProxyValueEntry<>(() -> getConfigValues().m_monster.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.depth", new ProxyValueEntry<>(() -> getConfigValues().m_depth.get(), ConfigManager::finalizePassive));
         proxies.put("sanity.passive.darkness", new ProxyValueEntry<>(() -> getConfigValues().m_darkness.get(), ConfigManager::finalizePassive));
         proxies.put("sanity.passive.darkness_threshold", new ProxyValueEntry<>(() -> getConfigValues().m_darknessThreshold.get(), ConfigManager::noFinalize));
         proxies.put("sanity.passive.lightness", new ProxyValueEntry<>(() -> getConfigValues().m_lightness.get(), ConfigManager::finalizePassive));
