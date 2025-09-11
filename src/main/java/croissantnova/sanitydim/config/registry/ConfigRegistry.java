@@ -50,34 +50,6 @@ public class ConfigRegistry
     public final DoubleValue m_jukeboxUnsettling;
     public final ConfigValue<List<? extends String>> m_passiveBlocks;
 
-    public final PassiveLSOCompat passive_lsoCompat;
-    public static class PassiveLSOCompat {
-        public final DoubleValue frostbiteTemperature;
-        public final DoubleValue coldTemperature;
-        public final DoubleValue normalTemperature;
-        public final DoubleValue hotTemperature;
-        public final DoubleValue heatStrokeTemperature;
-
-        private final ForgeConfigSpec.Builder builder;
-
-        public PassiveLSOCompat(ForgeConfigSpec.Builder builder) {
-            this.builder = builder;
-            
-            heatStrokeTemperature = temperature("heat stroke", -0.1);
-            frostbiteTemperature = temperature("frostbite", -0.1);
-            hotTemperature = temperature("hot", -0.05);
-            coldTemperature = temperature("cold", -0.05);
-            normalTemperature = temperature("normal", 0.05);
-        }
-
-        private DoubleValue temperature(String name, double value) {
-            return builder
-                    .comment(String.format("How much sanity you gain per second while having a %s temperature", name))
-                    .defineInRange(name.replaceAll(" ", "_") + "_temperature", value, MIN_SANITY, MAX_SANITY);
-        }
-    }
-
-
     // actives
     public final DoubleValue m_sleeping;
     public final DoubleValue m_sleepingCd;
@@ -293,13 +265,7 @@ public class ConfigRegistry
         passiveConfig = new PassiveConfig(builder);
 
 
-        builder.comment("These values are only used if you have Legendary Survival Overhaul installed.")
-                .push("legendary_survival_overhaul_compat");
-        passive_lsoCompat = new PassiveLSOCompat(builder);
-
-
-
-        builder.pop(2);
+        builder.pop();
         builder.comment("Configuration for active sanity sources").push("active");
 
         active_respawnedNearLastDeath.build(builder);
