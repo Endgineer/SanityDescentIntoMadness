@@ -13,12 +13,7 @@ public enum ConfigEntryOld {
     SNEAKING_TERROR_KILL_RATIO(
             "sanity.active.sneaking_terror_kill_ratio",
             new ConfigManager.ProxyValueEntry<>(() -> ConfigManager.getConfigValues().m_sneakingTerrorKillRatio.get(), ConfigManager::finalizeActive)
-    ),
-    PASSIVE_BODY_PART_SLIGHTLY_WOUNDED(
-            "sanity.passive.body_part_slightly_wounded",
-            new ConfigManager.ProxyValueEntry<>(() -> ConfigManager.getConfigValues().passive_lsoCompat.bodyPartSlightlyWounded.get(), ConfigManager::finalizePassive)
-    )
-    ;
+    );
 
     private final String proxyKey;
     private final ConfigManager.ProxyValueEntry<?> proxyValueEntry;

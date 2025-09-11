@@ -67,13 +67,6 @@ public class PassiveConfig {
             "Players with their food levels at or above this threshold gain bonus sanity per second."
     );
 
-    public final ModConfigValue<Double> lowHydration = ModConfigValue.createPassiveDouble(
-            "sanity.passive.low_hydration",
-            -0.2,
-            "Defines how much sanity is gained per second when the player is low on hydration.",
-            "This value applies only when the player's hydration level is at or below the threshold."
-    );
-
     public final ModConfigValue<Double> sunlight = ModConfigValue.createPassiveDouble(
             "sanity.passive.sunlight",
             0.05,
@@ -95,7 +88,6 @@ public class PassiveConfig {
         wellHydratedThreshold.build(builder);
         wellFed.build(builder);
         wellFedThreshold.build(builder);
-        lowHydration.build(builder);
         sunlight.build(builder);
         wornArmor.build(builder);
     }

@@ -73,43 +73,5 @@ public class ConfigEntryOld2<T> {
         private static @NotNull ConfigEntryOld2<Double> createDoublePassive(String proxyKey, Supplier<Double> getter) {
             return createDouble(proxyKey, getter, ConfigManager::finalizePassive);
         }
-
-        public final ConfigEntryOld2<Float> bodyPartSlightlyWounded = createFloatPassive(
-                "sanity.passive.body_part_slightly_wounded",
-                () -> ConfigManager.getConfigValues().passive_lsoCompat.bodyPartSlightlyWounded.get()
-        );
-        public final ConfigEntryOld2<Float> bodyPartWounded = createFloatPassive(
-                "sanity.passive.body_part_wounded",
-                () -> ConfigManager.getConfigValues().passive_lsoCompat.bodyPartWounded.get()
-        );
-        public final ConfigEntryOld2<Float> bodyPartHeavilyWounded = createFloatPassive(
-                "sanity.passive.body_part_heavily_wounded",
-                () -> ConfigManager.getConfigValues().passive_lsoCompat.bodyPartHeavilyWounded.get()
-        );
-        public final ConfigEntryOld2<Float> bodyPartDead = createFloatPassive(
-                "sanity.passive.body_part_dead",
-                () -> ConfigManager.getConfigValues().passive_lsoCompat.bodyPartDead.get()
-        );
-
-        public final ConfigEntryOld2<Float> heatStrokeTemperature = createFloatPassive(
-                "sanity.passive.heat_stroke_temperature",
-                () -> ConfigManager.getConfigValues().passive_lsoCompat.heatStrokeTemperature.get()
-        );
-        public final ConfigEntryOld2<Float> frostbiteTemperature = createFloatPassive(
-                "sanity.passive.frostbite_temperature",
-                () -> ConfigManager.getConfigValues().passive_lsoCompat.frostbiteTemperature.get()
-        );
-        public final ConfigEntryOld2<Float> hotTemperature = createFloatPassive(
-                "sanity.passive.hot_temperature",
-                () -> ConfigManager.getConfigValues().passive_lsoCompat.hotTemperature.get()
-        );
-        public final ConfigEntryOld2<Float> coldTemperature = createFloatPassive(
-                "sanity.passive.cold_temperature",
-                () -> ConfigManager.getConfigValues().passive_lsoCompat.coldTemperature.get()
-        );
-        public final ConfigEntryOld2<Float> normalTemperature = createFloatPassive(
-                "sanity.passive.normal_temperature",
-                () -> ConfigManager.getConfigValues().passive_lsoCompat.normalTemperature.get()
-        );
     }
 }

@@ -22,6 +22,20 @@ public class ConfigRegistry
     public final DoubleValue m_raining;
     public final IntValue m_hungerThreshold;
     public final DoubleValue m_hungry;
+    public final IntValue m_thirstThreshold;
+    public final DoubleValue m_thirsty;
+    public final DoubleValue m_seasonEarlySpring;
+    public final DoubleValue m_seasonMidSpring;
+    public final DoubleValue m_seasonLateSpring;
+    public final DoubleValue m_seasonEarlySummer;
+    public final DoubleValue m_seasonMidSummer;
+    public final DoubleValue m_seasonLateSummer;
+    public final DoubleValue m_seasonEarlyAutumn;
+    public final DoubleValue m_seasonMidAutumn;
+    public final DoubleValue m_seasonLateAutumn;
+    public final DoubleValue m_seasonEarlyWinter;
+    public final DoubleValue m_seasonMidWinter;
+    public final DoubleValue m_seasonLateWinter;
     public final DoubleValue m_enderManAnger;
     public final DoubleValue m_pet;
     public final DoubleValue m_monster;
@@ -38,11 +52,6 @@ public class ConfigRegistry
 
     public final PassiveLSOCompat passive_lsoCompat;
     public static class PassiveLSOCompat {
-        public final DoubleValue bodyPartSlightlyWounded;
-        public final DoubleValue bodyPartWounded;
-        public final DoubleValue bodyPartHeavilyWounded;
-        public final DoubleValue bodyPartDead;
-
         public final DoubleValue frostbiteTemperature;
         public final DoubleValue coldTemperature;
         public final DoubleValue normalTemperature;
@@ -53,19 +62,7 @@ public class ConfigRegistry
 
         public PassiveLSOCompat(ForgeConfigSpec.Builder builder) {
             this.builder = builder;
-            bodyPartSlightlyWounded = builder
-                    .comment("Having a slightly wounded body part gives this amount of sanity per second")
-                    .defineInRange("body_part_slightly_wounded", -0.0, MIN_SANITY, MAX_SANITY);
-            bodyPartWounded = builder
-                    .comment("Having a wounded body part gives this amount of sanity per second")
-                    .defineInRange("body_part_wounded", -0.01, MIN_SANITY, MAX_SANITY);
-            bodyPartHeavilyWounded = builder
-                    .comment("Having a heavily wounded body part gives this amount of sanity per second")
-                    .defineInRange("body_part_heavily_wounded", -0.025, MIN_SANITY, MAX_SANITY);
-            bodyPartDead = builder
-                    .comment("Having a dead body part gives this amount of sanity per second")
-                    .defineInRange("body_part_dead", -0.05, MIN_SANITY, MAX_SANITY);
-
+            
             heatStrokeTemperature = temperature("heat stroke", -0.1);
             frostbiteTemperature = temperature("frostbite", -0.1);
             hotTemperature = temperature("hot", -0.05);
@@ -200,6 +197,48 @@ public class ConfigRegistry
         m_hungry = builder
                 .comment("Players with food levels at and below <hunger_threshold> gain this amount of sanity per second")
                 .defineInRange("hungry", -.2, -100.0, 100.0);
+        m_thirstThreshold = builder
+                .comment("Players' sanity will start getting affected with thirst levels at and below this threshold (in half-waterdrops)")
+                .defineInRange("thirst_threshold", 8, 0, 20);
+        m_thirsty = builder
+                .comment("Players with thirst levels at and below <thirst_threshold> gain this amount of sanity per second")
+                .defineInRange("thirsty", -.2, -100.0, 100.0);
+        m_seasonEarlySpring = builder
+                .comment("Players gain this amount of sanity per second during EarlySpring")
+                .defineInRange("seasonEarlySpring", 0.05, -100.0, 100.0);
+        m_seasonMidSpring = builder
+                .comment("Players gain this amount of sanity per second during MidSpring")
+                .defineInRange("seasonMidSpring", 0.1, -100.0, 100.0);
+        m_seasonLateSpring = builder
+                .comment("Players gain this amount of sanity per second during LateSpring")
+                .defineInRange("seasonLateSpring", 0.05, -100.0, 100.0);
+        m_seasonEarlySummer = builder
+                .comment("Players gain this amount of sanity per second during EarlySummer")
+                .defineInRange("seasonEarlySummer", 0, -100.0, 100.0);
+        m_seasonMidSummer = builder
+                .comment("Players gain this amount of sanity per second during MidSummer")
+                .defineInRange("seasonMidSummer", 0, -100.0, 100.0);
+        m_seasonLateSummer = builder
+                .comment("Players gain this amount of sanity per second during LateSummer")
+                .defineInRange("seasonLateSummer", 0, -100.0, 100.0);
+        m_seasonEarlyAutumn = builder
+                .comment("Players gain this amount of sanity per second during EarlyAutumn")
+                .defineInRange("seasonEarlyAutumn", 0.05, -100.0, 100.0);
+        m_seasonMidAutumn = builder
+                .comment("Players gain this amount of sanity per second during MidAutumn")
+                .defineInRange("seasonMidAutumn", 0.1, -100.0, 100.0);
+        m_seasonLateAutumn = builder
+                .comment("Players gain this amount of sanity per second during LateAutumn")
+                .defineInRange("seasonLateAutumn", 0.05, -100.0, 100.0);
+        m_seasonEarlyWinter = builder
+                .comment("Players gain this amount of sanity per second during EarlyWinter")
+                .defineInRange("seasonEarlyWinter", -0.05, -100.0, 100.0);
+        m_seasonMidWinter = builder
+                .comment("Players gain this amount of sanity per second during MidWinter")
+                .defineInRange("seasonMidWinter", -0.1, -100.0, 100.0);
+        m_seasonLateWinter = builder
+                .comment("Players gain this amount of sanity per second during LateWinter")
+                .defineInRange("seasonLateWinter", -0.05, -100.0, 100.0);
         m_enderManAnger = builder
                 .comment("Players will gain this amount of sanity per second for 5 seconds after looking at an enderman")
                 .defineInRange("ender_man_anger", -5.0, -100.0, 100.0);

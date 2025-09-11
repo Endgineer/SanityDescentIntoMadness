@@ -37,6 +37,76 @@ public abstract class ConfigProxy
         return ConfigManager.proxyd2f("sanity.passive.hungry", dim);
     }
 
+    public static int getThirstThreshold(ResourceLocation dim)
+    {
+        return ConfigManager.proxyi("sanity.passive.thirst_threshold", dim);
+    }
+
+    public static float getThirsty(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.thirsty", dim);
+    }
+
+    public static float getEarlySpring(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonEarlySpring", dim);
+    }
+
+    public static float getMidSpring(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonMidSpring", dim);
+    }
+
+    public static float getLateSpring(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonLateSpring", dim);
+    }
+
+    public static float getEarlySummer(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonEarlySummer", dim);
+    }
+
+    public static float getMidSummer(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonMidSummer", dim);
+    }
+
+    public static float getLateSummer(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonLateSummer", dim);
+    }
+
+    public static float getEarlyAutumn(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonEarlyAutumn", dim);
+    }
+
+    public static float getMidAutumn(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonMidAutumn", dim);
+    }
+
+    public static float getLateAutumn(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonLateAutumn", dim);
+    }
+
+    public static float getEarlyWinter(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonEarlyWinter", dim);
+    }
+
+    public static float getMidWinter(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonMidWinter", dim);
+    }
+
+    public static float getLateWinter(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.seasonLateWinter", dim);
+    }
+
     public static float getEnderManAnger(ResourceLocation dim)
     {
         return ConfigManager.proxyd2f("sanity.passive.ender_man_anger", dim);
