@@ -51,11 +51,6 @@ public class NightmareEntitySpawner
         return level.getEntitiesOfClass(NightmareEntity.class, new AABB(blockPos).inflate(radius));
     }
 
-    // when nightmares should spawn and also the inverse of when they should despawn
-    public static boolean isNightmareTime(@NotNull Level level) {
-        return level.isNight() || level.isThundering();
-    }
-
     // every tick try to spawn an nightmare entity
     // gives MAX_SPAWN_POS_TRIES to getConfigValue a valid spawn position for the entity or try all over again next tick
     // SPAWN_CHANCE roughly determines chance to spawn every tick after spawn timeout is over
@@ -82,10 +77,7 @@ public class NightmareEntitySpawner
         if (PlayerHelper.isImmortal(player) || LevelHelper.isPeaceful(level)) {
             return;
         }
-        if (!isNightmareTime(level)) {
-            return;
-        }
-
+        
         // buffer period between spawns to stop entity spam
         PLAYER_SPAWN_TIMEOUT.putIfAbsent(player, 0);
         int spawnTimeout = PLAYER_SPAWN_TIMEOUT.get(player);

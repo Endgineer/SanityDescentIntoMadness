@@ -53,15 +53,4 @@ public abstract class NightmareEntity extends Monster {
     protected @NotNull SoundEvent getDeathSound() {
         return SoundRegistry.NIGHTMARE_ENTITY_HURT.get();
     }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (this.level().isClientSide) return;
-
-        if (!LevelSanityAPI.isNightmareTime(this.level())) {
-            this.remove(RemovalReason.DISCARDED);
-            return;
-        }
-    }
 }
