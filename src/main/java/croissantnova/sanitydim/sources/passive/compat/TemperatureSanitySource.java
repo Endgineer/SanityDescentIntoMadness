@@ -21,7 +21,7 @@ public class TemperatureSanitySource implements IPassiveSanitySource {
         if (ColdSweatCompatAPI.isModLoaded() && EntityTempManager.isTemperatureEnabled(player)) {
             Temperature.Units preferredUnits = CSMath.getIfNotNull(player, p -> Preference.getOrDefault(p, Preference.UNITS, Temperature.Units.F), Temperature.Units.F);
             double temp = CSMath.truncate(Temperature.convertIfNeeded(Temperature.get((LivingEntity) player, Temperature.Trait.BODY), Temperature.Trait.BODY, preferredUnits), 2);
-            return Math.abs(temp) >= 60 ? ConfigProxy.getColdSweaty(dim) : 0f;
+            return Math.abs(temp) >= 50 ? ConfigProxy.getColdSweaty(dim) : 0f;
         }
         
         return 0f;
