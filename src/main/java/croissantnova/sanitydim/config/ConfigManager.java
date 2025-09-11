@@ -59,6 +59,7 @@ public abstract class ConfigManager {
         proxies.put("sanity.passive.hungry", new ProxyValueEntry<>(() -> getConfigValues().m_hungry.get(), ConfigManager::finalizePassive));
         proxies.put("sanity.passive.thirst_threshold", new ProxyValueEntry<>(() -> getConfigValues().m_thirstThreshold.get(), ConfigManager::noFinalize));
         proxies.put("sanity.passive.thirsty", new ProxyValueEntry<>(() -> getConfigValues().m_thirsty.get(), ConfigManager::finalizePassive));
+        proxies.put("sanity.passive.coldsweaty", new ProxyValueEntry<>(() -> getConfigValues().m_coldsweaty.get(), ConfigManager::finalizePassive));
         proxies.put("sanity.passive.seasonEarlySpring", new ProxyValueEntry<>(() -> getConfigValues().m_seasonEarlySpring.get(), ConfigManager::finalizePassive));
         proxies.put("sanity.passive.seasonMidSpring", new ProxyValueEntry<>(() -> getConfigValues().m_seasonMidSpring.get(), ConfigManager::finalizePassive));
         proxies.put("sanity.passive.seasonLateSpring", new ProxyValueEntry<>(() -> getConfigValues().m_seasonLateSpring.get(), ConfigManager::finalizePassive));

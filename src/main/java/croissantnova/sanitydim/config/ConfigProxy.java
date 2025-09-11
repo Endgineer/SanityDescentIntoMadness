@@ -47,6 +47,11 @@ public abstract class ConfigProxy
         return ConfigManager.proxyd2f("sanity.passive.thirsty", dim);
     }
 
+    public static float getColdSweaty(ResourceLocation dim)
+    {
+        return ConfigManager.proxyd2f("sanity.passive.coldsweaty", dim);
+    }
+
     public static float getEarlySpring(ResourceLocation dim)
     {
         return ConfigManager.proxyd2f("sanity.passive.seasonEarlySpring", dim);

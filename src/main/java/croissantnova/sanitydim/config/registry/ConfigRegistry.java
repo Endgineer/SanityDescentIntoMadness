@@ -24,6 +24,7 @@ public class ConfigRegistry
     public final DoubleValue m_hungry;
     public final IntValue m_thirstThreshold;
     public final DoubleValue m_thirsty;
+    public final DoubleValue m_coldsweaty;
     public final DoubleValue m_seasonEarlySpring;
     public final DoubleValue m_seasonMidSpring;
     public final DoubleValue m_seasonLateSpring;
@@ -175,6 +176,9 @@ public class ConfigRegistry
         m_thirsty = builder
                 .comment("Players with thirst levels at and below <thirst_threshold> gain this amount of sanity per second")
                 .defineInRange("thirsty", -.2, -100.0, 100.0);
+        m_coldsweaty = builder
+                .comment("Players that are freezing or overheating gain this amount of sanity per second")
+                .defineInRange("coldsweaty", -.2, -100.0, 100.0);
         m_seasonEarlySpring = builder
                 .comment("Players gain this amount of sanity per second during EarlySpring")
                 .defineInRange("seasonEarlySpring", 0.05, -100.0, 100.0);

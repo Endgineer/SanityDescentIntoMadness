@@ -1,6 +1,5 @@
 package croissantnova.sanitydim.entity;
 
-import croissantnova.sanitydim.api.LevelSanityAPI;
 import croissantnova.sanitydim.api.PlayerSanityAPI;
 import croissantnova.sanitydim.api.SanityState;
 import croissantnova.sanitydim.config.ConfigProxy;
