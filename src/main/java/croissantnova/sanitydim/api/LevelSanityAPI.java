@@ -8,6 +8,6 @@ public final class LevelSanityAPI {
     private LevelSanityAPI() {}
 
     public static boolean isNightmareTime(@NotNull Level level) {
-        return level.isNight() || level.isThundering();
+        return true;
     }
 }
